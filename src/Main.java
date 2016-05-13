@@ -1,6 +1,7 @@
 
 import Devices.Router;
 import Devices.Router.Builder;
+import Validation.Validator;
 
 public class Main {
 
@@ -12,7 +13,6 @@ public class Main {
         // required attribute 'deviceType' is passed inside the dedicated Builder itself 
         // (when calling the super constructor),
         // optional parameters are passed as chainable methods.
-
         Router router = new Router.Builder("Super megacool router", "not-the-address-you-are-looking-for")
                 .name("oh noes")
                 .someRouterProperty(42)
@@ -22,5 +22,9 @@ public class Main {
         System.out.println("required Device address: " + router.getAddress());
         System.out.println("optional Device name: " + router.getName());
         System.out.println("optional Router property: " + router.getSomeRouterProperty());
+        
+        // XML validation
+        // Odkomentovat pro validaci. Oba soubory, .xml i .xsd, budou ve slozce, ktera obsahuje slozku src (tj. "vedle" slozky src)
+        //Validator validation = new Validator(new String[] {"masterrouter.xml", "masterrouter.xsd"});
     }
 }
