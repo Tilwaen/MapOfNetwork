@@ -9,6 +9,6 @@ package Devices;
  *
  * @author Kristýna Leknerová
  */
-public abstract class Port {
+public class EthernetPort extends Port {
     
 }
