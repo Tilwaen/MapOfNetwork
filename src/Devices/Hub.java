@@ -1,14 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Devices;
 
 /**
- *
+ * Represents a Hub.
+ * 
  * @author Kristýna Leknerová
  */
-public class Hub {
-    // TODO
+public class Hub extends Device {
+        
+    private Hub(Builder builder) {
+            super(builder);
+        }
+        
+        /*** Builder ***/ 
+        public static class Builder extends Device.DeviceBuilder<Builder> {
+            public Builder(String did, String address) {
+                super(did, address, DeviceType.HUB);
+            }
+        
+            @Override protected Builder getThis() {
+                return this;
+            }
+        
+            public Hub build() {
+                return new Hub(this);
+            }
+        }
 }

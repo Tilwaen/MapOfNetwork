@@ -7,16 +7,16 @@ import java.lang.reflect.Constructor;
  * 
  * @param did Required, device ID
  * @param deviceType Required, device type
- * @param address Optional, device address (NOTE: CHANGE TO REQUIRED ACCORDING TO THE SCHEMA)
+ * @param address Required, device address
  * @param name Optional, device name
  * 
  * @author Kristýna Leknerová
  */
 public abstract class Device {
-    private int did;                // required
+    private String did;             // required
     private DeviceType deviceType;  // required
+    private String address;         // required
     
-    private String address;         // optional
     private String name;            // optional
     
     /*** Constructor ***/
@@ -28,7 +28,7 @@ public abstract class Device {
     }
     
     /*** Getters ***/
-    public int getDid() {
+    public String getDid() {
         return did;
     }
     
@@ -53,25 +53,20 @@ public abstract class Device {
      */    
     public static abstract class DeviceBuilder<T extends DeviceBuilder<T>> {
         protected abstract T getThis();
-        private final int did;
+        private final String did;
         private final DeviceType deviceType;
         private String address;
         private String name;
         
         // Required parameters passed in constructor
-        protected DeviceBuilder(int did, DeviceType deviceType) {
+        protected DeviceBuilder(String did, String address, DeviceType deviceType) {
             this.did = did;
+            this.address = address;
             this.deviceType = deviceType;
         }
         
-        // Optional parameters set in chainable methods
-        public T address(String address) {
-            this.address = address;
-            return getThis();
-        }
-        
-        public T name(String address) {
-            this.address = address;
+        public T name(String name) {
+            this.name = name;
             return getThis();
         }
     }
