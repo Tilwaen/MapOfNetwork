@@ -1,30 +1,37 @@
 package Devices;
 
 import java.lang.reflect.Constructor;
+import java.util.Collections;
 
 /**
  * Represents any device in the network.
  * 
- * @param did Required, device ID
- * @param deviceType Required, device type
- * @param address Required, device address
- * @param name Optional, device name
+ * @param did           Required, device ID
+ * @param deviceType    Required, device type
+ * @param address       Required, device address
+ * @param numberOfPorts Required, maximal number of ports
+ * @param arrayOfPorts  Optional, array of device ports
+ * @param name          Optional, device name. Its setter is exposed.
  * 
  * @author Kristýna Leknerová
  */
-public abstract class Device {
+public class Device {
     private String did;             // required
     private DeviceType deviceType;  // required
     private String address;         // required
-    
-    private String name;            // optional
+    private int numberOfPorts;      // required
+
+    private final Port[] arrayOfPorts;      // optional
+    private String name;                    // optional
     
     /*** Constructor ***/
-    protected <T extends Device> Device(DeviceBuilder deviceBuilder) {
-        this.did = deviceBuilder.did;
-        this.deviceType = deviceBuilder.deviceType;
-        this.address = deviceBuilder.address;
-        this.name = deviceBuilder.name;
+    private Device(String did, DeviceType deviceType, String address, int numberOfPorts, Port[] arrayOfPorts, String name) {
+        this.did = did;
+        this.deviceType = deviceType;
+        this.address = address;
+        this.numberOfPorts = numberOfPorts;
+        this.arrayOfPorts = arrayOfPorts;
+        this.name = name;
     }
     
     /*** Getters ***/
@@ -40,34 +47,68 @@ public abstract class Device {
         return address;
     }
     
+    /**
+     * 
+     * @return Mutable array of ports.
+     */
+    public Port[] getArrayOfPorts() {
+        // In case of need for immutable array, use deep copy (or list)
+        return arrayOfPorts;
+    }
+    
     public String getName() {
         return name;
     }
     
-    /**
-     * Builder for the class Device.
-     * One does not simply add multiple optional parameters.
-     * 
-     * More about this specific pattern used is to be found here: 
-     * https://leozgp.wordpress.com/2014/03/06/studying-builder-pattern-with-inheritance/
-     */    
-    public static abstract class DeviceBuilder<T extends DeviceBuilder<T>> {
-        protected abstract T getThis();
-        private final String did;
-        private final DeviceType deviceType;
-        private String address;
-        private String name;
+    /*** Setters ***/
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /*** Builder ***/
+    
+    public static class Builder {
+        private String did;             // required
+        private DeviceType deviceType;  // required
+        private String address;         // required
+        private int numberOfPorts;      // required
+        private Port[] arrayOfPorts;    // optional
+        private String name;            // optional
         
-        // Required parameters passed in constructor
-        protected DeviceBuilder(String did, String address, DeviceType deviceType) {
+        public Builder(String did, DeviceType deviceType, String address, int numberOfPorts) {
             this.did = did;
-            this.address = address;
             this.deviceType = deviceType;
+            this.address = address;
+            this.numberOfPorts = numberOfPorts;
         }
         
-        public T name(String name) {
+        /**
+         * Adds specified arrayOfPorts as an attribute to the Device.
+         * @param arrayOfPorts  Array of Ports. Its length can't be greater than numberOfPorts.
+         * @return 
+         */
+        public Builder arrayOfPorts(Port[] arrayOfPorts) {
+            if (arrayOfPorts.length > numberOfPorts) {
+                throw new IllegalArgumentException("Actual number of ports is higher than allowed maximal number of ports");
+            }
+            
+            this.arrayOfPorts = arrayOfPorts;
+            return this;
+        }
+        
+        public Builder arrayOfPorts() {
+            this.arrayOfPorts = new Port[numberOfPorts];
+            return this;
+        }
+        
+        public Builder name(String name) {
             this.name = name;
-            return getThis();
+            return this;
+        }
+        
+        public Device build() {
+            return new Device(did, deviceType, address, numberOfPorts, arrayOfPorts, name);
         }
     }
 }

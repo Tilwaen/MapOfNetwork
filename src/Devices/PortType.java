@@ -4,6 +4,6 @@ package Devices;
  *
  * @author Kristýna Leknerová
  */
-public enum SwitchType {
-    SWITCH12, SWITCH24, SWITCH48
+public enum PortType {
+    ETHERNET, WIFI
 }
