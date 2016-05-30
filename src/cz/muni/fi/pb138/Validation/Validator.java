@@ -1,4 +1,4 @@
-package Validation;
+package cz.muni.fi.pb138.Validation;
 
 import java.io.File;
 import java.io.IOException;

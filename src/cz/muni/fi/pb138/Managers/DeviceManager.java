@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Managers;
+package cz.muni.fi.pb138.Managers;
 
-import Devices.Device;
+import cz.muni.fi.pb138.Devices.Device;
 import java.util.List;
 
 /**
@@ -14,11 +9,9 @@ import java.util.List;
  */
 public interface DeviceManager {
  
-    void createDevice();
+    void createDevice(Device device);
  
     void deleteDevice(Device device);
- 
-    void deleteDeviceById(Long id);
  
     void updateDevice(Device device);
  
@@ -33,5 +26,11 @@ public interface DeviceManager {
     List<Device> listAllSwitches();
  
     Device findDeviceById();
+    
+    Device findDeviceByAdress(String adress);
+    
+    int findEmptyPort(Device device);
+    
+    boolean isPortEmpty(Device device, int numberInArrayOfPorts);
  
 }
