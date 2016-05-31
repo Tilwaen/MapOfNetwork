@@ -25,7 +25,7 @@ public interface DeviceManager {
  
     List<Device> listAllSwitches();
  
-    Device findDeviceById();
+    Device findDeviceById(String id);
     
     Device findDeviceByAdress(String adress);
     
