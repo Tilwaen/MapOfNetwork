@@ -1,8 +1,10 @@
 package cz.muni.fi.pb138.Devices;
 
+import cz.muni.fi.pb138.Managers.PortManagerImpl;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Represents any device in the network.
@@ -31,7 +33,7 @@ public class Device {
      * @param address       Required, device address
      * @param numberOfEthernetPorts Required, maximal number of ports
      * @param arrayOfEthernetPorts  Optional, array of device ports
-     * @param name          Optional, device name. Its setter is exposed.
+     * @param name          Optional, device name.
      */
     private Device(String did, DeviceType deviceType, String address,
             int numberOfEthernetPorts, ArrayList<Port> arrayOfEthernetPorts, 
@@ -47,9 +49,8 @@ public class Device {
         this.name = name;
     }
 
-    /**
-     * * Getters **
-     */
+    /*** Getters ***/
+    
     public String getDid() {
         return did;
     }
@@ -70,7 +71,7 @@ public class Device {
     }
 
     /**
-     *
+     * Gets arrayList of ethernet ports.
      * @return Mutable array of ports.
      */
     public ArrayList<Port> getArrayOfEthernetPorts() {
@@ -86,16 +87,80 @@ public class Device {
         return name;
     }
 
+    /*** Setters ***/
+    
     /**
-     * * Setters **
+     * Sets new maximal number of ethernet ports.
+     * If it's lower than the current number of connections,
+     * crops all connections with port numbers over this number.
+     * @param numberOfPorts New maximal number of ethernet ports
      */
+    public void setNumberOfPorts(int numberOfPorts) {
+        // TODO: GET THIS PORT MANAGER AS SomeClass.GetPortManager(), DON'T CREATE A NEW ONE
+        PortManagerImpl portManager = new PortManagerImpl();
+            
+        // Delete all connections over the new port number
+        for (int i = numberOfPorts; i < arrayOfEthernetPorts.size(); i++) {
+            portManager.deletePort(arrayOfEthernetPorts.get(i));
+        }
+        
+        // Trim the ArrayList and set the new number of ports
+        arrayOfEthernetPorts.subList(numberOfPorts, arrayOfEthernetPorts.size()).clear();
+        numberOfEthernetPorts = numberOfPorts;
+    }
+    
+    public void setDeviceType(DeviceType deviceType) {
+        this.deviceType = deviceType;
+    }
+    
     public void setName(String name) {
         this.name = name;
     }
-
+    
+    /*** Methods ***/
+    
     /**
-     * * Builder **
+     * Checks whether the device is a switch or not.
+     * Switch can be further divided into these subtypes: switch12, switch24, switch48.
+     * @return True is the device is a switch, false if not.
      */
+    public boolean isSwitch() {
+        return deviceType == DeviceType.SWITCH12 || deviceType == DeviceType.SWITCH24 || deviceType == DeviceType.SWITCH48;
+    }
+
+    /*** Equals and hascode ***/
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Device other = (Device) obj;
+        if (!Objects.equals(this.did, other.did)) {
+            return false;
+        }
+        if (!Objects.equals(this.address, other.address)) {
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.did);
+        hash = 53 * hash + Objects.hashCode(this.address);
+        return hash;
+    }
+
+    /*** Builder ***/
+    
     public static class Builder {
 
         private String did;                     // required
