@@ -41,8 +41,16 @@ public class Device {
         this.deviceType = deviceType;
         this.address = address;
         this.numberOfPorts = numberOfPorts;
-        this.arrayOfPorts = arrayOfPorts;
         this.name = name;
+        
+        if (arrayOfPorts == null) {
+            Port[] array = new Port[numberOfPorts];
+            Arrays.fill(array, null);
+            this.arrayOfPorts = Arrays.asList(array);
+        }
+        else {
+            this.arrayOfPorts = arrayOfPorts;
+        }
     }
 
     /*** Getters ***/
@@ -190,14 +198,6 @@ public class Device {
             }
 
             this.arrayOfPorts = arrayOfPorts;
-            return this;
-        }
-
-        public Builder arrayOfEthernetPorts() {
-            
-            Port[] array = new Port[numberOfPorts];
-            Arrays.fill(array, null);
-            this.arrayOfPorts = Arrays.asList(array);
             return this;
         }
 
