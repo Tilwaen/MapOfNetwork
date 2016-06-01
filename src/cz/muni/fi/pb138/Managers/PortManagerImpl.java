@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
+ * Class implementing operations with ports. Update port is not supported.
+ * Delete port and create new one instead.
+ *
  * @version 30.5.2016
  * @author Petr Beran
  */
@@ -28,6 +32,14 @@ public class PortManagerImpl implements PortManager {
         validatePort(port);
         Device deviceA = port.getDeviceA();
         Device deviceB = port.getDeviceB();
+
+        for (Port portInList : deviceA.getArrayOfEthernetPorts()) {
+            if (portInList != null && ((portInList.getDeviceA().equals(deviceA) && portInList.getDeviceB().equals(deviceB)) 
+                    || (portInList.getDeviceA().equals(deviceB) && portInList.getDeviceB().equals(deviceA)))) {
+                throw new IllegalArgumentException("There is already port between these two devices");
+            }
+        }
+
         try {
             List<Port> deviceAEthernetPorts = deviceA.getArrayOfEthernetPorts();
             deviceAEthernetPorts.set(deviceManager.findEmptyPort(deviceA), port);
@@ -62,10 +74,13 @@ public class PortManagerImpl implements PortManager {
         validatePort(port);
         Device deviceA = port.getDeviceA();
         Device deviceB = port.getDeviceB();
+        if (!deviceManager.isPortEmpty(deviceA, numberOfPortInDeviceA)) {
+            throw new IllegalArgumentException("Port in first device is occupied");
+        }
+        if (!deviceManager.isPortEmpty(deviceB, numberOfPortInDeviceA)) {
+            throw new IllegalArgumentException("Port in second device is occupied");
+        }
         try {
-            deviceManager.isPortEmpty(deviceA, numberOfPortInDeviceA);
-            deviceManager.isPortEmpty(deviceB, numberOfPortInDeviceB);
-
             List<Port> deviceAEthernetPorts = deviceA.getArrayOfEthernetPorts();
             deviceAEthernetPorts.set(numberOfPortInDeviceA, port);
 
@@ -132,6 +147,9 @@ public class PortManagerImpl implements PortManager {
         }
         if (port.getDeviceB() == null) {
             throw new IllegalArgumentException("DeviceB is null!");
+        }
+        if (port.getDeviceA().equals(port.getDeviceB())) {
+            throw new IllegalArgumentException("Devices are the same!");
         }
     }
 
