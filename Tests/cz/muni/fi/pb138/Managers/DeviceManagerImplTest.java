@@ -3,7 +3,6 @@ package cz.muni.fi.pb138.Managers;
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.DeviceType;
 import cz.muni.fi.pb138.Devices.Port;
-import cz.muni.fi.pb138.Devices.PortType;
 import java.util.List;
 import org.junit.After;
 import org.junit.Before;
@@ -280,7 +279,7 @@ public class DeviceManagerImplTest {
                 .build();
         manager.createDevice(device2);
         
-        portManager.createEthernetPort(new Port(PortType.ETHERNET, device1, device2));
+        portManager.createPort(new Port(device1, device2));
         int indexOfEmptyPort1 = manager.findEmptyPort(device1);
         int indexOfEmptyPort2 = manager.findEmptyPort(device2);
         
@@ -303,7 +302,7 @@ public class DeviceManagerImplTest {
                 .build();
         manager.createDevice(device2);
         
-        portManager.createEthernetPort(new Port(PortType.ETHERNET, device1, device2));
+        portManager.createPort(new Port(device1, device2));
         int indexOfEmptyPort1 = manager.findEmptyPort(device1);
         int indexOfEmptyPort2 = manager.findEmptyPort(device2);
         
@@ -322,7 +321,7 @@ public class DeviceManagerImplTest {
         Device device2 = new Device.Builder("did2", DeviceType.SWITCH12, "address2", 2).build();
         manager.createDevice(device2);
         
-        portManager.createEthernetPort(new Port(PortType.ETHERNET, device1, device2));
+        portManager.createPort(new Port(device1, device2));
         boolean occupiedPort = manager.isPortEmpty(device1, 0);
         boolean emptyPort = manager.isPortEmpty(device1, 1);
         

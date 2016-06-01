@@ -2,10 +2,7 @@ package cz.muni.fi.pb138.Managers;
 
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.Port;
-import cz.muni.fi.pb138.Devices.PortType;
-import cz.muni.fi.pb138.Main.ListOfDevices;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,130 +11,121 @@ import java.util.List;
  */
 public class PortManagerImpl implements PortManager {
 
-    private ListOfDevices devices;
     private DeviceManagerImpl deviceManager = new DeviceManagerImpl();
 
+    /**
+     *
+     * Creates new port. Port will be inserted into first available position in
+     * devices's ports arrays. Don't use this for creating port from imported
+     * XML file.
+     *
+     * @param port Builded port to assign.
+     * @throws IndexOutOfBoundsException if there is no empty port in either
+     * device.
+     */
     @Override
-    public void createEthernetPort(Port port) {
+    public void createPort(Port port) {
         validatePort(port);
-        Device DeviceA = port.getDeviceA();
-        Device DeviceB = port.getDeviceB();
+        Device deviceA = port.getDeviceA();
+        Device deviceB = port.getDeviceB();
         try {
-            if (port.getType() == PortType.ETHERNET) {
-                List<Port> deviceAEthernetPorts = DeviceA.getArrayOfEthernetPorts();
-                deviceAEthernetPorts.set(deviceManager.findEmptyPort(DeviceA), port);
+            List<Port> deviceAEthernetPorts = deviceA.getArrayOfEthernetPorts();
+            deviceAEthernetPorts.set(deviceManager.findEmptyPort(deviceA), port);
 
-                List<Port> deviceBEthernetPorts = DeviceB.getArrayOfEthernetPorts();
-                deviceBEthernetPorts.set(deviceManager.findEmptyPort(DeviceB), port);
-            }
-            /*if (port.getType() == PortType.WIFI) {
-                ArrayList<Port> deviceAWifiPorts = DeviceA.getArrayOfWifiPorts();
-                deviceAWifiPorts.set(deviceManager.findEmptyPort(DeviceA), port);
-
-                ArrayList<Port> deviceBWifiPorts = DeviceB.getArrayOfWifiPorts();
-                deviceBWifiPorts.set(deviceManager.findEmptyPort(DeviceB), port);
-            }*/
-        } catch (UnsupportedOperationException e) {
-
+            List<Port> deviceBEthernetPorts = deviceB.getArrayOfEthernetPorts();
+            deviceBEthernetPorts.set(deviceManager.findEmptyPort(deviceB), port);
+        } catch (IndexOutOfBoundsException e) {
+            throw e;
         }
     }
 
+    /**
+     *
+     * Creates new port from imported XML file. Don't use for any other purpose.
+     * Created port will be inserted into specific place in devices' ports
+     * arrays.
+     *
+     * @param port Builded port to assign.
+     * @param numberOfPortInDeviceA Position of port in first device's ports
+     * array
+     * @param numberOfPortInDeviceB Position of port in second device's ports
+     * array
+     * @throws IllegalArgumentException if either number is negative.
+     * @throws IndexOutOfBoundsException if either number is greater/smaller
+     * than devices' ports array.
+     */
     @Override
     public void createPortFromXML(Port port, int numberOfPortInDeviceA, int numberOfPortInDeviceB) {
+        if (numberOfPortInDeviceA < 0 || numberOfPortInDeviceB < 0) {
+            throw new IllegalArgumentException("Number of port in device cannot be negative!");
+        }
         validatePort(port);
-        Device DeviceA = port.getDeviceA();
-        Device DeviceB = port.getDeviceB();
+        Device deviceA = port.getDeviceA();
+        Device deviceB = port.getDeviceB();
         try {
-            if (port.getType() == PortType.ETHERNET) {
-                deviceManager.isPortEmpty(port.getDeviceA(), numberOfPortInDeviceA);
-                deviceManager.isPortEmpty(port.getDeviceB(), numberOfPortInDeviceB);
+            deviceManager.isPortEmpty(deviceA, numberOfPortInDeviceA);
+            deviceManager.isPortEmpty(deviceB, numberOfPortInDeviceB);
 
-                List<Port> deviceAEthernetPorts = DeviceA.getArrayOfEthernetPorts();
-                deviceAEthernetPorts.set(numberOfPortInDeviceA, port);
+            List<Port> deviceAEthernetPorts = deviceA.getArrayOfEthernetPorts();
+            deviceAEthernetPorts.set(numberOfPortInDeviceA, port);
 
-                List<Port> deviceBEthernetPorts = DeviceB.getArrayOfEthernetPorts();
-                deviceBEthernetPorts.set(numberOfPortInDeviceB, port);
-            }
-            /*if (port.getType() == PortType.WIFI) {
-                deviceManager.isPortEmpty(port.getDeviceA(), numberOfPortInDeviceA);
-                deviceManager.isPortEmpty(port.getDeviceB(), numberOfPortInDeviceB);
-
-                ArrayList<Port> deviceAWifiPorts = DeviceA.getArrayOfWifiPorts();
-                deviceAWifiPorts.set(numberOfPortInDeviceA, port);
-
-                ArrayList<Port> deviceBWifiPorts = DeviceB.getArrayOfWifiPorts();
-                deviceBWifiPorts.set(numberOfPortInDeviceB, port);
-            }*/
-
-        } catch (UnsupportedOperationException | IllegalArgumentException e) {
-
+            List<Port> deviceBEthernetPorts = deviceB.getArrayOfEthernetPorts();
+            deviceBEthernetPorts.set(numberOfPortInDeviceB, port);
+        } catch (IndexOutOfBoundsException e) {
+            throw e;
         }
     }
 
+    /**
+     *
+     * Deletes selected port. In devices' lists of ports is port index set to
+     * null.
+     *
+     * @param port Port to delete
+     * @throws IllegalArgumentException if port is null
+     */
     @Override
     public void deletePort(Port port) {
         if (port == null) {
             throw new IllegalArgumentException("Port is null!");
         }
-        if (port.getType() == PortType.ETHERNET) {
-            port.getDeviceA().getArrayOfEthernetPorts().set(port.getDeviceA().getArrayOfEthernetPorts().indexOf(port), null);
-            port.getDeviceB().getArrayOfEthernetPorts().set(port.getDeviceB().getArrayOfEthernetPorts().indexOf(port), null);
-            port = null;
-        }
-        /*if (port.getType() == PortType.WIFI) {
-            port.getDeviceA().getArrayOfWifiPorts().remove(port);
-            port.getDeviceB().getArrayOfWifiPorts().remove(port);
-            port = null;
-        }*/
-    }
-
-    @Override
-    public void updatePort(Port port, PortType portType) {
         validatePort(port);
-        
-        if (port.getType() == portType){
-            throw new IllegalArgumentException("Port type is the same");
-        }
-        
-        if (port.getType() == PortType.ETHERNET){
-            port.getDeviceA().getArrayOfEthernetPorts().set(port.getDeviceA().getArrayOfEthernetPorts().indexOf(port), null);
-            port.getDeviceB().getArrayOfEthernetPorts().set(port.getDeviceB().getArrayOfEthernetPorts().indexOf(port), null);
-            //port.getDeviceA().getArrayOfWifiPorts().add(port);
-            //port.getDeviceB().getArrayOfWifiPorts().add(port);
-        }
-        
-        /*if (port.getType() == PortType.WIFI){
-            port.getDeviceA().getArrayOfEthernetPorts().set(deviceManager.findEmptyPort(port.getDeviceA()), port);
-            port.getDeviceB().getArrayOfEthernetPorts().set(deviceManager.findEmptyPort(port.getDeviceB()), port);
-            port.getDeviceA().getArrayOfWifiPorts().remove(port);
-            port.getDeviceB().getArrayOfWifiPorts().remove(port);
-        }*/
+        Device deviceA = port.getDeviceA();
+        Device deviceB = port.getDeviceB();
+        deviceA.getArrayOfEthernetPorts().set(deviceA.getArrayOfEthernetPorts().indexOf(port), null);
+        deviceB.getArrayOfEthernetPorts().set(deviceB.getArrayOfEthernetPorts().indexOf(port), null);
+        port = null;
     }
 
+    /**
+     *
+     * Lists all ports of selected device that are occupied.
+     *
+     * @param device Device which ports are listed
+     * @return List of ports of selected device
+     */
     @Override
-    public ArrayList<Port> listAllEthernetPortsOfDevice(Device device) {
-        ArrayList<Port> listOfPorts = new ArrayList<>();
+    public List<Port> listAllPortsOfDevice(Device device) {
+        List<Port> listOfPorts = new ArrayList<>();
         for (Port port : device.getArrayOfEthernetPorts()) {
-            listOfPorts.add(port);
+            if (port != null) {
+                listOfPorts.add(port);
+            }
         }
         return listOfPorts;
     }
 
-    /*@Override
-    public ArrayList<Port> listAllWifiPortsOfDevice(Device device) {
-        ArrayList<Port> listOfPorts = new ArrayList<>();
-        for (Port port : device.getArrayOfWifiPorts()) {
-            listOfPorts.add(port);
-        }
-        return listOfPorts;
-    }*/
-
+    /**
+     *
+     * Validates if selected port is not null and has both deviced set. Throws
+     * IllegalArgumentException otherwise.
+     *
+     * @param port Port to validate
+     * @throws IllegalArgumentException if port and/or devices are null
+     */
     public void validatePort(Port port) {
-        if (port.getType() == null) {
-            throw new IllegalArgumentException("Port type is null!");
-        }
-        if (!Arrays.asList(PortType.values()).contains(port.getType())) {
-            throw new IllegalArgumentException("Invalid type of port!");
+        if (port == null) {
+            throw new IllegalArgumentException("Port is null!");
         }
         if (port.getDeviceA() == null) {
             throw new IllegalArgumentException("DeviceA is null!");
@@ -145,12 +133,6 @@ public class PortManagerImpl implements PortManager {
         if (port.getDeviceB() == null) {
             throw new IllegalArgumentException("DeviceB is null!");
         }
-        /*if (port.getType() == PortType.ETHERNET && (port.getDeviceA().getArrayOfWifiPorts().contains(port) || port.getDeviceB().getArrayOfWifiPorts().contains(port))) {
-            throw new IllegalArgumentException("Ethernet port is in wifi array!");
-        }
-        if (port.getType() == PortType.WIFI && (port.getDeviceA().getArrayOfEthernetPorts().contains(port) || port.getDeviceB().getArrayOfEthernetPorts().contains(port))) {
-            throw new IllegalArgumentException("Ethernet port is in ethernet array!");
-        }*/
     }
 
 }

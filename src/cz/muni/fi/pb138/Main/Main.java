@@ -3,7 +3,6 @@ package cz.muni.fi.pb138.Main;
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.DeviceType;
 import cz.muni.fi.pb138.Devices.Port;
-import cz.muni.fi.pb138.Devices.PortType;
 import cz.muni.fi.pb138.Managers.DeviceManagerImpl;
 import cz.muni.fi.pb138.Managers.PortManagerImpl;
 import cz.muni.fi.pb138.Validation.Validator;
