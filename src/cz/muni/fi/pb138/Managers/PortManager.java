@@ -21,6 +21,6 @@ public interface PortManager {
  
     ArrayList<Port> listAllEthernetPortsOfDevice(Device device);
  
-    ArrayList<Port> listAllWifiPortsOfDevice(Device device);
+    //ArrayList<Port> listAllWifiPortsOfDevice(Device device);
  
 }

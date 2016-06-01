@@ -1,51 +1,47 @@
 package cz.muni.fi.pb138.Devices;
 
 import cz.muni.fi.pb138.Managers.PortManagerImpl;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Represents any device in the network.
  *
+ * @version 1.6.2016
  * @author Kristýna Leknerová
- * @author Petr Beran
  */
 public class Device {
 
     private String did;             // required
     private DeviceType deviceType;  // required
     private String address;         // required
-    private int numberOfEthernetPorts;      // required
-    private int numberOfWifiPorts; // required
+    private int numberOfPorts;      // required
     
-    private final ArrayList<Port> arrayOfEthernetPorts;      // optional
-    private final ArrayList<Port> arrayOfWifiPorts; // optional
-    private String name;                    // optional
+    private List<Port> arrayOfPorts;// optional; has fixed size (CAN use get/set, CAN'T use add/remove)
+    private String name;            // optional
 
     /**
-     *
-     * Constructor for Device class
+     * Constructor for Device class.
+     * Private, only the Builder may access it.
+     * Device class must always be constructed via its Builder.
      *
      * @param did           Required, device ID
      * @param deviceType    Required, device type
      * @param address       Required, device address
-     * @param numberOfEthernetPorts Required, maximal number of ports
-     * @param arrayOfEthernetPorts  Optional, array of device ports
+     * @param numberOfPorts Required, maximal number of ports
+     * @param arrayOfPorts  Optional, array of device ports
      * @param name          Optional, device name.
      */
     private Device(String did, DeviceType deviceType, String address,
-            int numberOfEthernetPorts, ArrayList<Port> arrayOfEthernetPorts, 
-            int numberOfWifiPorts, ArrayList<Port> arrayOfWifiPorts, String name) {
+            int numberOfPorts, List<Port> arrayOfPorts, String name) {
 
         this.did = did;
         this.deviceType = deviceType;
         this.address = address;
-        this.numberOfEthernetPorts = numberOfEthernetPorts;
-        this.arrayOfEthernetPorts = arrayOfEthernetPorts;
-        this.numberOfWifiPorts = numberOfWifiPorts;
-        this.arrayOfWifiPorts = arrayOfWifiPorts;
+        this.numberOfPorts = numberOfPorts;
+        this.arrayOfPorts = arrayOfPorts;
         this.name = name;
     }
 
@@ -64,23 +60,16 @@ public class Device {
     }
     
     public int getNumberOfEthernetPorts(){
-        return numberOfEthernetPorts;
-    }
-    public int getNumberOfWifiPorts(){
-        return numberOfWifiPorts;
+        return numberOfPorts;
     }
 
     /**
      * Gets arrayList of ethernet ports.
      * @return Mutable array of ports.
      */
-    public ArrayList<Port> getArrayOfEthernetPorts() {
+    public List<Port> getArrayOfEthernetPorts() {
         // In case of need for immutable array, use deep copy (or list)
-        return arrayOfEthernetPorts;
-    }
-    public ArrayList<Port> getArrayOfWifiPorts() {
-        // In case of need for immutable array, use deep copy (or list)
-        return arrayOfWifiPorts;
+        return arrayOfPorts;
     }
 
     public String getName() {
@@ -100,13 +89,20 @@ public class Device {
         PortManagerImpl portManager = new PortManagerImpl();
             
         // Delete all connections over the new port number
-        for (int i = numberOfPorts; i < arrayOfEthernetPorts.size(); i++) {
-            portManager.deletePort(arrayOfEthernetPorts.get(i));
+        for (int i = numberOfPorts; i < arrayOfPorts.size(); i++) {
+            portManager.deletePort(arrayOfPorts.get(i));
         }
         
-        // Trim the ArrayList and set the new number of ports
-        arrayOfEthernetPorts.subList(numberOfPorts, arrayOfEthernetPorts.size()).clear();
-        numberOfEthernetPorts = numberOfPorts;
+        // Remap the array. Set original values as far as possible,
+        // but if the new array is larger, set remaining fields as null.
+        Port[] portArray = new Port[numberOfPorts];
+        
+        for (int i = 0; i < numberOfPorts; i++) {
+            portArray[i] = (i < arrayOfPorts.size()) ? arrayOfPorts.get(i) : null;
+        }
+
+        arrayOfPorts = Arrays.asList(portArray);
+        this.numberOfPorts = numberOfPorts;
     }
     
     public void setDeviceType(DeviceType deviceType) {
@@ -166,14 +162,10 @@ public class Device {
         private String did;                     // required
         private DeviceType deviceType;          // required
         private String address;                 // required
-        private int numberOfEthernetPorts;              // required
-        private int numberOfWifiPorts;              // required
-        private ArrayList<Port> arrayOfEthernetPorts;   // optional
-        private ArrayList<Port> arrayOfWifiPorts;   // optional
+        private int numberOfPorts;              // required
+        private List<Port> arrayOfPorts;        // optional
         private String name;                    // optional
 
-        
-        
         public Builder(String did, DeviceType deviceType, String address, int numberOfEthernetPorts) {
             this(did, deviceType, address, numberOfEthernetPorts, 0);
         }
@@ -181,51 +173,31 @@ public class Device {
             this.did = did;
             this.deviceType = deviceType;
             this.address = address;
-            this.numberOfEthernetPorts = numberOfEthernetPorts;
-            this.numberOfWifiPorts = numberOfWifiPorts;
+            this.numberOfPorts = numberOfEthernetPorts;
         }
 
         /**
          * Adds specified arrayOfEthernetPorts as an attribute to the Device.
          *
-         * @param arrayOfEthernetPorts Array of Ports. Its length can't be greater than
- numberOfEthernetPorts.
+         * @param arrayOfPorts Array of Ports. Its length can't be greater than numberOfPorts.
          * @return
          */
-        public Builder arrayOfEthernetPorts(ArrayList<Port> arrayOfEthernetPorts) {
-            if (arrayOfEthernetPorts.size() > numberOfEthernetPorts) {
+        public Builder arrayOfEthernetPorts(ArrayList<Port> arrayOfPorts) {
+            
+            if (arrayOfPorts.size() > numberOfPorts) {
                 throw new IllegalArgumentException("Actual number of ports is "
                         + "higher than allowed maximal number of ports");
             }
 
-            this.arrayOfEthernetPorts = arrayOfEthernetPorts;
+            this.arrayOfPorts = arrayOfPorts;
             return this;
         }
 
         public Builder arrayOfEthernetPorts() {
-            ArrayList<Port> arrayOfPorts = new ArrayList();
-            for (int i = 0; i < numberOfEthernetPorts; i++){
-                arrayOfPorts.add(null);
-            }
-            this.arrayOfEthernetPorts = arrayOfPorts;
-            return this;
-        }
-        public Builder arrayOfWifiPorts(ArrayList<Port> arrayOfWifiPorts) {
-            if (arrayOfWifiPorts.size() > 65535) {
-                throw new IllegalArgumentException("Actual number of ports is "
-                        + "higher than allowed maximal number of ports");
-            }
-
-            this.arrayOfWifiPorts = arrayOfWifiPorts;
-            return this;
-        }
-
-        public Builder arrayOfWifiPorts() {
-            ArrayList<Port> arrayOfPorts = new ArrayList();
-            for (int i = 0; i < numberOfWifiPorts; i++){
-                arrayOfPorts.add(null);
-            }
-            this.arrayOfWifiPorts = arrayOfPorts;
+            
+            Port[] array = new Port[numberOfPorts];
+            Arrays.fill(array, null);
+            this.arrayOfPorts = Arrays.asList(array);
             return this;
         }
 
@@ -235,7 +207,7 @@ public class Device {
         }
 
         public Device build() {
-            return new Device(did, deviceType, address, numberOfEthernetPorts, arrayOfEthernetPorts, numberOfWifiPorts, arrayOfWifiPorts, name);
+            return new Device(did, deviceType, address, numberOfPorts, arrayOfPorts, name);
         }
     }
 }
