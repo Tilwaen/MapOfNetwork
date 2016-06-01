@@ -27,7 +27,7 @@ public interface DeviceManager {
  
     Device findDeviceById(String id);
     
-    Device findDeviceByAdress(String adress);
+    Device findDeviceByAddress(String adress);
     
     int findEmptyPort(Device device);
     

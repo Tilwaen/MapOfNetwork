@@ -167,7 +167,7 @@ public class DeviceManagerImpl implements DeviceManager{
      */
     @Nullable
     @Override
-    public Device findDeviceByAdress(String adress) {
+    public Device findDeviceByAddress(String adress) {
         Optional<Device> optional = devices.getListOfDevices().stream().filter(device -> device.getAddress().equals(adress)).findFirst();
 
         if (!optional.isPresent()) {
