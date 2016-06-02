@@ -305,7 +305,7 @@ public class DeviceManagerImpl implements DeviceManager {
 
         return !devices.getListOfDevices().stream().anyMatch(similarDid);
     }
-
+    
     /**
      * Checks duplicity of address attribute of the newly formed device.
 
