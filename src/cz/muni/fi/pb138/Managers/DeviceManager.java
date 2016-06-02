@@ -6,6 +6,7 @@ import java.util.List;
 /**
  *
  * @author Petr Beran
+ * @author Kristýna Leknerová
  */
 public interface DeviceManager {
  
@@ -25,12 +26,11 @@ public interface DeviceManager {
  
     List<Device> listAllSwitches();
  
-    Device findDeviceById(String id);
+    Device findDeviceById(Long id);
     
     Device findDeviceByAddress(String adress);
     
     int findEmptyPort(Device device);
     
     boolean isPortEmpty(Device device, int numberInArrayOfPorts);
- 
 }

@@ -8,17 +8,22 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 /**
  * Test for implementation DeviceManagerImpl of an DeviceManager interface
  * 
  * @author Kristýna Leknerová
- * @version 1.6.2016
+ * @version 2.6.2016
  */
 public class DeviceManagerImplTest {
     
     private DeviceManager manager;
     private PortManager portManager;
+    
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
     
     @Before
     public void setUp() {
@@ -30,31 +35,25 @@ public class DeviceManagerImplTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of createDevice method, of class DeviceManagerImpl.
-     */
     @Test
     public void createDevice() {
-        Device device = new Device.Builder("did", DeviceType.COMPUTER, "address", 0)
+        Device device = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device);
         
-        Device createdDevice = manager.findDeviceById("did");
+        Device createdDevice = manager.findDeviceById(10L);
         assertEquals(device, createdDevice);
     }
     
-    /**
-     * Test of createDevice method, multiple same devices, of class DeviceManagerImpl.
-     */
     @Test
     public void createDeviceMultipleSame() {
-        Device computer = new Device.Builder("did", DeviceType.COMPUTER, "address", 0)
+        Device computer = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(computer);
         
-        Device computer2 = new Device.Builder("did", DeviceType.COMPUTER, "address", 0)
+        Device computer2 = new Device.Builder(12L, DeviceType.COMPUTER, "address", 0)
                 .name("Fidorka")
                 .build();
         manager.createDevice(computer2);
@@ -63,12 +62,9 @@ public class DeviceManagerImplTest {
         assertEquals(allDevicesSize, 1);
     }
 
-    /**
-     * Test of deleteDevice method, of class DeviceManagerImpl.
-     */
     @Test
     public void deleteDevice() {
-        Device computer = new Device.Builder("did", DeviceType.COMPUTER, "address", 0)
+        Device computer = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(computer);
@@ -77,18 +73,30 @@ public class DeviceManagerImplTest {
         int allDevicesSize = manager.listAllDevices().size();
         assertEquals(allDevicesSize, 0);
     }
+    
+    @Test
+    public void deleteDeviceNull() {
+        exception.expect(IllegalArgumentException.class);
+        manager.deleteDevice(null);
+    }
+    
+    @Test
+    public void deleteDeviceNotPresent() {
+        Device device = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
+                .name("Jogobella")
+                .build();
+        exception.expect(IllegalArgumentException.class);
+        manager.deleteDevice(device);
+    }
 
-    /**
-     * Test of updateDevice method, of class DeviceManagerImpl.
-     */
     @Test
     public void updateDevice() {
-        Device device = new Device.Builder("did", DeviceType.COMPUTER, "address", 4)
+        Device device = new Device.Builder(10L, DeviceType.COMPUTER, "address", 4)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device);
         
-        Device newDevice = manager.findDeviceById("did");
+        Device newDevice = manager.findDeviceById(10L);
         newDevice.setDeviceType(DeviceType.ROUTER);
         newDevice.setName("Trautenberk");
         
@@ -99,22 +107,19 @@ public class DeviceManagerImplTest {
         assertNotEquals("Jogobella", newDevice.getName());
     }
 
-    /**
-     * Test of listAllDevices method, of class DeviceManagerImpl.
-     */
     @Test
     public void listAllDevices() {
-        Device computer = new Device.Builder("did", DeviceType.COMPUTER, "address", 0)
+        Device computer = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(computer);
         
-        Device router = new Device.Builder("did2", DeviceType.ROUTER, "address2", 0)
+        Device router = new Device.Builder(666L, DeviceType.ROUTER, "address2", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(router);
         
-        Device switch12 = new Device.Builder("did3", DeviceType.SWITCH12, "address3", 0)
+        Device switch12 = new Device.Builder(42L, DeviceType.SWITCH12, "address3", 0)
                 .name("Pls")
                 .build();
         manager.createDevice(switch12);
@@ -126,22 +131,19 @@ public class DeviceManagerImplTest {
         assertEquals(allDevices.contains(switch12), true);
     }
 
-    /**
-     * Test of listAllComputers method, of class DeviceManagerImpl.
-     */
     @Test
     public void listAllComputers() {
-        Device device1 = new Device.Builder("did", DeviceType.COMPUTER, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.COMPUTER, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder("did2", DeviceType.ROUTER, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.ROUTER, "address2", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
         
-        Device device3 = new Device.Builder("did3", DeviceType.COMPUTER, "address3", 0)
+        Device device3 = new Device.Builder(69L, DeviceType.COMPUTER, "address3", 0)
                 .name("Pls")
                 .build();
         manager.createDevice(device3);
@@ -150,22 +152,19 @@ public class DeviceManagerImplTest {
         assertEquals(allComputers.size(), 2);
     }
 
-    /**
-     * Test of listAllHubs method, of class DeviceManagerImpl.
-     */
     @Test
     public void listAllHubs() {
-        Device device1 = new Device.Builder("did", DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder("did2", DeviceType.HUB, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.HUB, "address2", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
         
-        Device device3 = new Device.Builder("did3", DeviceType.COMPUTER, "address3", 0)
+        Device device3 = new Device.Builder(69L, DeviceType.COMPUTER, "address3", 0)
                 .name("Pls")
                 .build();
         manager.createDevice(device3);
@@ -174,22 +173,19 @@ public class DeviceManagerImplTest {
         assertEquals(allHubs.size(), 2);
     }
 
-    /**
-     * Test of listAllRouters method, of class DeviceManagerImpl.
-     */
     @Test
     public void listAllRouters() {
-        Device device1 = new Device.Builder("did", DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder("did2", DeviceType.ROUTER, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.ROUTER, "address2", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
         
-        Device device3 = new Device.Builder("did3", DeviceType.ROUTER, "address3", 0)
+        Device device3 = new Device.Builder(69L, DeviceType.ROUTER, "address3", 0)
                 .name("Pls")
                 .build();
         manager.createDevice(device3);
@@ -198,27 +194,24 @@ public class DeviceManagerImplTest {
         assertEquals(allRouters.size(), 2);
     }
 
-    /**
-     * Test of listAllSwitches method, of class DeviceManagerImpl.
-     */
     @Test
     public void listAllSwitches() {
-        Device device1 = new Device.Builder("did", DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder("did2", DeviceType.SWITCH12, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
         
-        Device device3 = new Device.Builder("did3", DeviceType.SWITCH24, "address3", 0)
+        Device device3 = new Device.Builder(69L, DeviceType.SWITCH24, "address3", 0)
                 .name("Pls")
                 .build();
         manager.createDevice(device3);
         
-        Device device4 = new Device.Builder("did4", DeviceType.SWITCH48, "address4", 0)
+        Device device4 = new Device.Builder(1L, DeviceType.SWITCH48, "address4", 0)
                 .build();
         manager.createDevice(device4);
         
@@ -226,36 +219,41 @@ public class DeviceManagerImplTest {
         assertEquals(allSwitches.size(), 3);
     }
 
-    /**
-     * Test of findDeviceById method, of class DeviceManagerImpl.
-     */
     @Test
     public void findDeviceById() {
-        Device device1 = new Device.Builder("did", DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder("did2", DeviceType.SWITCH12, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
         
-        Device foundDevice = manager.findDeviceById("did");
+        Device foundDevice = manager.findDeviceById(666L);
         assertEquals(foundDevice, device1);
     }
-
-    /**
-     * Test of findDeviceByAddress method, of class DeviceManagerImpl.
-     */
+    
     @Test
-    public void findDeviceByAddress() {
-        Device device1 = new Device.Builder("did", DeviceType.HUB, "address", 0)
+    public void findDeviceByIdNotPresent() {
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder("did2", DeviceType.SWITCH12, "address2", 0)
+        Device foundDevice = manager.findDeviceById(42L);
+        assertNull(foundDevice);
+    }
+
+    @Test
+    public void findDeviceByAddress() {
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
+                .name("Jogobella")
+                .build();
+        manager.createDevice(device1);
+        
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
@@ -263,18 +261,26 @@ public class DeviceManagerImplTest {
         Device foundDevice = manager.findDeviceByAddress("address");
         assertEquals(foundDevice, device1);
     }
-
-    /**
-     * Test of findEmptyPort method, of class DeviceManagerImpl.
-     */
+    
     @Test
-    public void findEmptyPort() {
-        Device device1 = new Device.Builder("did", DeviceType.HUB, "address", 4)
+    public void findDeviceByAddressNotPresent() {
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder("did2", DeviceType.SWITCH12, "address2", 2)
+        Device foundDevice = manager.findDeviceByAddress("OhMyGoodSuchACoolAddress");
+        assertNull(foundDevice);
+    }
+
+    @Test
+    public void findEmptyPort() {
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 4)
+                .name("Jogobella")
+                .build();
+        manager.createDevice(device1);
+        
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 2)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
@@ -287,17 +293,14 @@ public class DeviceManagerImplTest {
         assertEquals(indexOfEmptyPort2, 1);
     }
     
-    /**
-     * Test of findEmptyPort method, of class DeviceManagerImpl.
-     */
     @Test
     public void findEmptyPortNothingEmpty() {
-        Device device1 = new Device.Builder("did", DeviceType.HUB, "address", 1)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 1)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder("did2", DeviceType.SWITCH12, "address2", 2)
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 2)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
@@ -310,15 +313,12 @@ public class DeviceManagerImplTest {
         assertEquals(indexOfEmptyPort2, 1);
     }
 
-    /**
-     * Test of isPortEmpty method, of class DeviceManagerImpl.
-     */
     @Test
     public void isPortEmpty() {
-        Device device1 = new Device.Builder("did", DeviceType.HUB, "address", 2).build();
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 2).build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder("did2", DeviceType.SWITCH12, "address2", 2).build();
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 2).build();
         manager.createDevice(device2);
         
         portManager.createPort(new Port(device1, device2));
@@ -328,5 +328,4 @@ public class DeviceManagerImplTest {
         assertEquals(occupiedPort, false);
         assertEquals(emptyPort, true);
     }
-    
 }

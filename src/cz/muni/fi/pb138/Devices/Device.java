@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class Device {
 
-    private String did;             // required
+    private Long did;             // required
     private DeviceType deviceType;  // required
     private String address;         // required
     private int numberOfPorts;      // required
@@ -34,7 +34,7 @@ public class Device {
      * @param arrayOfPorts  Optional, array of device ports
      * @param name          Optional, device name.
      */
-    private Device(String did, DeviceType deviceType, String address,
+    private Device(Long did, DeviceType deviceType, String address,
             int numberOfPorts, List<Port> arrayOfPorts, String name) {
 
         this.did = did;
@@ -55,7 +55,7 @@ public class Device {
 
     /*** Getters ***/
     
-    public String getDid() {
+    public Long getDid() {
         return did;
     }
 
@@ -98,7 +98,9 @@ public class Device {
             
         // Delete all connections over the new port number
         for (int i = numberOfPorts; i < arrayOfPorts.size(); i++) {
-            portManager.deletePort(arrayOfPorts.get(i));
+            if (arrayOfPorts.get(i) != null) {
+                portManager.deletePort(arrayOfPorts.get(i));
+            }
         }
         
         // Remap the array. Set original values as far as possible,
@@ -167,17 +169,24 @@ public class Device {
     
     public static class Builder {
 
-        private String did;                     // required
+        private Long did;                     // required
         private DeviceType deviceType;          // required
         private String address;                 // required
         private int numberOfPorts;              // required
         private List<Port> arrayOfPorts;        // optional
         private String name;                    // optional
 
-        public Builder(String did, DeviceType deviceType, String address, int numberOfEthernetPorts) {
-            this(did, deviceType, address, numberOfEthernetPorts, 0);
-        }
-        public Builder(String did, DeviceType deviceType, String address, int numberOfEthernetPorts, int numberOfWifiPorts) {
+        public Builder(Long did, DeviceType deviceType, String address, int numberOfEthernetPorts) {
+            if (did == null) {
+                throw new IllegalArgumentException("Did is null");
+            }
+            if (address == null) {
+                throw new IllegalArgumentException("Address is null");
+            }
+            if (numberOfEthernetPorts < 0) {
+                throw new IllegalArgumentException("Negative number of maximum ports");
+            }
+            
             this.did = did;
             this.deviceType = deviceType;
             this.address = address;

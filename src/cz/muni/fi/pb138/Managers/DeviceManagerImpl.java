@@ -30,7 +30,7 @@ public class DeviceManagerImpl implements DeviceManager{
      */
     public DeviceManagerImpl(ListOfDevices listOfDevices) {
         if (listOfDevices == null) {
-            throw new NullPointerException("List of devices can't be null");
+            throw new IllegalArgumentException("List of devices can't be null");
         }
         
         this.devices = listOfDevices;
@@ -39,7 +39,7 @@ public class DeviceManagerImpl implements DeviceManager{
     @Override
     public void createDevice(Device device) {
         if (device == null) {
-            throw new NullPointerException("Device can't be null");
+            throw new IllegalArgumentException("Device can't be null");
         }
 
         if (hasValidDidOrAddress(device)) {
@@ -50,7 +50,7 @@ public class DeviceManagerImpl implements DeviceManager{
     @Override
     public void deleteDevice(Device device) {
         if (device == null) {
-            throw new NullPointerException("Device can't be null");
+            throw new IllegalArgumentException("Device can't be null");
         }
         
         List<Device> listOfDevices = devices.getListOfDevices();
@@ -75,7 +75,7 @@ public class DeviceManagerImpl implements DeviceManager{
     @Override
     public void updateDevice(Device device) {
         if (device == null) {
-            throw new NullPointerException("Device can't be null");
+            throw new IllegalArgumentException("Device can't be null");
         }
         
         List<Device> listOfDevices = devices.getListOfDevices();
@@ -145,7 +145,7 @@ public class DeviceManagerImpl implements DeviceManager{
      * @return Device with given ID. Null if there is no such device.
      */
     @Override
-    public Device findDeviceById(String id) {
+    public Device findDeviceById(Long id) {
         Optional<Device> optional = devices.getListOfDevices().stream().filter(device -> device.getDid().equals(id)).findFirst();
         //Device myDevice = devices.getListOfDevices().stream().filter(device -> device.getDid().equals(id)).findFirst().get();
 
@@ -185,7 +185,7 @@ public class DeviceManagerImpl implements DeviceManager{
     public int findEmptyPort(Device device) {
         
         if (device == null) {
-            throw new NullPointerException("Device can't be null");
+            throw new IllegalArgumentException("Device can't be null");
         }
         
         List<Port> ethernetPorts = device.getArrayOfEthernetPorts();
@@ -214,7 +214,7 @@ public class DeviceManagerImpl implements DeviceManager{
     public boolean isPortEmpty(Device device, int numberInArrayOfPorts){         
         
         if (device == null) {
-            throw new NullPointerException("Device can't be null");
+            throw new IllegalArgumentException("Device can't be null");
         }
         
         return device.getArrayOfEthernetPorts().get(numberInArrayOfPorts) == null;
@@ -231,7 +231,7 @@ public class DeviceManagerImpl implements DeviceManager{
     private boolean hasValidDidOrAddress(Device device) {
         
         if (device == null) {
-            throw new NullPointerException("Device can't be null");
+            throw new IllegalArgumentException("Device can't be null");
         }
         
         Predicate<Device> similarDid = (n) -> n.getDid().equals(device.getDid());
