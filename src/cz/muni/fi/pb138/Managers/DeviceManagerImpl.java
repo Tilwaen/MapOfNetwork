@@ -60,6 +60,9 @@ public class DeviceManagerImpl implements DeviceManager{
                     + device.getDid() + " found in the list of devices.");
         }
         else {
+            // Delete all port connections
+            device.setNumberOfPorts(0);
+            // Remove the device
             listOfDevices.remove(device);
         }
     }
