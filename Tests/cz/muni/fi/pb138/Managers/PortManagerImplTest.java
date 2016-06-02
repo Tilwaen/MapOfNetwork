@@ -49,8 +49,8 @@ public class PortManagerImplTest {
     public void createPort() {
         Port port = new Port(testDeviceA, testDeviceB);
         portManager.createPort(port);
-        assertEquals(true, testDeviceA.getArrayOfEthernetPorts().contains(port));
-        assertEquals(true, testDeviceB.getArrayOfEthernetPorts().contains(port));
+        assertEquals(true, testDeviceA.getArrayOfPorts().contains(port));
+        assertEquals(true, testDeviceB.getArrayOfPorts().contains(port));
     }
 
     @Test
@@ -120,14 +120,14 @@ public class PortManagerImplTest {
 
     @Test
     public void createPortFromXML() {
-        assertNull(testDeviceA.getArrayOfEthernetPorts().get(0));
-        assertNull(testDeviceB.getArrayOfEthernetPorts().get(0));
+        assertNull(testDeviceA.getArrayOfPorts().get(0));
+        assertNull(testDeviceB.getArrayOfPorts().get(0));
         Port port = new Port(testDeviceA, testDeviceB);
         portManager.createPortFromXML(port, 0, 0);
-        assertEquals(true, testDeviceA.getArrayOfEthernetPorts().contains(port));
-        assertEquals(true, testDeviceB.getArrayOfEthernetPorts().contains(port));
-        assertEquals(port, testDeviceA.getArrayOfEthernetPorts().get(0));
-        assertEquals(port, testDeviceB.getArrayOfEthernetPorts().get(0));
+        assertEquals(true, testDeviceA.getArrayOfPorts().contains(port));
+        assertEquals(true, testDeviceB.getArrayOfPorts().contains(port));
+        assertEquals(port, testDeviceA.getArrayOfPorts().get(0));
+        assertEquals(port, testDeviceB.getArrayOfPorts().get(0));
     }
 
     @Test
@@ -191,9 +191,9 @@ public class PortManagerImplTest {
         portManager.createPort(portAB);
         portManager.createPort(portAC);
 
-        List<Port> listOfDeviceAPorts = testDeviceA.getArrayOfEthernetPorts();
-        List<Port> listOfDeviceBPorts = testDeviceB.getArrayOfEthernetPorts();
-        List<Port> listOfDeviceCPorts = testDeviceC.getArrayOfEthernetPorts();
+        List<Port> listOfDeviceAPorts = testDeviceA.getArrayOfPorts();
+        List<Port> listOfDeviceBPorts = testDeviceB.getArrayOfPorts();
+        List<Port> listOfDeviceCPorts = testDeviceC.getArrayOfPorts();
 
         portManager.deletePort(listOfDeviceAPorts.get(0));
         assertEquals(true, listOfDeviceAPorts.contains(portAC));
@@ -213,21 +213,21 @@ public class PortManagerImplTest {
     @Test
     public void deleteNullPortInList() {
         exception.expect(IllegalArgumentException.class);
-        portManager.deletePort(testDeviceA.getArrayOfEthernetPorts().get(0));
+        portManager.deletePort(testDeviceA.getArrayOfPorts().get(0));
     }
 
     @Test
     public void testListAllPortsOfDevice() {
-        assertNotNull(testDeviceA.getArrayOfEthernetPorts());
-        assertEquals(false, testDeviceA.getArrayOfEthernetPorts().isEmpty());
-        assertNull(testDeviceA.getArrayOfEthernetPorts().get(0));
-        assertNull(testDeviceA.getArrayOfEthernetPorts().get(1));
+        assertNotNull(testDeviceA.getArrayOfPorts());
+        assertEquals(false, testDeviceA.getArrayOfPorts().isEmpty());
+        assertNull(testDeviceA.getArrayOfPorts().get(0));
+        assertNull(testDeviceA.getArrayOfPorts().get(1));
 
         Port port = new Port(testDeviceA, testDeviceB);
         portManager.createPort(port);
 
-        assertEquals(true, testDeviceA.getArrayOfEthernetPorts().contains(port));
-        assertNull(testDeviceA.getArrayOfEthernetPorts().get(1));
+        assertEquals(true, testDeviceA.getArrayOfPorts().contains(port));
+        assertNull(testDeviceA.getArrayOfPorts().get(1));
 
         List<Port> testList = portManager.listAllPortsOfDevice(testDeviceA);
         assertEquals(true, testList.size() == 1);

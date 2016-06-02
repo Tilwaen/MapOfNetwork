@@ -54,31 +54,31 @@ public class DeviceTest {
     @Test
     public void testSetNumberOfPorts() {
         Device computer = new Device.Builder(666L, DeviceType.COMPUTER, "address", 0).build();
-        assertEquals(computer.getArrayOfEthernetPorts().size(), 0);
+        assertEquals(computer.getArrayOfPorts().size(), 0);
         
         computer.setNumberOfPorts(10);
-        assertEquals(computer.getNumberOfEthernetPorts(), 10);
-        assertEquals(computer.getArrayOfEthernetPorts().size(), 10);
+        assertEquals(computer.getNumberOfPorts(), 10);
+        assertEquals(computer.getArrayOfPorts().size(), 10);
     }
     
     @Test
     public void testSetNumberOfPortsShrinking() {
         Device computer = new Device.Builder(666L, DeviceType.COMPUTER, "address", 8).build();
-        assertEquals(computer.getArrayOfEthernetPorts().size(), 8);
+        assertEquals(computer.getArrayOfPorts().size(), 8);
         
         computer.setNumberOfPorts(5);
-        assertEquals(computer.getNumberOfEthernetPorts(), 5);
-        assertEquals(computer.getArrayOfEthernetPorts().size(), 5);
+        assertEquals(computer.getNumberOfPorts(), 5);
+        assertEquals(computer.getArrayOfPorts().size(), 5);
     }
     
     @Test
     public void testSetNumberOfPortsExpanding() {
         Device computer = new Device.Builder(666L, DeviceType.COMPUTER, "address", 2).build();
-        assertEquals(computer.getArrayOfEthernetPorts().size(), 2);
+        assertEquals(computer.getArrayOfPorts().size(), 2);
         
         computer.setNumberOfPorts(42);
-        assertEquals(computer.getNumberOfEthernetPorts(), 42);
-        assertEquals(computer.getArrayOfEthernetPorts().size(), 42);
+        assertEquals(computer.getNumberOfPorts(), 42);
+        assertEquals(computer.getArrayOfPorts().size(), 42);
     }
 
     @Test

@@ -32,7 +32,7 @@ public class PortManagerImpl implements PortManager {
         Device deviceA = port.getDeviceA();
         Device deviceB = port.getDeviceB();
 
-        for (Port portInList : deviceA.getArrayOfEthernetPorts()) {
+        for (Port portInList : deviceA.getArrayOfPorts()) {
             if (portInList != null && ((portInList.getDeviceA().equals(deviceA) && portInList.getDeviceB().equals(deviceB))
                     || (portInList.getDeviceA().equals(deviceB) && portInList.getDeviceB().equals(deviceA)))) {
                 throw new IllegalArgumentException("There is already port between these two devices");
@@ -40,10 +40,10 @@ public class PortManagerImpl implements PortManager {
         }
 
         try {
-            List<Port> deviceAEthernetPorts = deviceA.getArrayOfEthernetPorts();
+            List<Port> deviceAEthernetPorts = deviceA.getArrayOfPorts();
             deviceAEthernetPorts.set(deviceManager.findEmptyPort(deviceA), port);
 
-            List<Port> deviceBEthernetPorts = deviceB.getArrayOfEthernetPorts();
+            List<Port> deviceBEthernetPorts = deviceB.getArrayOfPorts();
             deviceBEthernetPorts.set(deviceManager.findEmptyPort(deviceB), port);
         } catch (IndexOutOfBoundsException e) {
             throw e;
@@ -79,10 +79,10 @@ public class PortManagerImpl implements PortManager {
             throw new IllegalArgumentException("Port in second device is occupied");
         }
         try {
-            List<Port> deviceAEthernetPorts = deviceA.getArrayOfEthernetPorts();
+            List<Port> deviceAEthernetPorts = deviceA.getArrayOfPorts();
             deviceAEthernetPorts.set(numberOfPortInDeviceA, port);
 
-            List<Port> deviceBEthernetPorts = deviceB.getArrayOfEthernetPorts();
+            List<Port> deviceBEthernetPorts = deviceB.getArrayOfPorts();
             deviceBEthernetPorts.set(numberOfPortInDeviceB, port);
         } catch (IndexOutOfBoundsException e) {
             throw e;
@@ -104,8 +104,8 @@ public class PortManagerImpl implements PortManager {
         validatePort(port);
         Device deviceA = port.getDeviceA();
         Device deviceB = port.getDeviceB();
-        deviceA.getArrayOfEthernetPorts().set(deviceA.getArrayOfEthernetPorts().indexOf(port), null);
-        deviceB.getArrayOfEthernetPorts().set(deviceB.getArrayOfEthernetPorts().indexOf(port), null);
+        deviceA.getArrayOfPorts().set(deviceA.getArrayOfPorts().indexOf(port), null);
+        deviceB.getArrayOfPorts().set(deviceB.getArrayOfPorts().indexOf(port), null);
         port = null;
     }
 
@@ -118,7 +118,7 @@ public class PortManagerImpl implements PortManager {
     @Override
     public List<Port> listAllPortsOfDevice(Device device) {
         List<Port> listOfPorts = new ArrayList<>();
-        device.getArrayOfEthernetPorts().stream().filter((port) -> (port != null)).forEach((port) -> {
+        device.getArrayOfPorts().stream().filter((port) -> (port != null)).forEach((port) -> {
             listOfPorts.add(port);
         });
         return listOfPorts;

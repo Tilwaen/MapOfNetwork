@@ -7,6 +7,7 @@ import cz.muni.fi.pb138.Main.ListOfDevices;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,39 @@ public class DeviceManagerImpl implements DeviceManager {
 
         this.devices = listOfDevices;
     }
+    
+    @Override
+    public void createDevice(DeviceType deviceType, String address, int numberOfPorts, List<Port> arrayOfPorts, String name) {
+
+        if (address == null) {
+            throw new IllegalArgumentException("Required parameter address is null");
+        }
+        
+        Device device;
+        int iterationCounter = 0;
+        int maxIterations = 1000;
+        
+        // Select unused id
+        do {
+            UUID uuid = UUID.randomUUID();
+            Long did = uuid.getLeastSignificantBits();
+            did = Math.abs(did);
+            
+            device = new Device.Builder(did, deviceType, address, numberOfPorts)
+                .arrayOfPorts(arrayOfPorts)
+                .name(name)
+                .build();
+            
+            iterationCounter++;
+            
+        } while(!hasValidDid(device) && iterationCounter < maxIterations);
+        
+        if (!hasValidAddress(device)) {
+            throw new IllegalArgumentException("Address is in wrong format");
+        }
+
+        devices.getListOfDevices().add(device);
+    }
 
     /**
      * Adds newly builded device to listOfDevices
@@ -52,7 +86,7 @@ public class DeviceManagerImpl implements DeviceManager {
             throw new IllegalArgumentException("Device can't be null");
         }
 
-        if (hasValidDidOrAddress(device)) {
+        if (hasValidDid(device) || hasValidAddress(device)) {
             devices.getListOfDevices().add(device);
         }
     }
@@ -107,7 +141,7 @@ public class DeviceManagerImpl implements DeviceManager {
             int index = listOfDevices.indexOf(device);
             Device originalDevice = listOfDevices.get(index);
 
-            originalDevice.setNumberOfPorts(device.getNumberOfEthernetPorts());
+            originalDevice.setNumberOfPorts(device.getNumberOfPorts());
             originalDevice.setName(device.getName());
             originalDevice.setDeviceType(device.getDeviceType());
         }
@@ -205,8 +239,8 @@ public class DeviceManagerImpl implements DeviceManager {
      * there is no empty port.
      *
      * @param device Device.
-     * @return Index of the arrayOfEthernetPorts (positive or zero number). -1
-     * if there is no such element.
+     * @return Index of the arrayOfPorts (positive or zero number). -1
+ if there is no such element.
      * @throws IllegalArgumentException if either device or device's list of
      * port is null.
      */
@@ -217,7 +251,7 @@ public class DeviceManagerImpl implements DeviceManager {
             throw new IllegalArgumentException("Device can't be null");
         }
 
-        List<Port> ethernetPorts = device.getArrayOfEthernetPorts();
+        List<Port> ethernetPorts = device.getArrayOfPorts();
 
         if (ethernetPorts == null) {
             throw new IllegalArgumentException("Device can't have null array of ports");
@@ -250,28 +284,44 @@ public class DeviceManagerImpl implements DeviceManager {
             throw new IllegalArgumentException("Device can't be null");
         }
 
-        return device.getArrayOfEthernetPorts().get(numberInArrayOfPorts) == null;
+        return device.getArrayOfPorts().get(numberInArrayOfPorts) == null;
     }
-
+    
     /**
-     * Checks duplicity of did and address attribute of the newly formed device.
-     * Devices are uniquely identified by their id (did) and address. If there
-     * is any other device with the same did OR the same address, return false
-     *
+     * Checks duplicity of did attribute of the newly formed device.
+
      * @param device Device. Must have unique both address and id (did).
-     * @return True if there is no other device with the same did or address,
-     * false if any other device has the same did or address.
+     * @return True if there is no other device with the same did,
+     * false if any other device has the same did.
      * @throws IllegalArgumentException if device is null.
      */
-    private boolean hasValidDidOrAddress(Device device) {
-
+    private boolean hasValidDid(Device device) {
+        
         if (device == null) {
             throw new IllegalArgumentException("Device can't be null");
         }
 
         Predicate<Device> similarDid = (n) -> n.getDid().equals(device.getDid());
+
+        return !devices.getListOfDevices().stream().anyMatch(similarDid);
+    }
+
+    /**
+     * Checks duplicity of address attribute of the newly formed device.
+
+     * @param device Device. Must have unique both address and id (did).
+     * @return True if there is no other device with the same address,
+     * false if any other device has the same address.
+     * @throws IllegalArgumentException if device is null.
+     */
+    private boolean hasValidAddress(Device device) {
+
+        if (device == null) {
+            throw new IllegalArgumentException("Device can't be null");
+        }
+
         Predicate<Device> similarAddress = (n) -> n.getAddress().equals(device.getAddress());
 
-        return !devices.getListOfDevices().stream().anyMatch(similarDid.or(similarAddress));
+        return !devices.getListOfDevices().stream().anyMatch(similarAddress);
     }
 }

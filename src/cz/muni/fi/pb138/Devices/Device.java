@@ -67,7 +67,7 @@ public class Device {
         return address;
     }
     
-    public int getNumberOfEthernetPorts(){
+    public int getNumberOfPorts(){
         return numberOfPorts;
     }
 
@@ -75,7 +75,7 @@ public class Device {
      * Gets arrayList of ethernet ports.
      * @return Mutable array of ports.
      */
-    public List<Port> getArrayOfEthernetPorts() {
+    public List<Port> getArrayOfPorts() {
         // In case of need for immutable array, use deep copy (or list)
         return arrayOfPorts;
     }
@@ -194,12 +194,17 @@ public class Device {
         }
 
         /**
-         * Adds specified arrayOfEthernetPorts as an attribute to the Device.
+         * Adds specified arrayOfPorts as an attribute to the Device.
          *
          * @param arrayOfPorts Array of Ports. Its length can't be greater than numberOfPorts.
          * @return
          */
-        public Builder arrayOfEthernetPorts(ArrayList<Port> arrayOfPorts) {
+        public Builder arrayOfPorts(List<Port> arrayOfPorts) {
+            
+            // Don't add anything if the parameter is null
+            if (arrayOfPorts == null) {
+                return this;
+            }
             
             if (arrayOfPorts.size() > numberOfPorts) {
                 throw new IllegalArgumentException("Actual number of ports is "

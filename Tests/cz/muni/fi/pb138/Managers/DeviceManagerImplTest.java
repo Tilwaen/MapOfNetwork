@@ -53,13 +53,29 @@ public class DeviceManagerImplTest {
                 .build();
         manager.createDevice(computer);
         
-        Device computer2 = new Device.Builder(12L, DeviceType.COMPUTER, "address", 0)
+        Device computer2 = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
                 .name("Fidorka")
                 .build();
         manager.createDevice(computer2);
         
         int allDevicesSize = manager.listAllDevices().size();
         assertEquals(allDevicesSize, 1);
+    }
+    
+    @Test
+    public void createDeviceWithoutDidCorrect() {
+        manager.createDevice(DeviceType.HUB, "address", 0, null, null);
+        
+        Device foundDevice = manager.findDeviceByAddress("address");
+        assertNotNull(foundDevice);
+        assertNotNull(foundDevice.getDid());
+        System.out.println("Randomly generated id: " + foundDevice.getDid());
+    }
+    
+    @Test
+    public void createDeviceWithoutDidAddressNull() {
+        exception.expect(IllegalArgumentException.class);
+        manager.createDevice(DeviceType.HUB, null, 0, null, null);
     }
 
     @Test

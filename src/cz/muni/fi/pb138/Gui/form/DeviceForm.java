@@ -46,7 +46,7 @@ public class DeviceForm extends javax.swing.JFrame {
         
         textFieldAddress.setText( device.getAddress() );
         textFieldName.setText( device.getName() );
-        textFieldNumberOfPorts.setText( new Integer( device.getNumberOfEthernetPorts() ).toString() );
+        textFieldNumberOfPorts.setText( new Integer( device.getNumberOfPorts() ).toString() );
         //comboBoxDeviceType.se
         //typeOfDevice
     }
