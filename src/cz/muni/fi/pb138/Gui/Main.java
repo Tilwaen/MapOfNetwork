@@ -11,6 +11,7 @@ import cz.muni.fi.pb138.Gui.List.DeviceList;
 import cz.muni.fi.pb138.Gui.List.PortList;
 import cz.muni.fi.pb138.Gui.form.DeviceForm;
 import cz.muni.fi.pb138.Gui.form.PortForm;
+import cz.muni.fi.pb138.Main.ListOfDevices;
 import cz.muni.fi.pb138.Managers.DeviceManager;
 import cz.muni.fi.pb138.Managers.DeviceManagerImpl;
 import cz.muni.fi.pb138.Managers.PortManager;
@@ -36,8 +37,9 @@ public class Main extends javax.swing.JFrame {
      * Creates new form MapOfNetworkUI
      */
     public Main() {
+        ListOfDevices listOfDevices = new ListOfDevices();
         deviceManager = new DeviceManagerImpl();
-        devices = deviceManager.listAllDevices();
+        devices = listOfDevices.getListOfDevices();
         rowIndex = -1;
         initComponents();
     }
@@ -110,7 +112,7 @@ public class Main extends javax.swing.JFrame {
         labelDevice = new javax.swing.JLabel();
         labelPort = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         buttonAddDevice.setText("Add device");
         buttonAddDevice.addActionListener(new java.awt.event.ActionListener() {
@@ -188,14 +190,13 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonAddDeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddDeviceActionPerformed
-        //DeviceForm deviceForm = new DeviceForm( this );
-        //deviceForm.setVisible( true );
+        DeviceForm deviceForm = new DeviceForm(deviceManager);
+        deviceForm.setVisible(true);
     }//GEN-LAST:event_buttonAddDeviceActionPerformed
 
     private void buttonAddPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddPortActionPerformed
-        PortList portList = null;
-        //PortForm portForm = new PortForm( portList );
-        //portForm.setVisible(true);
+        PortForm portForm = new PortForm(devices, deviceManager);
+        portForm.setVisible(true);
     }//GEN-LAST:event_buttonAddPortActionPerformed
 
     private void buttonDeleteDeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteDeviceActionPerformed

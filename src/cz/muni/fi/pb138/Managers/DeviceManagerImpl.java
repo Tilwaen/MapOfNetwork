@@ -252,7 +252,7 @@ public class DeviceManagerImpl implements DeviceManager {
 
         return device.getArrayOfEthernetPorts().get(numberInArrayOfPorts) == null;
     }
-
+    
     /**
      * Checks duplicity of did and address attribute of the newly formed device.
      * Devices are uniquely identified by their id (did) and address. If there
