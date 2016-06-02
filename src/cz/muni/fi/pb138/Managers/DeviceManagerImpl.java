@@ -1,7 +1,5 @@
 package cz.muni.fi.pb138.Managers;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.DeviceType;
 import cz.muni.fi.pb138.Devices.Port;
@@ -30,18 +28,18 @@ public class DeviceManagerImpl implements DeviceManager{
      * DeviceManager constructor.
      * @param listOfDevices Keeps array of devices.
      */
-    public DeviceManagerImpl(@NotNull ListOfDevices listOfDevices) {
+    public DeviceManagerImpl(ListOfDevices listOfDevices) {
         if (listOfDevices == null) {
-            throw new IllegalArgumentException("List of devices can't be null");
+            throw new NullPointerException("List of devices can't be null");
         }
         
         this.devices = listOfDevices;
     }
     
     @Override
-    public void createDevice(@NotNull Device device) {
+    public void createDevice(Device device) {
         if (device == null) {
-            throw new IllegalArgumentException("Null device");
+            throw new NullPointerException("Device can't be null");
         }
 
         if (hasValidDidOrAddress(device)) {
@@ -50,9 +48,9 @@ public class DeviceManagerImpl implements DeviceManager{
     }
 
     @Override
-    public void deleteDevice(@NotNull Device device) {
+    public void deleteDevice(Device device) {
         if (device == null) {
-            throw new IllegalArgumentException("Null device");
+            throw new NullPointerException("Device can't be null");
         }
         
         List<Device> listOfDevices = devices.getListOfDevices();
@@ -75,9 +73,9 @@ public class DeviceManagerImpl implements DeviceManager{
      * @param device Must have the same did and address of the device that is being updated
      */
     @Override
-    public void updateDevice(@NotNull Device device) {
+    public void updateDevice(Device device) {
         if (device == null) {
-            throw new IllegalArgumentException("Null device");
+            throw new NullPointerException("Device can't be null");
         }
         
         List<Device> listOfDevices = devices.getListOfDevices();
@@ -146,7 +144,6 @@ public class DeviceManagerImpl implements DeviceManager{
      * @param id Unique identificator.
      * @return Device with given ID. Null if there is no such device.
      */
-    @Nullable
     @Override
     public Device findDeviceById(String id) {
         Optional<Device> optional = devices.getListOfDevices().stream().filter(device -> device.getDid().equals(id)).findFirst();
@@ -165,7 +162,6 @@ public class DeviceManagerImpl implements DeviceManager{
      * @param adress Unique MAC address.
      * @return Device with given address. Null if there is no such device.
      */
-    @Nullable
     @Override
     public Device findDeviceByAddress(String adress) {
         Optional<Device> optional = devices.getListOfDevices().stream().filter(device -> device.getAddress().equals(adress)).findFirst();
@@ -186,10 +182,10 @@ public class DeviceManagerImpl implements DeviceManager{
      * -1 if there is no such element.
      */
     @Override
-    public int findEmptyPort(@NotNull Device device) {
+    public int findEmptyPort(Device device) {
         
         if (device == null) {
-            throw new IllegalArgumentException("Device can't be null");
+            throw new NullPointerException("Device can't be null");
         }
         
         List<Port> ethernetPorts = device.getArrayOfEthernetPorts();
@@ -215,10 +211,10 @@ public class DeviceManagerImpl implements DeviceManager{
      * @return True if there is no Port on the specified index; false if the port is already occupied.
      */
     @Override
-    public boolean isPortEmpty(@NotNull Device device, int numberInArrayOfPorts){         
+    public boolean isPortEmpty(Device device, int numberInArrayOfPorts){         
         
         if (device == null) {
-            throw new IllegalArgumentException("Device can't be null");
+            throw new NullPointerException("Device can't be null");
         }
         
         return device.getArrayOfEthernetPorts().get(numberInArrayOfPorts) == null;
@@ -232,10 +228,10 @@ public class DeviceManagerImpl implements DeviceManager{
      * @return True if there is no other device with the same did or address, 
      * false if any other device has the same did or address.
      */
-    private boolean hasValidDidOrAddress(@NotNull Device device) {
+    private boolean hasValidDidOrAddress(Device device) {
         
         if (device == null) {
-            throw new IllegalArgumentException("Device can't be null");
+            throw new NullPointerException("Device can't be null");
         }
         
         Predicate<Device> similarDid = (n) -> n.getDid().equals(device.getDid());
