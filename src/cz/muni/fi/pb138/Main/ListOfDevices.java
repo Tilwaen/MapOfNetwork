@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * @version 30.5.2016
  * @author Petr Beran
  * @author Kristýna Leknerová
+ * @author Jakub Mičuda
  */
 public class ListOfDevices {
 

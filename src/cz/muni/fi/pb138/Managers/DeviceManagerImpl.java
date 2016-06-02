@@ -11,31 +11,41 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
+ * Class implementing operations with devices from interface DeviceManager.
+ *
  * @version 1.6.2016
  * @author Petr Beran
  * @author Kristýna Leknerová
  */
-public class DeviceManagerImpl implements DeviceManager{
+public class DeviceManagerImpl implements DeviceManager {
 
     private ListOfDevices devices;
-    
+
     public DeviceManagerImpl() {
         devices = new ListOfDevices();
         // other possibility = SomeClass.getListOfDevices();
     }
-    
+
     /**
      * DeviceManager constructor.
+     *
      * @param listOfDevices Keeps array of devices.
+     * @throws IllegalArgumentException if list of devices is null.
      */
     public DeviceManagerImpl(ListOfDevices listOfDevices) {
         if (listOfDevices == null) {
             throw new IllegalArgumentException("List of devices can't be null");
         }
-        
+
         this.devices = listOfDevices;
     }
-    
+
+    /**
+     * Adds newly builded device to listOfDevices
+     *
+     * @param device Builded device to create in listOfDevices.
+     * @throws IllegalArgumentException if device is null.
+     */
     @Override
     public void createDevice(Device device) {
         if (device == null) {
@@ -47,50 +57,56 @@ public class DeviceManagerImpl implements DeviceManager{
         }
     }
 
+    /**
+     * Deletes specified device from listOfDevices. Also deletes all ports of
+     * deleted device.
+     *
+     * @param device Selected device to delete.
+     * @throws IllegalArgumentException of device is null or there is no device
+     * with such id.
+     */
     @Override
     public void deleteDevice(Device device) {
         if (device == null) {
             throw new IllegalArgumentException("Device can't be null");
         }
-        
+
         List<Device> listOfDevices = devices.getListOfDevices();
-        
+
         if (!listOfDevices.contains(device)) {
-            throw new IllegalArgumentException("No device with id " 
+            throw new IllegalArgumentException("No device with id "
                     + device.getDid() + " found in the list of devices.");
-        }
-        else {
-            // Delete all port connections
-            device.setNumberOfPorts(0);
-            // Remove the device
+        } else {
             listOfDevices.remove(device);
         }
     }
 
     /**
-     * Updates the device.
-     * The only things that can be updated this way are 
-     * name, maximal number of ports and device type.
-     * If the new maximal number of ports is lower than the original one, 
-     * all connections over this number are cropped.
-     * @param device Must have the same did and address of the device that is being updated
+     * Updates the device. The only things that can be updated this way are
+     * name, maximal number of ports and device type. If the new maximal number
+     * of ports is lower than the original one, all connections over this number
+     * are cropped.
+     *
+     * @param device Must have the same did and address of the device that is
+     * being updated
+     * @throws IllegalArgumentException if device is null or there is no device
+     * with such id.
      */
     @Override
     public void updateDevice(Device device) {
         if (device == null) {
             throw new IllegalArgumentException("Device can't be null");
         }
-        
+
         List<Device> listOfDevices = devices.getListOfDevices();
-        
+
         if (!listOfDevices.contains(device)) {
-            throw new IllegalArgumentException("No device with id " 
+            throw new IllegalArgumentException("No device with id "
                     + device.getDid() + " found in the list of devices.");
-        }
-        else {
+        } else {
             int index = listOfDevices.indexOf(device);
             Device originalDevice = listOfDevices.get(index);
-            
+
             originalDevice.setNumberOfPorts(device.getNumberOfEthernetPorts());
             originalDevice.setName(device.getName());
             originalDevice.setDeviceType(device.getDeviceType());
@@ -99,6 +115,7 @@ public class DeviceManagerImpl implements DeviceManager{
 
     /**
      * Gets list of all devices.
+     *
      * @return Unmodifiable list of all devices.
      */
     @Override
@@ -108,6 +125,7 @@ public class DeviceManagerImpl implements DeviceManager{
 
     /**
      * Gets list of all computers.
+     *
      * @return Copy of the list of all computers.
      */
     @Override
@@ -117,6 +135,7 @@ public class DeviceManagerImpl implements DeviceManager{
 
     /**
      * Gets list of all hubs.
+     *
      * @return Copy of the list of all hubs.
      */
     @Override
@@ -126,6 +145,7 @@ public class DeviceManagerImpl implements DeviceManager{
 
     /**
      * Gets list of all routers.
+     *
      * @return Copy of the list of all routers.
      */
     @Override
@@ -135,6 +155,7 @@ public class DeviceManagerImpl implements DeviceManager{
 
     /**
      * Gets list of all switches.
+     *
      * @return Copy of the list of all switches.
      */
     @Override
@@ -144,6 +165,7 @@ public class DeviceManagerImpl implements DeviceManager{
 
     /**
      * Finds device by its ID.
+     *
      * @param id Unique identificator.
      * @return Device with given ID. Null if there is no such device.
      */
@@ -156,12 +178,13 @@ public class DeviceManagerImpl implements DeviceManager{
             return null;
             //throw new IllegalArgumentException("No device with id " + id + " found.");
         }
-        
+
         return optional.get();
     }
 
     /**
      * Finds device by its address.
+     *
      * @param adress Unique MAC address.
      * @return Device with given address. Null if there is no such device.
      */
@@ -173,73 +196,82 @@ public class DeviceManagerImpl implements DeviceManager{
             return null;
             //throw new IllegalArgumentException("No device with id " + adress + " found.");
         }
-        
+
         return optional.get();
     }
 
     /**
-     * Finds first empty ethernet port of the device.
-     * Returns negative number if there is no empty port.
+     * Finds first empty ethernet port of the device. Returns negative number if
+     * there is no empty port.
+     *
      * @param device Device.
-     * @return Index of the arrayOfEthernetPorts (positive or zero number).
-     * -1 if there is no such element.
+     * @return Index of the arrayOfEthernetPorts (positive or zero number). -1
+     * if there is no such element.
+     * @throws IllegalArgumentException if either device or device's list of
+     * port is null.
      */
     @Override
     public int findEmptyPort(Device device) {
-        
+
         if (device == null) {
             throw new IllegalArgumentException("Device can't be null");
         }
-        
+
         List<Port> ethernetPorts = device.getArrayOfEthernetPorts();
-        
+
         if (ethernetPorts == null) {
             throw new IllegalArgumentException("Device can't have null array of ports");
         }
-        
+
         for (int i = 0; i < ethernetPorts.size(); i++) {
             if (ethernetPorts.get(i) == null) {
                 return i;
             }
         }
-        
+
         // No empty port
         return -1;
     }
 
     /**
      * Checks whether the device ethernet port is occupied or not.
+     *
      * @param device Device.
-     * @param numberInArrayOfPorts Index of the ethernet port in the array of device ethernet ports.
-     * @return True if there is no Port on the specified index; false if the port is already occupied.
+     * @param numberInArrayOfPorts Index of the ethernet port in the array of
+     * device ethernet ports.
+     * @return True if there is no Port on the specified index; false if the
+     * port is already occupied.
+     * @throws IllegalArgumentException if device is null.
      */
     @Override
-    public boolean isPortEmpty(Device device, int numberInArrayOfPorts){         
-        
+    public boolean isPortEmpty(Device device, int numberInArrayOfPorts) {
+
         if (device == null) {
             throw new IllegalArgumentException("Device can't be null");
         }
-        
+
         return device.getArrayOfEthernetPorts().get(numberInArrayOfPorts) == null;
     }
 
     /**
      * Checks duplicity of did and address attribute of the newly formed device.
-     * Devices are uniquely identified by their id (did) and address.
-     * If there is any other device with the same did OR the same address, return false.
+     * Devices are uniquely identified by their id (did) and address. If there
+     * is any other device with the same did OR the same address, return false
+     *
      * @param device Device. Must have unique both address and id (did).
-     * @return True if there is no other device with the same did or address, 
+     * @return True if there is no other device with the same did or address,
      * false if any other device has the same did or address.
+     * @throws IllegalArgumentException if device is null.
      */
     private boolean hasValidDidOrAddress(Device device) {
-        
+
         if (device == null) {
             throw new IllegalArgumentException("Device can't be null");
         }
-        
+
         Predicate<Device> similarDid = (n) -> n.getDid().equals(device.getDid());
         Predicate<Device> similarAddress = (n) -> n.getAddress().equals(device.getAddress());
-        
+
         return !devices.getListOfDevices().stream().anyMatch(similarDid.or(similarAddress));
     }
 }

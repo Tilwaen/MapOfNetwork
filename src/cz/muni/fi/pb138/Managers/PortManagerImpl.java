@@ -6,19 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * Class implementing operations with ports. Update port is not supported.
  * Delete port and create new one instead.
  *
- * @version 30.5.2016
+ * @version 1.6.2016
  * @author Petr Beran
+ * @author Kristýna Leknerová
  */
 public class PortManagerImpl implements PortManager {
 
     private DeviceManagerImpl deviceManager = new DeviceManagerImpl();
 
     /**
-     *
      * Creates new port. Port will be inserted into first available position in
      * devices's ports arrays. Don't use this for creating port from imported
      * XML file.
@@ -34,7 +33,7 @@ public class PortManagerImpl implements PortManager {
         Device deviceB = port.getDeviceB();
 
         for (Port portInList : deviceA.getArrayOfEthernetPorts()) {
-            if (portInList != null && ((portInList.getDeviceA().equals(deviceA) && portInList.getDeviceB().equals(deviceB)) 
+            if (portInList != null && ((portInList.getDeviceA().equals(deviceA) && portInList.getDeviceB().equals(deviceB))
                     || (portInList.getDeviceA().equals(deviceB) && portInList.getDeviceB().equals(deviceA)))) {
                 throw new IllegalArgumentException("There is already port between these two devices");
             }
@@ -52,7 +51,6 @@ public class PortManagerImpl implements PortManager {
     }
 
     /**
-     *
      * Creates new port from imported XML file. Don't use for any other purpose.
      * Created port will be inserted into specific place in devices' ports
      * arrays.
@@ -92,7 +90,6 @@ public class PortManagerImpl implements PortManager {
     }
 
     /**
-     *
      * Deletes selected port. In devices' lists of ports is port index set to
      * null.
      *
@@ -113,7 +110,6 @@ public class PortManagerImpl implements PortManager {
     }
 
     /**
-     *
      * Lists all ports of selected device that are occupied.
      *
      * @param device Device which ports are listed
@@ -122,18 +118,16 @@ public class PortManagerImpl implements PortManager {
     @Override
     public List<Port> listAllPortsOfDevice(Device device) {
         List<Port> listOfPorts = new ArrayList<>();
-        for (Port port : device.getArrayOfEthernetPorts()) {
-            if (port != null) {
-                listOfPorts.add(port);
-            }
-        }
+        device.getArrayOfEthernetPorts().stream().filter((port) -> (port != null)).forEach((port) -> {
+            listOfPorts.add(port);
+        });
         return listOfPorts;
     }
 
     /**
-     *
      * Validates if selected port is not null and has both deviced set. Throws
-     * IllegalArgumentException otherwise.
+     * IllegalArgumentException otherwise. Also checks if the devices are the
+     * same.
      *
      * @param port Port to validate
      * @throws IllegalArgumentException if port and/or devices are null
