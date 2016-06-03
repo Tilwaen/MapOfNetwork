@@ -31,20 +31,22 @@
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="buttonSave" min="-2" pref="65" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="panelName" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
                           <Component id="panelDeviceType" min="-2" max="-2" attributes="0"/>
                           <Component id="panelAddress" min="-2" max="-2" attributes="0"/>
                           <Component id="panelNewDevice" min="-2" max="-2" attributes="0"/>
                           <Component id="panelNumberOfPorts" alignment="0" min="-2" pref="148" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="textFieldNumberOfPorts" alignment="0" max="32767" attributes="0"/>
-                          <Component id="textFieldName" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
-                          <Component id="comboBoxDeviceType" alignment="1" min="-2" pref="120" max="-2" attributes="0"/>
+                          <Component id="textFieldName" alignment="0" pref="120" max="32767" attributes="0"/>
+                          <Component id="comboBoxDeviceType" alignment="0" pref="120" max="32767" attributes="0"/>
                           <Component id="textFieldAddress" alignment="0" max="32767" attributes="0"/>
+                          <Component id="textFieldSpot" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -77,12 +79,22 @@
                   <Component id="panelNumberOfPorts" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="textFieldNumberOfPorts" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="65" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="buttonCancel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="buttonSave" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="45" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="buttonCancel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonSave" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="textFieldSpot" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -156,6 +168,13 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Spot:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldSpot">
     </Component>
   </SubComponents>
 </Form>

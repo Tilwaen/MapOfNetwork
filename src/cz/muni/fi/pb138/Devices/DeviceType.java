@@ -16,3 +16,4 @@ public enum DeviceType {
     SWITCH24,
     SWITCH48
 }
+

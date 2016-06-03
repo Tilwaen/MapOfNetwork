@@ -19,12 +19,29 @@ public class DeviceForm extends javax.swing.JFrame {
     public static final boolean EDIT = true;
     public static final boolean ADD = false;
     private boolean action;
+    DeviceType deviceType;
+    int spot;
     Device device;
+    String name;
     DeviceManager deviceManager;
 
     /**
      * Creates new form DeviceForm
      */
+    
+    public String getName() {
+        return name;
+    }
+        
+    public DeviceType getDeviceType() {
+        return deviceType;
+    }
+    
+    public int getSpot() {
+        return spot;
+    }
+
+    
     public DeviceForm(DeviceManager deviceManager) {
         this.deviceManager = deviceManager;
         initComponents();
@@ -48,7 +65,7 @@ public class DeviceForm extends javax.swing.JFrame {
     }
 
     private class addSwingWorker extends SwingWorker<Integer, Void> {
-
+        
         Device device;
         DeviceManager deviceManager;
 
@@ -72,7 +89,7 @@ public class DeviceForm extends javax.swing.JFrame {
     }
 
     private class editSwingWorker extends SwingWorker<Integer, Void> {
-
+        
         Device newDevice;
         DeviceManager deviceManager;
 
@@ -115,6 +132,8 @@ public class DeviceForm extends javax.swing.JFrame {
         buttonCancel = new javax.swing.JButton();
         panelNewDevice = new javax.swing.JLabel();
         comboBoxDeviceType = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        textFieldSpot = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -162,6 +181,8 @@ public class DeviceForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Spot:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,19 +194,21 @@ public class DeviceForm extends javax.swing.JFrame {
                         .addComponent(buttonCancel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(panelName, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(panelDeviceType)
                             .addComponent(panelAddress)
                             .addComponent(panelNewDevice)
-                            .addComponent(panelNumberOfPorts, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(panelNumberOfPorts, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(textFieldNumberOfPorts)
-                            .addComponent(textFieldName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboBoxDeviceType, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textFieldAddress))))
+                            .addComponent(textFieldName, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(comboBoxDeviceType, 0, 120, Short.MAX_VALUE)
+                            .addComponent(textFieldAddress)
+                            .addComponent(textFieldSpot))))
                 .addGap(37, 37, 37))
         );
         layout.setVerticalGroup(
@@ -209,11 +232,18 @@ public class DeviceForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(panelNumberOfPorts)
                     .addComponent(textFieldNumberOfPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonCancel)
-                    .addComponent(buttonSave))
-                .addGap(25, 25, 25))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonCancel)
+                            .addComponent(buttonSave))
+                        .addGap(25, 25, 25))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(textFieldSpot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -248,7 +278,7 @@ public class DeviceForm extends javax.swing.JFrame {
                     swingWorker.execute();
                     this.dispose();
                 }
-            }
+            }  
         }
     }//GEN-LAST:event_buttonSaveActionPerformed
 
@@ -261,43 +291,53 @@ public class DeviceForm extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private Device parseTextFields() {
-        String name = textFieldName.getText();
-//        int deviceTypeIndex = comboBoxDeviceType.getSelectedIndex();      
+        name = textFieldName.getText();
+        int deviceTypeIndex = comboBoxDeviceType.getSelectedIndex();
         String address = textFieldAddress.getText();
         String numberOfPortsString = textFieldNumberOfPorts.getText();
+        String spotString = textFieldSpot.getText();
+        
+        deviceType = DeviceType.COMPUTER;
+        switch( deviceTypeIndex ) {
+            case 0:
+                deviceType = DeviceType.COMPUTER;
+                break;
+            case 1:
+                deviceType = DeviceType.HUB;
+                break;
+            case 2:
+                deviceType = DeviceType.MODEM;
+                break;
+            case 3:
+                deviceType = DeviceType.ROUTER;
+                break;
+            case 4:
+                deviceType = DeviceType.SWITCH12;
+                break;
+            case 5:
+                deviceType = DeviceType.SWITCH24;
+                break;
+            case 6:
+                deviceType = DeviceType.SWITCH48;
+                break;
+        }
+        
         int numberOfPorts = 0;
         try {
-            Integer.parseInt(numberOfPortsString);
+            numberOfPorts = Integer.parseInt(numberOfPortsString);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(rootPane, "Enter valid number.");
             return null;
         }
-        DeviceType deviceType = (DeviceType) comboBoxDeviceType.getSelectedItem();
-        //DeviceType deviceType = DeviceType.COMPUTER;
-
-//        switch( deviceTypeIndex ) {
-//            case 0:
-//                deviceType = DeviceType.COMPUTER;
-//                break;
-//            case 1:
-//                deviceType = DeviceType.HUB;
-//                break;
-//            case 2:
-//                deviceType = DeviceType.MODEM;
-//                break;
-//            case 3:
-//                deviceType = DeviceType.ROUTER;
-//                break;
-//            case 4:
-//                deviceType = DeviceType.SWITCH12;
-//                break;
-//            case 5:
-//                deviceType = DeviceType.SWITCH24;
-//                break;
-//            case 6:
-//                deviceType = DeviceType.SWITCH48;
-//                break;
-//        }
+        
+        spot = 0;
+        try {
+            spot = Integer.parseInt(spotString);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(rootPane, "Enter valid number.");
+            return null;
+        }
+        
         if (name.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Enter name.");
             return null;
@@ -318,7 +358,16 @@ public class DeviceForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Number of ports must be greater than zero.");
             return null;
         }
-
+        if (spotString.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Enter number of the spot.");
+            return null;
+        }
+        if(spot < 1 || spot > 20) {
+            JOptionPane.showMessageDialog(rootPane, "Enter number of the spot.");
+            return null;
+        }
+        
+        
         //Device newDevice = new Device( did, deviceType, address, numberOfPorts, arrayOfPorts, name );
         Device newDevice = new Device.Builder(10L, deviceType, address, numberOfPorts)
                 .name(name)
@@ -366,6 +415,7 @@ public class DeviceForm extends javax.swing.JFrame {
     private javax.swing.JButton buttonCancel;
     private javax.swing.JButton buttonSave;
     private javax.swing.JComboBox<String> comboBoxDeviceType;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel panelAddress;
     private javax.swing.JLabel panelDeviceType;
     private javax.swing.JLabel panelName;
@@ -374,5 +424,6 @@ public class DeviceForm extends javax.swing.JFrame {
     private javax.swing.JTextField textFieldAddress;
     private javax.swing.JTextField textFieldName;
     private javax.swing.JTextField textFieldNumberOfPorts;
+    private javax.swing.JTextField textFieldSpot;
     // End of variables declaration//GEN-END:variables
 }
