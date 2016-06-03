@@ -11,6 +11,7 @@ import cz.muni.fi.pb138.Gui.List.DeviceList;
 import cz.muni.fi.pb138.Gui.List.PortList;
 import cz.muni.fi.pb138.Gui.form.DeviceForm;
 import cz.muni.fi.pb138.Gui.form.PortForm;
+import cz.muni.fi.pb138.Main.ListOfDevices;
 import cz.muni.fi.pb138.Managers.DeviceManager;
 import cz.muni.fi.pb138.Managers.DeviceManagerImpl;
 import cz.muni.fi.pb138.Managers.PortManager;
@@ -23,6 +24,7 @@ import javax.swing.SwingWorker;
  * @author Magdalena Kunikova
  */
 public class Main extends javax.swing.JFrame {
+
     private DeviceManager deviceManager;
     private SwingWorker swingWorker;
     private List<Device> devices;
@@ -31,24 +33,25 @@ public class Main extends javax.swing.JFrame {
     public final int ADD = 1;
     public final int EDIT = 2;
     private Port port;
-    
+
     /**
      * Creates new form MapOfNetworkUI
      */
     public Main() {
+        ListOfDevices listOfDevices = new ListOfDevices();
         deviceManager = new DeviceManagerImpl();
-        devices = deviceManager.listAllDevices();
+        devices = listOfDevices.getListOfDevices();
         rowIndex = -1;
         initComponents();
     }
-    
-    
+
     private class editSwingWorker extends SwingWorker<Integer, Void> {
+
         Main frame;
         Integer deviceNumber;
         DeviceManager deviceManager;
 
-        public editSwingWorker( Main frame, Integer deviceNumber, DeviceManager deviceManager ) {
+        public editSwingWorker(Main frame, Integer deviceNumber, DeviceManager deviceManager) {
             this.frame = frame;
             this.deviceNumber = deviceNumber;
             this.deviceManager = deviceManager;
@@ -67,23 +70,23 @@ public class Main extends javax.swing.JFrame {
             swingWorker = null;
         }
     }
-    
-    
+
     private class deleteSwingWorker extends SwingWorker<Integer, Void> {
+
         DeviceManager deviceManager;
 
-        public deleteSwingWorker( DeviceManager deviceManager ) {
+        public deleteSwingWorker(DeviceManager deviceManager) {
             this.deviceManager = deviceManager;
         }
 
         @Override
         protected Integer doInBackground() throws Exception {
         //    rowIndex = tableDevice.getSelectedRow();
-        //    Main_TableModel deviceModel = (Main_TableModel) tableDevice.getModel();
-        //    Integer deviceNumber = (Integer) deviceModel.getValueAt( rowIndex, 0 );
-        //    Device device = deviceManager.findDeviceById( deviceNumber );
-        //    deviceManager.removeDevice( device.getDid() );
-        //    refreshDevices( device.get( rowIndex ), REMOVE );
+            //    Main_TableModel deviceModel = (Main_TableModel) tableDevice.getModel();
+            //    Integer deviceNumber = (Integer) deviceModel.getValueAt( rowIndex, 0 );
+            //    Device device = deviceManager.findDeviceById( deviceNumber );
+            //    deviceManager.removeDevice( device.getDid() );
+            //    refreshDevices( device.get( rowIndex ), REMOVE );
             return 0;
         }
 
@@ -188,24 +191,23 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonAddDeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddDeviceActionPerformed
-        //DeviceForm deviceForm = new DeviceForm( this );
-        //deviceForm.setVisible( true );
+        DeviceForm deviceForm = new DeviceForm(deviceManager);
+        deviceForm.setVisible(true);
     }//GEN-LAST:event_buttonAddDeviceActionPerformed
 
     private void buttonAddPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddPortActionPerformed
-        PortList portList = null;
-        //PortForm portForm = new PortForm( portList );
-        //portForm.setVisible(true);
+        PortForm portForm = new PortForm(devices, deviceManager);
+        portForm.setVisible(true);
     }//GEN-LAST:event_buttonAddPortActionPerformed
 
     private void buttonDeleteDeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteDeviceActionPerformed
         //rowIndex = tableInvoices.getSelectedRow();
-        if( rowIndex == -1 ) {
+        if (rowIndex == -1) {
             JOptionPane.showMessageDialog(rootPane, "No device was selected.");
         } else {
             int choice = JOptionPane.showConfirmDialog(rootPane, "Do you really want to delete the device?", null, JOptionPane.YES_NO_OPTION);
-            if( choice == 0 ) {
-                if( swingWorker != null ) {
+            if (choice == 0) {
+                if (swingWorker != null) {
                     throw new IllegalStateException("Operation was not accomplished yet.");
                 }
                 //swingWorker = new deleteSwingWorker(deviceManager);
@@ -216,12 +218,12 @@ public class Main extends javax.swing.JFrame {
 
     private void buttonDeletePortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeletePortActionPerformed
         //rowIndex = tableInvoices.getSelectedRow();
-        if( rowIndex == -1 ) {
+        if (rowIndex == -1) {
             JOptionPane.showMessageDialog(rootPane, "No port was selected.");
         } else {
             int choice = JOptionPane.showConfirmDialog(rootPane, "Do you really want to delete the port?", null, JOptionPane.YES_NO_OPTION);
-            if( choice == 0 ) {
-                if( swingWorker != null ) {
+            if (choice == 0) {
+                if (swingWorker != null) {
                     throw new IllegalStateException("Operation was not accomplished yet.");
                 }
                 //swingWorker = new deleteSwingWorker(deviceManager);
@@ -267,7 +269,6 @@ public class Main extends javax.swing.JFrame {
                 new Main().setVisible(true);
             }
         });
-
 
     }
 

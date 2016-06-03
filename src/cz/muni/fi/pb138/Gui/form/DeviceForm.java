@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pb138.Gui.form;
 
 import cz.muni.fi.pb138.Devices.Device;
@@ -18,77 +13,77 @@ import javax.swing.SwingWorker;
  *
  * @author Magdalena Kunikova
  */
-
-
 public class DeviceForm extends javax.swing.JFrame {
+
     SwingWorker swingWorker;
     public static final boolean EDIT = true;
     public static final boolean ADD = false;
     private boolean action;
     Device device;
     DeviceManager deviceManager;
-    
-    
+
     /**
      * Creates new form DeviceForm
      */
-    public DeviceForm() {
-        deviceManager = new DeviceManagerImpl();
+    public DeviceForm(DeviceManager deviceManager) {
+        this.deviceManager = deviceManager;
         initComponents();
     }
-     
-     
-    public DeviceForm( Device device ) {
-        deviceManager = new DeviceManagerImpl();
+
+    public void setDeviceManager(DeviceManager deviceManager) {
+        this.deviceManager = deviceManager;
+    }
+
+    public DeviceForm(Device device, DeviceManager deviceManager) {
+        this.deviceManager = deviceManager;
         this.device = device;
         action = EDIT;
         initComponents();
-        
-        textFieldAddress.setText( device.getAddress() );
-        textFieldName.setText( device.getName() );
-        textFieldNumberOfPorts.setText( new Integer( device.getNumberOfPorts() ).toString() );
+
+        textFieldAddress.setText(device.getAddress());
+        textFieldName.setText(device.getName());
+        textFieldNumberOfPorts.setText(new Integer(device.getNumberOfPorts()).toString());
         //comboBoxDeviceType.se
         //typeOfDevice
     }
-     
-    
+
     private class addSwingWorker extends SwingWorker<Integer, Void> {
+
         Device device;
         DeviceManager deviceManager;
 
-        public addSwingWorker( Device device, DeviceManager deviceManager) {
+        public addSwingWorker(Device device, DeviceManager deviceManager) {
             this.device = device;
             this.deviceManager = deviceManager;
         }
 
         @Override
         protected Integer doInBackground() throws Exception {
-            deviceManager.createDevice( device );
-
+            deviceManager.createDevice(device);
 
             return 0;
         }
 
         @Override
         protected void done() {
-            buttonSave.setEnabled( true );
+            buttonSave.setEnabled(true);
             swingWorker = null;
         }
     }
-    
-    
+
     private class editSwingWorker extends SwingWorker<Integer, Void> {
+
         Device newDevice;
         DeviceManager deviceManager;
 
-        public editSwingWorker( Device newDevice, DeviceManager DevicecontactManager) {
+        public editSwingWorker(Device newDevice, DeviceManager DevicecontactManager) {
             this.deviceManager = deviceManager;
             this.newDevice = newDevice;
         }
 
         @Override
         protected Integer doInBackground() throws Exception {
-            deviceManager.updateDevice( newDevice );
+            deviceManager.updateDevice(newDevice);
 
             return 0;
         }
@@ -233,23 +228,23 @@ public class DeviceForm extends javax.swing.JFrame {
     }//GEN-LAST:event_textFieldNameActionPerformed
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
-        if( swingWorker != null ) {
-            throw new IllegalStateException( "Operation was not accomplished yet." );
+        if (swingWorker != null) {
+            throw new IllegalStateException("Operation was not accomplished yet.");
         } else {
-            if( action == ADD ) {
+            if (action == ADD) {
                 Device newDevice = parseTextFields();
-                if( newDevice != null ) {
-                    swingWorker = new addSwingWorker( newDevice, deviceManager );
-                    buttonSave.setEnabled( false );
+                if (newDevice != null) {
+                    swingWorker = new addSwingWorker(newDevice, deviceManager);
+                    buttonSave.setEnabled(false);
                     swingWorker.execute();
                     this.dispose();
                 }
-            } else if( action == EDIT ) {
+            } else if (action == EDIT) {
                 Device newDevice = parseTextFields();
-                if( newDevice != null ) {
+                if (newDevice != null) {
                     //newDevice.setDid( device.getDid() );
-                    swingWorker = new editSwingWorker( newDevice, deviceManager );
-                    buttonSave.setEnabled( false );
+                    swingWorker = new editSwingWorker(newDevice, deviceManager);
+                    buttonSave.setEnabled(false);
                     swingWorker.execute();
                     this.dispose();
                 }
@@ -264,70 +259,74 @@ public class DeviceForm extends javax.swing.JFrame {
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_buttonCancelActionPerformed
-    
+
     private Device parseTextFields() {
         String name = textFieldName.getText();
-        int deviceTypeIndex = comboBoxDeviceType.getSelectedIndex();      
+//        int deviceTypeIndex = comboBoxDeviceType.getSelectedIndex();      
         String address = textFieldAddress.getText();
         String numberOfPortsString = textFieldNumberOfPorts.getText();
-        
-        DeviceType deviceType = DeviceType.COMPUTER;
-        switch( deviceTypeIndex ) {
-            case 0:
-                deviceType = DeviceType.COMPUTER;
-                break;
-            case 1:
-                deviceType = DeviceType.HUB;
-                break;
-            case 2:
-                deviceType = DeviceType.MODEM;
-                break;
-            case 3:
-                deviceType = DeviceType.ROUTER;
-                break;
-            case 4:
-                deviceType = DeviceType.SWITCH12;
-                break;
-            case 5:
-                deviceType = DeviceType.SWITCH24;
-                break;
-            case 6:
-                deviceType = DeviceType.SWITCH48;
-                break;
-        }
-        
         int numberOfPorts = 0;
-        if( name.equals("") ) {
-            JOptionPane.showMessageDialog(rootPane, "Enter name.");
-        } else if( address.equals("") ) {
-            JOptionPane.showMessageDialog( rootPane, "Enter MAC address." );
-        } else if(numberOfPortsString.equals("")) {
-            JOptionPane.showMessageDialog( rootPane, "Enter number of ports." );
-        } else {
-            boolean valid = true;
-            if( !numberOfPortsString.equals("") ) {
-                try {
-                    numberOfPorts = Integer.parseInt( numberOfPortsString );
-                } catch( NumberFormatException e ) {
-                    valid = false;
-                    JOptionPane.showMessageDialog( rootPane, "Enter valid number." );
-                }
-                if ( numberOfPorts < 0 ) {
-                    JOptionPane.showMessageDialog( rootPane, "Enter valid positive number." );
-                    valid = false;
-                }
-            }
-            if( valid ) {
-            //    Device newDevice = new Device( did, deviceType, address, numberOfPorts, arrayOfPorts, name );
-              
-            //    return newDevice;
-            }             
+        try {
+            Integer.parseInt(numberOfPortsString);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(rootPane, "Enter valid number.");
+            return null;
         }
-        
-        return null;
+        DeviceType deviceType = (DeviceType) comboBoxDeviceType.getSelectedItem();
+        //DeviceType deviceType = DeviceType.COMPUTER;
+
+//        switch( deviceTypeIndex ) {
+//            case 0:
+//                deviceType = DeviceType.COMPUTER;
+//                break;
+//            case 1:
+//                deviceType = DeviceType.HUB;
+//                break;
+//            case 2:
+//                deviceType = DeviceType.MODEM;
+//                break;
+//            case 3:
+//                deviceType = DeviceType.ROUTER;
+//                break;
+//            case 4:
+//                deviceType = DeviceType.SWITCH12;
+//                break;
+//            case 5:
+//                deviceType = DeviceType.SWITCH24;
+//                break;
+//            case 6:
+//                deviceType = DeviceType.SWITCH48;
+//                break;
+//        }
+        if (name.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Enter name.");
+            return null;
+        }
+        if (address.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Enter MAC address.");
+            return null;
+        }
+        if (address.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")) {
+            JOptionPane.showMessageDialog(rootPane, "MAC address has wrong format.");
+            return null;
+        }
+        if (numberOfPortsString.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Enter number of ports.");
+            return null;
+        }
+        if (numberOfPorts <= 0) {
+            JOptionPane.showMessageDialog(rootPane, "Number of ports must be greater than zero.");
+            return null;
+        }
+
+        //Device newDevice = new Device( did, deviceType, address, numberOfPorts, arrayOfPorts, name );
+        Device newDevice = new Device.Builder(10L, deviceType, address, numberOfPorts)
+                .name(name)
+                .build();
+
+        return newDevice;
     }
-    
-    
+
     /**
      * @param args the command line arguments
      */
@@ -358,7 +357,7 @@ public class DeviceForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DeviceForm().setVisible(true);
+                //new DeviceForm().setVisible(true);
             }
         });
     }
