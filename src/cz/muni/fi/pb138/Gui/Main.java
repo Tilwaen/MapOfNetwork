@@ -37,29 +37,31 @@ public class Main extends javax.swing.JFrame {
     private DeviceManager deviceManager;
     private DeviceForm deviceForm;
     private List<Device> devices;
-    private int rowIndex;
+    //private int rowIndex;
     public final int REMOVE = 0;
     public final int ADD = 1;
     public final int EDIT = 2;
     private Port port;
-    int spot;
-    String name;
-    DeviceType deviceType;
+    private int spot;
+    private String name;
+    private String address;
+    private int numberOfPorts;
+    private DeviceType deviceType;
     
-    private static final String computerPath = "C:\\Users\\Mags\\Desktop\\computer.png";// "computer.png";
-    private static final String hubPath = "hub.png";
-    private static final String modemPath = "modem.png";
-    private static final String routerPath = "router.png";
-    private static final String switch12Path = "12switch.png";
-    private static final String switch24Path = "24switch.png";
-    private static final String switch48Path = "48switch.png";
+    private static final String computerPath = "resources/computer.png";
+    private static final String hubPath = "resources/hub.png";
+    private static final String modemPath = "resources/modem.png";
+    private static final String routerPath = "resources/router.png";
+    private static final String switch12Path = "resources/12switch.png";
+    private static final String switch24Path = "resources/24switch.png";
+    private static final String switch48Path = "resources/48switch.png";
     
 
     public Main() {
         ListOfDevices listOfDevices = new ListOfDevices();
         deviceManager = new DeviceManagerImpl();
         devices = listOfDevices.getListOfDevices();
-        rowIndex = -1;
+        //rowIndex = -1;
         deviceForm = new DeviceForm(deviceManager);
         
         initComponents();
@@ -69,6 +71,8 @@ public class Main extends javax.swing.JFrame {
                 spot = deviceForm.getSpot();
                 deviceType = deviceForm.getDeviceType();
                 name = deviceForm.getName();
+                address = deviceForm.getAddress();
+                numberOfPorts = deviceForm.getNumberOfPorts();
                 editLabel(name, deviceType, spot);
             }
         } );
@@ -135,39 +139,40 @@ public class Main extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        label.setText(name);
+        label.setText("");
         
         Icon image = null;
         String deviceTypeString = deviceType.toString().toUpperCase();
         switch(deviceTypeString) {
             case "COMPUTER" : 
-                image = new ImageIcon(computerPath);
+                image = new ImageIcon(getClass().getClassLoader().getResource(computerPath));
                 break;
             case "HUB" :
-                image = new ImageIcon(hubPath);
+                image = new ImageIcon(getClass().getClassLoader().getResource(hubPath));
                 break;
             case "MODEM" :
-                image = new ImageIcon(modemPath);
+                image = new ImageIcon(getClass().getClassLoader().getResource(modemPath));
                 break;
             case "ROUTER" :
-                image = new ImageIcon(routerPath);
+                image = new ImageIcon(getClass().getClassLoader().getResource(routerPath));
                 break;
             case "SWITCH12" :
-                image = new ImageIcon(switch12Path);
+                image = new ImageIcon(getClass().getClassLoader().getResource(switch12Path));
                 break;
             case "SWITCH24" :
-                image = new ImageIcon(switch24Path);
+                image = new ImageIcon(getClass().getClassLoader().getResource(switch24Path));
                 break;
             case "SWITCH48" :
-                image = new ImageIcon(switch48Path);
+                image = new ImageIcon(getClass().getClassLoader().getResource(switch48Path));
                 break;
         }
         label.setIcon(image);
-        label.setHorizontalAlignment( SwingConstants.CENTER );
-        label.setVerticalAlignment( SwingConstants.CENTER );
-        //label.setHorizontalTextPosition( SwingConstants.CENTER );
-	//label.setVerticalTextPosition( SwingConstants.BOTTOM ); 
+        label.setHorizontalTextPosition( SwingConstants.CENTER );
+        //label.setVerticalTextPosition( SwingConstants.BOTTOM );
+        label.setToolTipText( name + ", number of ports: " + numberOfPorts + ", address: " + address );
     }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -237,6 +242,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         buttonEditDevice.setText("Edit device");
+        buttonEditDevice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditDeviceActionPerformed(evt);
+            }
+        });
 
         labelDevice.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         labelDevice.setText("Device");
@@ -466,36 +476,41 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAddPortActionPerformed
 
     private void buttonDeleteDeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteDeviceActionPerformed
+        
         //rowIndex = tableInvoices.getSelectedRow();
-        if (rowIndex == -1) {
-            JOptionPane.showMessageDialog(rootPane, "No device was selected.");
-        } else {
-            int choice = JOptionPane.showConfirmDialog(rootPane, "Do you really want to delete the device?", null, JOptionPane.YES_NO_OPTION);
-            if (choice == 0) {
-                if (swingWorker != null) {
-                    throw new IllegalStateException("Operation was not accomplished yet.");
-                }
+        //if (rowIndex == -1) {
+        //    JOptionPane.showMessageDialog(rootPane, "No device was selected.");
+        //} else {
+        //    int choice = JOptionPane.showConfirmDialog(rootPane, "Do you really want to delete the device?", null, JOptionPane.YES_NO_OPTION);
+        //    if (choice == 0) {
+        //        if (swingWorker != null) {
+        //            throw new IllegalStateException("Operation was not accomplished yet.");
+        //        }
                 //swingWorker = new deleteSwingWorker(deviceManager);
-                swingWorker.execute();
-            }
-        }
+        //        swingWorker.execute();
+        //    }
+        //}
     }//GEN-LAST:event_buttonDeleteDeviceActionPerformed
 
     private void buttonDeletePortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeletePortActionPerformed
         //rowIndex = tableInvoices.getSelectedRow();
-        if (rowIndex == -1) {
-            JOptionPane.showMessageDialog(rootPane, "No port was selected.");
-        } else {
-            int choice = JOptionPane.showConfirmDialog(rootPane, "Do you really want to delete the port?", null, JOptionPane.YES_NO_OPTION);
-            if (choice == 0) {
-                if (swingWorker != null) {
-                    throw new IllegalStateException("Operation was not accomplished yet.");
-                }
-                //swingWorker = new deleteSwingWorker(deviceManager);
-                swingWorker.execute();
-            }
-        }
+        //if (rowIndex == -1) {
+        //    JOptionPane.showMessageDialog(rootPane, "No port was selected.");
+        //} else {
+        //    int choice = JOptionPane.showConfirmDialog(rootPane, "Do you really want to delete the port?", null, JOptionPane.YES_NO_OPTION);
+        //    if (choice == 0) {
+        //        if (swingWorker != null) {
+        //            throw new IllegalStateException("Operation was not accomplished yet.");
+        //        }
+        //        //swingWorker = new deleteSwingWorker(deviceManager);
+        //        swingWorker.execute();
+        //    }
+     //}
     }//GEN-LAST:event_buttonDeletePortActionPerformed
+
+    private void buttonEditDeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditDeviceActionPerformed
+        deviceForm.setVisible(true);
+    }//GEN-LAST:event_buttonEditDeviceActionPerformed
 
     /**
      * @param args the command line arguments

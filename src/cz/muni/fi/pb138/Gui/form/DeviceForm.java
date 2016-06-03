@@ -15,19 +15,25 @@ import javax.swing.SwingWorker;
  */
 public class DeviceForm extends javax.swing.JFrame {
 
-    SwingWorker swingWorker;
+    private SwingWorker swingWorker;
     public static final boolean EDIT = true;
     public static final boolean ADD = false;
     private boolean action;
-    DeviceType deviceType;
-    int spot;
-    Device device;
-    String name;
-    DeviceManager deviceManager;
+    private DeviceType deviceType;
+    private int spot;
+    private Device device;
+    private String name;
+    private int numberOfPorts;
+    private String address;
+    private DeviceManager deviceManager;
 
     /**
      * Creates new form DeviceForm
      */
+    
+    public String getAddress() {
+        return address;
+    }
     
     public String getName() {
         return name;
@@ -39,6 +45,10 @@ public class DeviceForm extends javax.swing.JFrame {
     
     public int getSpot() {
         return spot;
+    }
+    
+    public int getNumberOfPorts() {
+        return numberOfPorts;
     }
 
     
@@ -293,7 +303,7 @@ public class DeviceForm extends javax.swing.JFrame {
     private Device parseTextFields() {
         name = textFieldName.getText();
         int deviceTypeIndex = comboBoxDeviceType.getSelectedIndex();
-        String address = textFieldAddress.getText();
+        address = textFieldAddress.getText();
         String numberOfPortsString = textFieldNumberOfPorts.getText();
         String spotString = textFieldSpot.getText();
         
@@ -322,7 +332,7 @@ public class DeviceForm extends javax.swing.JFrame {
                 break;
         }
         
-        int numberOfPorts = 0;
+        numberOfPorts = 0;
         try {
             numberOfPorts = Integer.parseInt(numberOfPortsString);
         } catch (NumberFormatException e) {
@@ -346,9 +356,10 @@ public class DeviceForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Enter MAC address.");
             return null;
         }
-        if (address.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")) {
+        
+        String addressRegex = "(([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2})|(([0-9A-Fa-f]{4}\\.){2}[0-9A-Fa-f]{4})";
+        if (!address.matches(addressRegex)) {
             JOptionPane.showMessageDialog(rootPane, "MAC address has wrong format.");
-            return null;
         }
         if (numberOfPortsString.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Enter number of ports.");
@@ -367,8 +378,6 @@ public class DeviceForm extends javax.swing.JFrame {
             return null;
         }
         
-        
-        //Device newDevice = new Device( did, deviceType, address, numberOfPorts, arrayOfPorts, name );
         Device newDevice = new Device.Builder(10L, deviceType, address, numberOfPorts)
                 .name(name)
                 .build();
