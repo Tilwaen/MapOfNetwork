@@ -33,10 +33,10 @@ public class PortManagerImplTest {
     @Before
     public void setUp() {
         this.portManager = new PortManagerImpl();
-        this.testDeviceA = new Device.Builder(1L, DeviceType.COMPUTER, "address", 2)
+        this.testDeviceA = new Device.Builder(1L, DeviceType.COMPUTER, "11:11:11:11:11:11", 2)
                 .name("Kačer Donald")
                 .build();
-        this.testDeviceB = new Device.Builder(2L, DeviceType.ROUTER, "address", 4)
+        this.testDeviceB = new Device.Builder(2L, DeviceType.ROUTER, "22:22:22:22:22:22", 4)
                 .name("Hamoun")
                 .build();
     }
@@ -76,10 +76,10 @@ public class PortManagerImplTest {
 
     @Test
     public void createPortForDeviceWithOccupiedPortSlots() {
-        Device testDeviceC = new Device.Builder(666L, DeviceType.ROUTER, "address", 4)
+        Device testDeviceC = new Device.Builder(666L, DeviceType.ROUTER, "01:02:03:04:ab:cd", 4)
                 .name("Kulík")
                 .build();
-        Device testDeviceD = new Device.Builder(42L, DeviceType.ROUTER, "address", 4)
+        Device testDeviceD = new Device.Builder(42L, DeviceType.ROUTER, "11:02:03:04:ab:cd", 4)
                 .name("Dulík")
                 .build();
         Port portAB = new Port(testDeviceA, testDeviceB);
@@ -93,7 +93,7 @@ public class PortManagerImplTest {
 
     @Test
     public void createPortForDeviceWithNoPortSlots() {
-        Device testDeviceC = new Device.Builder(666L, DeviceType.ROUTER, "address", 0)
+        Device testDeviceC = new Device.Builder(666L, DeviceType.ROUTER, "01:02:03:04:ab:cd", 0)
                 .name("Bubík")
                 .build();
         Port portAC = new Port(testDeviceA, testDeviceC);
@@ -153,7 +153,7 @@ public class PortManagerImplTest {
 
     @Test
     public void createPortFromXMLForOccupiedPort() {
-        Device testDeviceC = new Device.Builder(666L, DeviceType.ROUTER, "address", 4)
+        Device testDeviceC = new Device.Builder(666L, DeviceType.ROUTER, "01:02:03:04:ab:cd", 4)
                 .name("Strýček Skrblík")
                 .build();
 
@@ -166,7 +166,7 @@ public class PortManagerImplTest {
 
     @Test
     public void createPortFromXMLForDeviceWithZeroPorts() {
-        Device testDeviceC = new Device.Builder(666L, DeviceType.ROUTER, "address", 0)
+        Device testDeviceC = new Device.Builder(666L, DeviceType.ROUTER, "01:02:03:04:ab:cd", 0)
                 .name("Daisy")
                 .build();
         Port portAC = new Port(testDeviceA, testDeviceC);
@@ -183,7 +183,7 @@ public class PortManagerImplTest {
 
     @Test
     public void deletePort() {
-        Device testDeviceC = new Device.Builder(666L, DeviceType.ROUTER, "address", 1)
+        Device testDeviceC = new Device.Builder(666L, DeviceType.ROUTER, "01:02:03:04:ab:cd", 1)
                 .name("Magika von Čáry")
                 .build();
         Port portAB = new Port(testDeviceA, testDeviceB);

@@ -187,6 +187,13 @@ public class Device {
                 throw new IllegalArgumentException("Negative number of maximum ports");
             }
             
+            String addressRegex = "(([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2})|(([0-9A-Fa-f]{4}\\.){2}[0-9A-Fa-f]{4})";
+            
+            if (!address.matches(addressRegex)) {
+                throw new IllegalArgumentException("Address format is incorrect. "
+                        + "Device must have a correct MAC address (ie. 01:02:03:04:ab:cd or 01-02-03-04-ab-cd)");
+            }
+            
             this.did = did;
             this.deviceType = deviceType;
             this.address = address;

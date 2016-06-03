@@ -37,7 +37,7 @@ public class DeviceManagerImplTest {
 
     @Test
     public void createDevice() {
-        Device device = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
+        Device device = new Device.Builder(10L, DeviceType.COMPUTER, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device);
@@ -48,12 +48,12 @@ public class DeviceManagerImplTest {
     
     @Test
     public void createDeviceMultipleSame() {
-        Device computer = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
+        Device computer = new Device.Builder(10L, DeviceType.COMPUTER, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(computer);
         
-        Device computer2 = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
+        Device computer2 = new Device.Builder(10L, DeviceType.COMPUTER, "01:02:03:04:ab:cd", 0)
                 .name("Fidorka")
                 .build();
         manager.createDevice(computer2);
@@ -64,9 +64,9 @@ public class DeviceManagerImplTest {
     
     @Test
     public void createDeviceWithoutDidCorrect() {
-        manager.createDevice(DeviceType.HUB, "address", 0, null, null);
+        manager.createDevice(DeviceType.HUB, "01:02:03:04:ab:cd", 0, null, null);
         
-        Device foundDevice = manager.findDeviceByAddress("address");
+        Device foundDevice = manager.findDeviceByAddress("01:02:03:04:ab:cd");
         assertNotNull(foundDevice);
         assertNotNull(foundDevice.getDid());
         System.out.println("Randomly generated id: " + foundDevice.getDid());
@@ -80,7 +80,7 @@ public class DeviceManagerImplTest {
 
     @Test
     public void deleteDevice() {
-        Device computer = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
+        Device computer = new Device.Builder(10L, DeviceType.COMPUTER, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(computer);
@@ -98,7 +98,7 @@ public class DeviceManagerImplTest {
     
     @Test
     public void deleteDeviceNotPresent() {
-        Device device = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
+        Device device = new Device.Builder(10L, DeviceType.COMPUTER, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         exception.expect(IllegalArgumentException.class);
@@ -107,7 +107,7 @@ public class DeviceManagerImplTest {
 
     @Test
     public void updateDevice() {
-        Device device = new Device.Builder(10L, DeviceType.COMPUTER, "address", 4)
+        Device device = new Device.Builder(10L, DeviceType.COMPUTER, "01:02:03:04:ab:cd", 4)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device);
@@ -125,17 +125,17 @@ public class DeviceManagerImplTest {
 
     @Test
     public void listAllDevices() {
-        Device computer = new Device.Builder(10L, DeviceType.COMPUTER, "address", 0)
+        Device computer = new Device.Builder(10L, DeviceType.COMPUTER, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(computer);
         
-        Device router = new Device.Builder(666L, DeviceType.ROUTER, "address2", 0)
+        Device router = new Device.Builder(666L, DeviceType.ROUTER, "22:22:22:22:22:22", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(router);
         
-        Device switch12 = new Device.Builder(42L, DeviceType.SWITCH12, "address3", 0)
+        Device switch12 = new Device.Builder(42L, DeviceType.SWITCH12, "33:33:33:33:33:33", 0)
                 .name("Pls")
                 .build();
         manager.createDevice(switch12);
@@ -149,17 +149,17 @@ public class DeviceManagerImplTest {
 
     @Test
     public void listAllComputers() {
-        Device device1 = new Device.Builder(666L, DeviceType.COMPUTER, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.COMPUTER, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder(42L, DeviceType.ROUTER, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.ROUTER, "11:02:03:04:ab:cd", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
         
-        Device device3 = new Device.Builder(69L, DeviceType.COMPUTER, "address3", 0)
+        Device device3 = new Device.Builder(69L, DeviceType.COMPUTER, "21:02:03:04:ab:cd", 0)
                 .name("Pls")
                 .build();
         manager.createDevice(device3);
@@ -170,17 +170,17 @@ public class DeviceManagerImplTest {
 
     @Test
     public void listAllHubs() {
-        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder(42L, DeviceType.HUB, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.HUB, "11:02:03:04:ab:cd", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
         
-        Device device3 = new Device.Builder(69L, DeviceType.COMPUTER, "address3", 0)
+        Device device3 = new Device.Builder(69L, DeviceType.COMPUTER, "21:02:03:04:ab:cd", 0)
                 .name("Pls")
                 .build();
         manager.createDevice(device3);
@@ -191,17 +191,17 @@ public class DeviceManagerImplTest {
 
     @Test
     public void listAllRouters() {
-        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder(42L, DeviceType.ROUTER, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.ROUTER, "11:02:03:04:ab:cd", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
         
-        Device device3 = new Device.Builder(69L, DeviceType.ROUTER, "address3", 0)
+        Device device3 = new Device.Builder(69L, DeviceType.ROUTER, "21:02:03:04:ab:cd", 0)
                 .name("Pls")
                 .build();
         manager.createDevice(device3);
@@ -212,22 +212,22 @@ public class DeviceManagerImplTest {
 
     @Test
     public void listAllSwitches() {
-        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "11:02:03:04:ab:cd", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
         
-        Device device3 = new Device.Builder(69L, DeviceType.SWITCH24, "address3", 0)
+        Device device3 = new Device.Builder(69L, DeviceType.SWITCH24, "21:02:03:04:ab:cd", 0)
                 .name("Pls")
                 .build();
         manager.createDevice(device3);
         
-        Device device4 = new Device.Builder(1L, DeviceType.SWITCH48, "address4", 0)
+        Device device4 = new Device.Builder(1L, DeviceType.SWITCH48, "31:02:03:04:ab:cd", 0)
                 .build();
         manager.createDevice(device4);
         
@@ -237,12 +237,12 @@ public class DeviceManagerImplTest {
 
     @Test
     public void findDeviceById() {
-        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "11:02:03:04:ab:cd", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
@@ -253,7 +253,7 @@ public class DeviceManagerImplTest {
     
     @Test
     public void findDeviceByIdNotPresent() {
-        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
@@ -264,39 +264,39 @@ public class DeviceManagerImplTest {
 
     @Test
     public void findDeviceByAddress() {
-        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 0)
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "11:02:03:04:ab:cd", 0)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
         
-        Device foundDevice = manager.findDeviceByAddress("address");
+        Device foundDevice = manager.findDeviceByAddress("01:02:03:04:ab:cd");
         assertEquals(foundDevice, device1);
     }
     
     @Test
     public void findDeviceByAddressNotPresent() {
-        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 0)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "01:02:03:04:ab:cd", 0)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device foundDevice = manager.findDeviceByAddress("OhMyGoodSuchACoolAddress");
+        Device foundDevice = manager.findDeviceByAddress("11:02:03:04:ab:cd");
         assertNull(foundDevice);
     }
 
     @Test
     public void findEmptyPort() {
-        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 4)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "01:02:03:04:ab:cd", 4)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 2)
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "11:02:03:04:ab:cd", 2)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
@@ -311,12 +311,12 @@ public class DeviceManagerImplTest {
     
     @Test
     public void findEmptyPortNothingEmpty() {
-        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 1)
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "01:02:03:04:ab:cd", 1)
                 .name("Jogobella")
                 .build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 2)
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "11:02:03:04:ab:cd", 2)
                 .name("Ovoce")
                 .build();
         manager.createDevice(device2);
@@ -331,10 +331,10 @@ public class DeviceManagerImplTest {
 
     @Test
     public void isPortEmpty() {
-        Device device1 = new Device.Builder(666L, DeviceType.HUB, "address", 2).build();
+        Device device1 = new Device.Builder(666L, DeviceType.HUB, "01:02:03:04:ab:cd", 2).build();
         manager.createDevice(device1);
         
-        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "address2", 2).build();
+        Device device2 = new Device.Builder(42L, DeviceType.SWITCH12, "11:02:03:04:ab:cd", 2).build();
         manager.createDevice(device2);
         
         portManager.createPort(new Port(device1, device2));
