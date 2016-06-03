@@ -3,10 +3,16 @@ package cz.muni.fi.pb138.Gui.form;
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.DeviceType;
 import cz.muni.fi.pb138.Gui.List.DeviceList;
+import cz.muni.fi.pb138.Gui.Main;
 import cz.muni.fi.pb138.Managers.DeviceManager;
 import cz.muni.fi.pb138.Managers.DeviceManagerImpl;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 
 /**
@@ -26,6 +32,14 @@ public class DeviceForm extends javax.swing.JFrame {
     private int numberOfPorts;
     private String address;
     private DeviceManager deviceManager;
+    
+    private static final String computerPath = "resources/computer.png";
+    private static final String hubPath = "resources/hub.png";
+    private static final String modemPath = "resources/modem.png";
+    private static final String routerPath = "resources/router.png";
+    private static final String switch12Path = "resources/12switch.png";
+    private static final String switch24Path = "resources/24switch.png";
+    private static final String switch48Path = "resources/48switch.png";
 
     /**
      * Creates new form DeviceForm
@@ -50,7 +64,7 @@ public class DeviceForm extends javax.swing.JFrame {
     public int getNumberOfPorts() {
         return numberOfPorts;
     }
-
+    
     
     public DeviceForm(DeviceManager deviceManager) {
         this.deviceManager = deviceManager;
@@ -59,6 +73,10 @@ public class DeviceForm extends javax.swing.JFrame {
 
     public void setDeviceManager(DeviceManager deviceManager) {
         this.deviceManager = deviceManager;
+    }
+    
+    public JTextField getTextFieldName() {
+        return textFieldName;
     }
 
     public DeviceForm(Device device, DeviceManager deviceManager) {
@@ -275,6 +293,7 @@ public class DeviceForm extends javax.swing.JFrame {
                 Device newDevice = parseTextFields();
                 if (newDevice != null) {
                     swingWorker = new addSwingWorker(newDevice, deviceManager);
+                    editLabel();
                     buttonSave.setEnabled(false);
                     swingWorker.execute();
                     this.dispose();
@@ -300,6 +319,41 @@ public class DeviceForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_buttonCancelActionPerformed
 
+     private void editLabel() {
+        //String labelNumber = "labelSpot" + spot;
+        JLabel label = Main.getLabels().get(spot-1);
+        label.setText("");
+        
+        Icon image = null;
+        String deviceTypeString = deviceType.toString().toUpperCase();
+        switch(deviceTypeString) {
+            case "COMPUTER" : 
+                image = new ImageIcon(getClass().getClassLoader().getResource(computerPath));
+                break;
+            case "HUB" :
+                image = new ImageIcon(getClass().getClassLoader().getResource(hubPath));
+                break;
+            case "MODEM" :
+                image = new ImageIcon(getClass().getClassLoader().getResource(modemPath));
+                break;
+            case "ROUTER" :
+                image = new ImageIcon(getClass().getClassLoader().getResource(routerPath));
+                break;
+            case "SWITCH12" :
+                image = new ImageIcon(getClass().getClassLoader().getResource(switch12Path));
+                break;
+            case "SWITCH24" :
+                image = new ImageIcon(getClass().getClassLoader().getResource(switch24Path));
+                break;
+            case "SWITCH48" :
+                image = new ImageIcon(getClass().getClassLoader().getResource(switch48Path));
+                break;
+        }
+        label.setIcon(image);
+        label.setHorizontalTextPosition( SwingConstants.CENTER );
+        label.setToolTipText( name + ", number of ports: " + numberOfPorts + ", address: " + address );
+    }
+    
     private Device parseTextFields() {
         name = textFieldName.getText();
         int deviceTypeIndex = comboBoxDeviceType.getSelectedIndex();

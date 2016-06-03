@@ -236,7 +236,7 @@
         <Component class="javax.swing.JLabel" name="labelSpot1">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 1"/>
+            <Property name="text" type="java.lang.String" value="Spot 1" postCode="labelSpot1.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot1.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -245,11 +245,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot1);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot2">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 2"/>
+            <Property name="text" type="java.lang.String" value="Spot 2" postCode="labelSpot2.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot2.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -258,11 +261,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot2);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot3">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 3"/>
+            <Property name="text" type="java.lang.String" value="Spot 3" postCode="labelSpot3.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot3.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -271,11 +277,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot3);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot4">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 4"/>
+            <Property name="text" type="java.lang.String" value="Spot 4" postCode="labelSpot4.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot4.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -284,11 +293,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot4);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot5">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 5"/>
+            <Property name="text" type="java.lang.String" value="Spot 5" postCode="labelSpot5.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot5.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -297,11 +309,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot5);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot6">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 6"/>
+            <Property name="text" type="java.lang.String" value="Spot 6" postCode="labelSpot6.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot6.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -310,11 +325,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot6);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot7">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 7"/>
+            <Property name="text" type="java.lang.String" value="Spot 7" postCode="labelSpot7.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot7.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -323,11 +341,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot7);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot8">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 8"/>
+            <Property name="text" type="java.lang.String" value="Spot 8" postCode="labelSpot8.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot8.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -336,11 +357,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot8);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot9">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 9"/>
+            <Property name="text" type="java.lang.String" value="Spot 9" postCode="labelSpot9.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot9.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -349,11 +373,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot9);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot10">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 10"/>
+            <Property name="text" type="java.lang.String" value="Spot 10" postCode="labelSpot10.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot10.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -362,11 +389,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot10);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot11">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 11"/>
+            <Property name="text" type="java.lang.String" value="Spot 11" postCode="labelSpot11.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot11.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -375,11 +405,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot11);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot12">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 12"/>
+            <Property name="text" type="java.lang.String" value="Spot 12" postCode="labelSpot12.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot12.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -388,11 +421,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot12);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot13">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 13"/>
+            <Property name="text" type="java.lang.String" value="Spot 13" postCode="labelSpot13.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot13.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -401,11 +437,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot13);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot14">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 14"/>
+            <Property name="text" type="java.lang.String" value="Spot 14" postCode="labelSpot14.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot14.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -414,11 +453,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot14);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot15">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 15"/>
+            <Property name="text" type="java.lang.String" value="Spot 15" postCode="labelSpot15.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot15.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -427,11 +469,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot15);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot16">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 16"/>
+            <Property name="text" type="java.lang.String" value="Spot 16" postCode="labelSpot16.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot16.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -440,11 +485,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot16);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot17">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 17"/>
+            <Property name="text" type="java.lang.String" value="Spot 17" postCode="labelSpot17.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot17.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -453,11 +501,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot17);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot18">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 18"/>
+            <Property name="text" type="java.lang.String" value="Spot 18" postCode="labelSpot18.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot18.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -466,11 +517,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot18);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot19">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 19"/>
+            <Property name="text" type="java.lang.String" value="Spot 19" postCode="labelSpot19.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot19.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -479,11 +533,14 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot19);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="labelSpot20">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Spot 20"/>
+            <Property name="text" type="java.lang.String" value="Spot 20" postCode="labelSpot20.addMouseListener(new MouseListener() {    &#xa;@Override&#xa;public void mouseClicked(MouseEvent arg0) {&#xa;    if(labelSpot20.getText().equals(&quot;&quot;)) {&#xa;        SelectForm selectForm = new SelectForm();&#xa;        selectForm.setVisible(true);&#xa;    }&#xa;}&#xa;&#xa;@Override&#xa;public void mouseExited(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseEntered(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mousePressed(MouseEvent arg0) {&#xa;}&#xa;&#xa;@Override&#xa;public void mouseReleased(MouseEvent arg0) {&#xa;}&#xa;});"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -492,6 +549,9 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="labels.add(labelSpot20);"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
