@@ -19,6 +19,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.xml.sax.SAXException;
 
 /**
  * @version 4.6.2016
@@ -296,9 +297,12 @@ public class ListOfDevices {
              NodeList nPortList = parentPort.getElementsByTagName("port");
              int numOfPorts = nPortList.getLength();
              
-             
              Builder builder = new Builder(did, type, address.getTextContent(), numOfPorts);
-             builder.name(name.getNodeValue());
+             
+             if (name != null) {
+                 builder.name(name.getNodeValue());
+             }
+             
              Device dev = builder.build();
              listOfDevices.add(dev);
          }
@@ -314,7 +318,11 @@ public class ListOfDevices {
              
              
          Builder builder = new Builder(did, type, address.getTextContent(), numOfPorts);
-         builder.name(name.getNodeValue());
+         
+         if (name != null) {
+                 builder.name(name.getNodeValue());
+             }
+         
          Device dev = builder.build();
          listOfDevices.add(dev);
          
@@ -337,12 +345,18 @@ public class ListOfDevices {
             }
            
         }
-         
-        }catch(Exception e){
+        
+        System.out.println("Imported the file.");
+        /*}catch(Exception e){
             throw new IOException(e.toString());
+        }*/
+        } catch (ParserConfigurationException ex) {
+            throw new IOException(ex.toString());
+        } catch (SAXException ex) {
+            throw new IOException(ex.toString());
         }
     }
-   
+      
     private DeviceType getDeviceType(String type){
         return DeviceType.valueOf(type.toUpperCase());
     }

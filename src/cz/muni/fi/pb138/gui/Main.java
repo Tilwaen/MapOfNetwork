@@ -35,6 +35,7 @@ import java.util.Collections;
 import cz.muni.fi.pb138.gui.form.utils.LineDrawer;
 import java.awt.Color;
 import java.awt.Point;
+import java.io.IOException;
 
 /**
  *
@@ -42,7 +43,8 @@ import java.awt.Point;
  */
 public class Main extends javax.swing.JFrame {
 
-    private static DeviceManager deviceManager = new DeviceManagerImpl();
+    private static ListOfDevices listOfDevices = new ListOfDevices();
+    private static DeviceManager deviceManager = new DeviceManagerImpl(listOfDevices);
     private static PortManager portManager;
     private static LineDrawer linker;
     
@@ -62,7 +64,7 @@ public class Main extends javax.swing.JFrame {
     
 
     public Main() {
-        deviceManager = new DeviceManagerImpl();
+        //deviceManager = new DeviceManagerImpl();
         portManager = new PortManagerImpl();
         
         devices = deviceManager.listAllDevices();
@@ -150,6 +152,9 @@ public class Main extends javax.swing.JFrame {
         labelSpot18 = new javax.swing.JLabel();
         labelSpot19 = new javax.swing.JLabel();
         labelSpot20 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        importButton = new javax.swing.JButton();
+        exportButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -906,6 +911,23 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setText("File");
+
+        importButton.setLabel("Import");
+        importButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importButtonActionPerformed(evt);
+            }
+        });
+
+        exportButton.setLabel("Export");
+        exportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -919,7 +941,10 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(labelDevice)
                     .addComponent(buttonAddPort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(buttonAddDevice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonDeletePort, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
+                    .addComponent(buttonDeletePort, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(importButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
@@ -935,7 +960,13 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(buttonAddPort)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(buttonDeletePort)
-                .addGap(205, 205, 205))
+                .addGap(57, 57, 57)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(importButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(exportButton)
+                .addGap(51, 51, 51))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -961,6 +992,32 @@ public class Main extends javax.swing.JFrame {
         deleteForm.setLocationRelativeTo(null);
         deleteForm.setVisible(true);
     }//GEN-LAST:event_buttonDeletePortActionPerformed
+
+    private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
+        // Import file
+        try {
+            listOfDevices.importXML("./resultfile.xml");
+        }
+        catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Unable to import the file");
+        }
+        
+        // Load into JLabels
+        
+        // Delete surplus devices
+        List<Device> listOfLoadedDevices = listOfDevices.getListOfDevices();
+        if (listOfLoadedDevices.size() > 20) {
+            JOptionPane.showMessageDialog(null, "Too many devices to display. All devices above 20 will not be considered.");
+            
+            for (int i = 19; i < listOfLoadedDevices.size(); i++) {
+                // in progress
+            }
+        }
+    }//GEN-LAST:event_importButtonActionPerformed
+
+    private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
+        listOfDevices.exportXML();
+    }//GEN-LAST:event_exportButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1006,6 +1063,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton buttonAddDevice;
     private javax.swing.JButton buttonAddPort;
     private javax.swing.JButton buttonDeletePort;
+    private javax.swing.JButton exportButton;
+    private javax.swing.JButton importButton;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelDevice;
     private javax.swing.JLabel labelPort;
     private javax.swing.JLabel labelSpot1;

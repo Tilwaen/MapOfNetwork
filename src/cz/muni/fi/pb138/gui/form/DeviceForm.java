@@ -360,6 +360,7 @@ public class DeviceForm extends javax.swing.JFrame {
         String addressRegex = "(([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2})|(([0-9A-Fa-f]{4}\\.){2}[0-9A-Fa-f]{4})";
         if (!address.matches(addressRegex)) {
             JOptionPane.showMessageDialog(rootPane, "MAC address has wrong format.");
+            return null;
         }
         if (numberOfPortsString.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Enter number of ports.");
