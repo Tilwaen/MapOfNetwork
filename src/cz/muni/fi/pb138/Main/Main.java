@@ -18,9 +18,13 @@ public class Main {
                 .name("Jogobella")
                 .build();*/
         
+        ListOfDevices lod = new ListOfDevices();
+        lod.exportXML();
+        
         
         // XML validation
         // Odkomentovat pro validaci. Oba soubory, .xml i .xsd, budou ve slozce, ktera obsahuje slozku src (tj. "vedle" slozky src)
         //Validator validation = new Validator(new String[] {"masterrouter.xml", "masterrouter.xsd"});
+        Validator validation = new Validator(new String[] {"resultfile.xml", "masterrouter.xsd"});
     }
 }

@@ -248,6 +248,7 @@ public class DeviceManagerImplTest {
         manager.createDevice(device2);
         
         Device foundDevice = manager.findDeviceById(666L);
+        System.out.println("Found device did: " +  foundDevice.getDid());
         assertEquals(foundDevice, device1);
     }
     
