@@ -34,6 +34,7 @@ public class SelectForm extends javax.swing.JFrame {
         this.spot = spot;
         this.deviceManager = Main.getDeviceManager();
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
