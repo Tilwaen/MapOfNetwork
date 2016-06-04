@@ -50,11 +50,11 @@ public class ListOfDevices {
 		rootElement.appendChild(mainDevice);
                 
                 Attr mainDeviceDid = doc.createAttribute("did");
-		mainDeviceDid.setValue("0");
+		mainDeviceDid.setValue("modem");
 		mainDevice.setAttributeNode(mainDeviceDid);
                 
                 Attr mainDeviceType = doc.createAttribute("type");
-		mainDeviceType.setValue("modem");
+		mainDeviceType.setValue("router");
 		mainDevice.setAttributeNode(mainDeviceType);
                 
                 Element mainDeviceAddress = doc.createElement("address");
@@ -64,8 +64,14 @@ public class ListOfDevices {
                 Element mainDeviceParentPort = doc.createElement("parentPort");
 		mainDevice.appendChild(mainDeviceParentPort);
                 
-                //Element mainDevicePort = doc.createElement("port");
-		//mainDeviceParentPort.appendChild(mainDevicePort);
+                Element mainDevicePort = doc.createElement("port");
+                Attr mainPortNumber = doc.createAttribute("number");
+		mainPortNumber.setValue("0");
+		mainDevicePort.setAttributeNode(mainPortNumber);
+                Attr mainPortType = doc.createAttribute("type");
+		mainPortType.setValue("ethernet");
+		mainDevicePort.setAttributeNode(mainPortType);
+		mainDeviceParentPort.appendChild(mainDevicePort);
                 
                 // Devices
                 Element devicesElement = doc.createElement("devices");
@@ -99,9 +105,11 @@ public class ListOfDevices {
                         deviceElement.appendChild(deviceName);
                     }
                     
+                    // ParentPort
                     Element deviceParentPort = doc.createElement("parentPort");
                     deviceElement.appendChild(deviceParentPort);
                     
+                    // Port
                     for (int i = 0; i < device.getArrayOfPorts().size(); i++) {
                         Element devicePort = doc.createElement("port");
                         devicePort.appendChild(doc.createTextNode(device.getName()));
@@ -109,6 +117,10 @@ public class ListOfDevices {
                         Attr portNumber = doc.createAttribute("number");
                         portNumber.setValue(String.valueOf(i));
                         devicePort.setAttributeNode(portNumber);
+                        
+                        Attr portType = doc.createAttribute("type");
+                        portType.setValue("ethernet");
+                        devicePort.setAttributeNode(portType);
                         
                         deviceParentPort.appendChild(devicePort);
                     }
@@ -188,7 +200,7 @@ public class ListOfDevices {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File("D:\\Dokumenty\\resultfile.xml"));
+		StreamResult result = new StreamResult(new File("./resultfile.xml"));
 
 		// Output to console for testing
 		// StreamResult result = new StreamResult(System.out);
