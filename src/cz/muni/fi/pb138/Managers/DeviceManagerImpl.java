@@ -41,6 +41,14 @@ public class DeviceManagerImpl implements DeviceManager {
         this.devices = listOfDevices;
     }
     
+    /**
+     * Creates device. Did is generated automatically.
+     * @param deviceType Type of device
+     * @param address Unique address of device; must be in MAC address format.
+     * @param numberOfPorts Maximal number of ports
+     * @param arrayOfPorts Array of ports
+     * @param name Name of device
+     */
     @Override
     public void createDevice(DeviceType deviceType, String address, int numberOfPorts, List<Port> arrayOfPorts, String name) {
 

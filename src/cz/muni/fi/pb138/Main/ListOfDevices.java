@@ -44,6 +44,9 @@ public class ListOfDevices {
     
     /**
      * Method for exporting listOfDevices to XML.
+     * Adds mainDevice as in the example specific XML file.
+     * Appends all devices and their ports.
+     * Appends types as in the example specific XML file.
      * @author Kristýna Leknerová
      */
     public void exportXML() {
@@ -233,6 +236,11 @@ public class ListOfDevices {
         }
     }
     
+    /**
+     * String value of device type as specified in example .xml file
+     * @param device Device with deviceType
+     * @return String value of device's deviceType
+     */
     private String getDeviceTypeFromDevice(Device device) {
         switch (device.getDeviceType()) {
             case COMPUTER:
@@ -258,7 +266,7 @@ public class ListOfDevices {
      * Compares addresses of devices in the port and returns address of the other device.
      * @param port Port containing two different devices.
      * @param thisDevice Device with valid address. 
-     * @return 
+     * @return Address string of the other device
      */
     private String getAddressOfTheOtherDevice(Port port, Device thisDevice) {
         

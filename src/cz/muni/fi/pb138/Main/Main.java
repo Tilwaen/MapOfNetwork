@@ -15,14 +15,15 @@ public class Main {
         // Required parameters are passed in the constructor,
         // optional parameters are passed as chainable methods.
         // Must end with .build() method.
-        Device router = new Device.Builder(666L, DeviceType.ROUTER, "12:23:45:56:aa:bb", 4)
+        /*Device router = new Device.Builder(666L, DeviceType.ROUTER, "12:23:45:56:aa:bb", 4)
                 .name("Jogobella")
                 .build();
         Device computer = new Device.Builder(999L, DeviceType.COMPUTER, "92:23:45:56:aa:bb", 4)
                 .name("OhMyGod")
-                .build();
+                .build();*/
         
-        ListOfDevices lod = new ListOfDevices();
+        // Try import and export
+        /*ListOfDevices lod = new ListOfDevices();
         
         lod.getListOfDevices().add(router);
         lod.getListOfDevices().add(computer);
@@ -34,12 +35,10 @@ public class Main {
         }
         catch (IOException ioe) {
             System.out.println("Unable to import the file");
-        }
+        }*/
         
         
         // XML validation
-        // Odkomentovat pro validaci. Oba soubory, .xml i .xsd, budou ve slozce, ktera obsahuje slozku src (tj. "vedle" slozky src)
-        //Validator validation = new Validator(new String[] {"masterrouter.xml", "masterrouter.xsd"});
-        Validator validation = new Validator(new String[] {"resultfile.xml", "masterrouter.xsd"});
+        //Validator validation = new Validator(new String[] {"resultfile.xml", "masterrouter.xsd"});
     }
 }

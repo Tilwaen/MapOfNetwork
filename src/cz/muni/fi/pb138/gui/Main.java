@@ -18,6 +18,7 @@ import cz.muni.fi.pb138.Managers.DeviceManager;
 import cz.muni.fi.pb138.Managers.DeviceManagerImpl;
 import cz.muni.fi.pb138.Managers.PortManager;
 import cz.muni.fi.pb138.Managers.PortManagerImpl;
+import cz.muni.fi.pb138.Validation.Validator;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -36,6 +37,7 @@ import cz.muni.fi.pb138.gui.form.utils.LineDrawer;
 import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -1020,10 +1022,16 @@ public class Main extends javax.swing.JFrame {
     private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
         // Import file
         try {
+            Validator validation = new Validator(new String[] {"resultfile.xml", "masterrouter.xsd"});
             listOfDevices.importXML("./resultfile.xml");
         }
         catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "Unable to import the file");
+            JOptionPane.showMessageDialog(null, "Unable to import the file.");
+            return;
+        }
+        catch (SAXException saxe) {
+            JOptionPane.showMessageDialog(null, "Imported file is not valid.");
+            return;
         }
         
         // Load into JLabels
@@ -1068,6 +1076,16 @@ public class Main extends javax.swing.JFrame {
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
         listOfDevices.exportXML();
         JOptionPane.showMessageDialog(null, "File exported.");
+        
+        try {
+            Validator validation = new Validator(new String[] {"resultfile.xml", "masterrouter.xsd"});
+        }
+        catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "Unable to validate the file.");
+        }
+        catch (SAXException saxe) {
+            JOptionPane.showMessageDialog(null, "Created file is not valid.");
+        }
     }//GEN-LAST:event_exportButtonActionPerformed
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed

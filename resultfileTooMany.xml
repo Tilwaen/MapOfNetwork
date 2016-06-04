@@ -2,7 +2,9 @@
 
 <devices>
 
-<device did="666" type="router"><address>12:23:45:56:aa:bb</address><name>Jogobella</name><parentPort><port number="0"/><port number="1"/><port number="2"/><port number="3"/></parentPort></device>
+<device did="666" type="router"><address>12:23:45:56:aa:bb</address><name>Jogobella</name><parentPort><port number="0"/>
+<port number="1">92:23:45:56:aa:09</port>
+<port number="2"/><port number="3"/></parentPort></device>
 
 <device did="999" type="computer"><address>92:23:45:56:aa:bb</address><name>OhMyGod</name><parentPort><port number="0"/><port number="1"/><port number="2"/><port number="3"/></parentPort></device>
 
@@ -15,7 +17,11 @@
 <device did="6" type="computer"><address>92:23:45:56:aa:06</address><name>OhMyGod</name><parentPort><port number="0"/><port number="1"/><port number="2"/><port number="3"/></parentPort></device>
 <device did="7" type="computer"><address>92:23:45:56:aa:07</address><name>OhMyGod</name><parentPort><port number="0"/><port number="1"/><port number="2"/><port number="3"/></parentPort></device>
 <device did="8" type="computer"><address>92:23:45:56:aa:08</address><name>OhMyGod</name><parentPort><port number="0"/><port number="1"/><port number="2"/><port number="3"/></parentPort></device>
-<device did="9" type="computer"><address>92:23:45:56:aa:09</address><name>OhMyGod</name><parentPort><port number="0"/><port number="1"/><port number="2"/><port number="3"/></parentPort></device>
+
+<device did="9" type="computer"><address>92:23:45:56:aa:09</address><name>OhMyGod</name><parentPort>
+<port number="0">12:23:45:56:aa:bb</port>
+<port number="1"/><port number="2"/><port number="3"/></parentPort></device>
+
 <device did="10" type="computer"><address>92:23:45:56:aa:10</address><name>OhMyGod</name><parentPort><port number="0"/><port number="1"/><port number="2"/><port number="3"/></parentPort></device>
 <device did="11" type="computer"><address>92:23:45:56:aa:11</address><name>OhMyGod</name><parentPort><port number="0"/><port number="1"/><port number="2"/><port number="3"/></parentPort></device>
 <device did="12" type="computer"><address>92:23:45:56:aa:12</address><name>OhMyGod</name><parentPort><port number="0"/><port number="1"/><port number="2"/><port number="3"/></parentPort></device>

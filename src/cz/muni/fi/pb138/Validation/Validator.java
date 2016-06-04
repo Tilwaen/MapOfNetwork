@@ -16,7 +16,7 @@ public class Validator {
     private String schemaLanguage;
     private SchemaFactory factory;
     
-    public Validator(String[] args) {
+    public Validator(String[] args) throws SAXException, IOException {
         long startTime = System.currentTimeMillis();
 
         Validator demo = new Validator(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -36,21 +36,14 @@ public class Validator {
             System.out.println("Validating '" + doc + "' against '" + schema
                     + "'");
         }
-        try {
-            if (schema == null) {
+        
+        if (schema == null) {
                 demo.validate(doc);
             } else {
                 demo.validate(doc, schema);
             }
             System.out.println("Document is valid.");
-
-        } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        
         long endTime = System.currentTimeMillis();
         
         System.out.println("Validation finished in " + (endTime-startTime) + " ms.");
