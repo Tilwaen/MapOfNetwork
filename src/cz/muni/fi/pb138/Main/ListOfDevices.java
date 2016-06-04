@@ -66,6 +66,10 @@ public class ListOfDevices {
                 mainDeviceAddress.appendChild(doc.createTextNode("00:00:00:00:00:00"));
                 mainDevice.appendChild(mainDeviceAddress);
                 
+                Element mainDeviceName = doc.createElement("name");
+                mainDeviceName.appendChild(doc.createTextNode("MasterRouterDevice"));
+                mainDevice.appendChild(mainDeviceName);
+                
                 Element mainDeviceParentPort = doc.createElement("parentPort");
 		mainDevice.appendChild(mainDeviceParentPort);
                 
@@ -73,9 +77,6 @@ public class ListOfDevices {
                 Attr mainPortNumber = doc.createAttribute("number");
 		mainPortNumber.setValue("0");
 		mainDevicePort.setAttributeNode(mainPortNumber);
-                Attr mainPortType = doc.createAttribute("type");
-		mainPortType.setValue("ethernet");
-		mainDevicePort.setAttributeNode(mainPortType);
 		mainDeviceParentPort.appendChild(mainDevicePort);
                 
                 // Devices
@@ -102,11 +103,14 @@ public class ListOfDevices {
                     deviceElement.appendChild(deviceAddress);
                     
                     // Name
-                    if (device.getName() != null) {
-                        Element deviceName = doc.createElement("name");
-                        deviceName.appendChild(doc.createTextNode(device.getName()));
-                        deviceElement.appendChild(deviceName);
+                    Element deviceName = doc.createElement("name");
+                    if (device.getName() == null) {
+                        deviceName.appendChild(doc.createTextNode(""));
                     }
+                    else {
+                        deviceName.appendChild(doc.createTextNode(device.getName()));
+                    }
+                    deviceElement.appendChild(deviceName);
                     
                     // ParentPort
                     Element deviceParentPort = doc.createElement("parentPort");
@@ -127,10 +131,6 @@ public class ListOfDevices {
                         Attr portNumber = doc.createAttribute("number");
                         portNumber.setValue(String.valueOf(i));
                         devicePort.setAttributeNode(portNumber);
-                        
-                        Attr portType = doc.createAttribute("type");
-                        portType.setValue("ethernet");
-                        devicePort.setAttributeNode(portType);
                         
                         deviceParentPort.appendChild(devicePort);
                     }
@@ -299,10 +299,10 @@ public class ListOfDevices {
              
              Builder builder = new Builder(did, type, address.getTextContent(), numOfPorts);
              
-             if (name != null) {
+             /*if (name != null) {
                  builder.name(name.getNodeValue());
-             }
-             
+             }*/
+             builder.name(name.getNodeValue());
              Device dev = builder.build();
              listOfDevices.add(dev);
          }
@@ -319,10 +319,10 @@ public class ListOfDevices {
              
          Builder builder = new Builder(did, type, address.getTextContent(), numOfPorts);
          
-         if (name != null) {
+         /*if (name != null) {
                  builder.name(name.getNodeValue());
-             }
-         
+             }*/
+         builder.name(name.getNodeValue());
          Device dev = builder.build();
          listOfDevices.add(dev);
          

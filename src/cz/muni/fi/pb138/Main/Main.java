@@ -24,10 +24,10 @@ public class Main {
         
         ListOfDevices lod = new ListOfDevices();
         
-        //lod.getListOfDevices().add(router);
-        //lod.getListOfDevices().add(computer);
+        lod.getListOfDevices().add(router);
+        lod.getListOfDevices().add(computer);
         
-        //lod.exportXML();
+        lod.exportXML();
         
         try {
             lod.importXML("./resultfile.xml");
