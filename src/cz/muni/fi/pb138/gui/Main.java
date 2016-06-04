@@ -42,7 +42,7 @@ import java.awt.Point;
  */
 public class Main extends javax.swing.JFrame {
 
-    private static DeviceManager deviceManager;
+    private static DeviceManager deviceManager = new DeviceManagerImpl();
     private static PortManager portManager;
     private static LineDrawer linker;
     
