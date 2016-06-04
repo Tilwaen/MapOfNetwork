@@ -1,8 +1,11 @@
 package cz.muni.fi.pb138.Main;
 
 import cz.muni.fi.pb138.Devices.Device;
+import cz.muni.fi.pb138.Devices.Device.Builder;
+import cz.muni.fi.pb138.Devices.DeviceType;
 import cz.muni.fi.pb138.Devices.Port;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -33,6 +36,7 @@ public class ListOfDevices {
     
     /**
      * Method for exporting listOfDevices to XML.
+     * @author Kristýna Leknerová
      */
     public void exportXML() {
         try {
@@ -90,8 +94,6 @@ public class ListOfDevices {
                     Attr deviceType = doc.createAttribute("type");
                     deviceType.setValue(getDeviceTypeFromDevice(device));
                     deviceElement.setAttributeNode(deviceType);
-                    
-                    // TODO: Maximální čáslo portů
                 
                     // Address
                     Element deviceAddress = doc.createElement("address");
@@ -273,8 +275,76 @@ public class ListOfDevices {
     /**
      * Method for importing XML into listOfDevices.
      */
-    public void importXML() {
-        return;
+    public void importXML(String input_xml) throws IOException {
+        try{  
+        File inputFile = new File(input_xml);
+         DocumentBuilderFactory dbFactory =
+            DocumentBuilderFactory.newInstance();
+         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+         Document doc = dBuilder.parse(inputFile);
+         doc.getDocumentElement().normalize();
+         
+         NodeList nList = doc.getElementsByTagName("device");
+         listOfDevices.clear();
+         for (int i = 0; i < nList.getLength(); i++) {
+             Element nNode = (Element)nList.item(i);
+             Long did =  new Long(nNode.getAttribute("did").hashCode());
+             DeviceType type = getDeviceType(nNode.getAttribute("type"));
+             Element parentPort = (Element)nNode.getElementsByTagName("parentPort").item(0);
+             Element address = (Element)nNode.getElementsByTagName("address").item(0);
+             Element name = (Element)nNode.getElementsByTagName("name").item(0);
+             NodeList nPortList = parentPort.getElementsByTagName("port");
+             int numOfPorts = nPortList.getLength();
+             
+             
+             Builder builder = new Builder(did, type, address.getTextContent(), numOfPorts);
+             builder.name(name.getNodeValue());
+             Device dev = builder.build();
+             listOfDevices.add(dev);
+         }
+         
+         Element mainDevice = (Element)doc.getElementsByTagName("mainDevice").item(0);
+         Long did =  new Long(mainDevice.getAttribute("did").hashCode());
+         DeviceType type = getDeviceType(mainDevice.getAttribute("type"));
+         Element parentPort = (Element)mainDevice.getElementsByTagName("parentPort").item(0);
+         Element address = (Element)mainDevice.getElementsByTagName("address").item(0);
+         Element name = (Element)mainDevice.getElementsByTagName("name").item(0);
+         NodeList nPortList = parentPort.getElementsByTagName("port");
+         int numOfPorts = nPortList.getLength();
+             
+             
+         Builder builder = new Builder(did, type, address.getTextContent(), numOfPorts);
+         builder.name(name.getNodeValue());
+         Device dev = builder.build();
+         listOfDevices.add(dev);
+         
+         for(int i = 0; i < nList.getLength();i++){
+            Element nNode = (Element)nList.item(i);
+            parentPort = (Element)nNode.getElementsByTagName("parentPort").item(0);
+            nPortList = parentPort.getElementsByTagName("port");
+            Long mDid =  new Long(nNode.getAttribute("did").hashCode());
+            nPortList = parentPort.getElementsByTagName("port");
+            Device thisDevice = listOfDevices.stream().filter(d -> d.getDid().equals(mDid)).findFirst().get();
+            for(int j=0;j<nPortList.getLength();j++){
+                Element nPort = (Element)nPortList.item(j);
+                Device otherDevice = listOfDevices.stream()
+                                        .filter(device -> device.getAddress().equals(nPort.getTextContent()))
+                                        .findFirst().orElse(null);
+                if(otherDevice != null){
+                Port port = new Port(thisDevice,otherDevice);
+                thisDevice.getArrayOfPorts().set(j, port);
+                }
+            }
+           
+        }
+         
+        }catch(Exception e){
+            throw new IOException(e.toString());
+        }
+    }
+   
+    private DeviceType getDeviceType(String type){
+        return DeviceType.valueOf(type.toUpperCase());
     }
 
 }
