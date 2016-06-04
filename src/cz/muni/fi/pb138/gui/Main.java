@@ -1041,24 +1041,26 @@ public class Main extends javax.swing.JFrame {
             // Trim device list
             listOfLoadedDevices.removeIf(device -> listOfLoadedDevices.indexOf(device) >= 20);
             System.out.println("Size after: " + listOfLoadedDevices.size());
+        }
+        
+        // Display remaining devices
+        for (int i = 0; i < listOfLoadedDevices.size(); i++) {
+            //Main.getSpots().get(spot - 1).updateSpot(newDevice);
+            spots.get(i).updateSpot(listOfLoadedDevices.get(i));
+        }
             
-            // Display remaining devices
-            for (int i = 0; i < listOfLoadedDevices.size(); i++) {
-                //Main.getSpots().get(spot - 1).updateSpot(newDevice);
-                spots.get(i).updateSpot(listOfLoadedDevices.get(i));
-            }
-            
-            // Link existing ports
-            for (int i = 0; i < listOfLoadedDevices.size(); i++) {
-                List<Port> listOfAllDevicePorts = portManager.listAllPortsOfDevice(listOfLoadedDevices.get(i));
+        // Link existing ports
+        for (int i = 0; i < listOfLoadedDevices.size(); i++) {
+            List<Port> listOfAllDevicePorts = portManager.listAllPortsOfDevice(listOfLoadedDevices.get(i));
                 
-                for (Port port : listOfAllDevicePorts) {
-                    Spot spotA = getSpotForDevice(port.getDeviceA());
-                    Spot spotB = getSpotForDevice(port.getDeviceB());
+            for (Port port : listOfAllDevicePorts) {
+                Spot spotA = getSpotForDevice(port.getDeviceA());
+                Spot spotB = getSpotForDevice(port.getDeviceB());
             
-                    linker.link(port, getLabelCenter(spotA.getLabel()), 
-                        getLabelCenter(spotB.getLabel()), Color.RED);
-                }
+                linker.link(port, getLabelCenter(spotA.getLabel()), 
+                    getLabelCenter(spotB.getLabel()), Color.RED);
+                
+                System.out.println("Port hashcode: " + port.hashCode());
             }
         }
     }//GEN-LAST:event_importButtonActionPerformed
