@@ -116,6 +116,13 @@ public class Main extends javax.swing.JFrame {
         
         return null;
     }
+    
+    private Point getLabelCenter(JLabel label) {
+        Point location = label.getLocation();
+        Dimension size = label.getSize();
+        
+        return new Point(location.x + size.width / 2, location.y + size.height / 2);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1020,20 +1027,45 @@ public class Main extends javax.swing.JFrame {
         }
         
         // Load into JLabels
-        
-        // Delete surplus devices
+        // Delete redundant devices
         List<Device> listOfLoadedDevices = listOfDevices.getListOfDevices();
         if (listOfLoadedDevices.size() > 20) {
             JOptionPane.showMessageDialog(null, "Too many devices to display. All devices above 20 will not be considered.");
             
+            System.out.println("Size before: " + listOfLoadedDevices.size());
+            // Delete devices ports
             for (int i = 19; i < listOfLoadedDevices.size(); i++) {
-                // in progress
+                listOfLoadedDevices.get(i).setNumberOfPorts(0);
+            }
+            
+            // Trim device list
+            listOfLoadedDevices.removeIf(device -> listOfLoadedDevices.indexOf(device) >= 20);
+            System.out.println("Size after: " + listOfLoadedDevices.size());
+            
+            // Display remaining devices
+            for (int i = 0; i < listOfLoadedDevices.size(); i++) {
+                //Main.getSpots().get(spot - 1).updateSpot(newDevice);
+                spots.get(i).updateSpot(listOfLoadedDevices.get(i));
+            }
+            
+            // Link existing ports
+            for (int i = 0; i < listOfLoadedDevices.size(); i++) {
+                List<Port> listOfAllDevicePorts = portManager.listAllPortsOfDevice(listOfLoadedDevices.get(i));
+                
+                for (Port port : listOfAllDevicePorts) {
+                    Spot spotA = getSpotForDevice(port.getDeviceA());
+                    Spot spotB = getSpotForDevice(port.getDeviceB());
+            
+                    linker.link(port, getLabelCenter(spotA.getLabel()), 
+                        getLabelCenter(spotB.getLabel()), Color.RED);
+                }
             }
         }
     }//GEN-LAST:event_importButtonActionPerformed
 
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
         listOfDevices.exportXML();
+        JOptionPane.showMessageDialog(null, "File exported.");
     }//GEN-LAST:event_exportButtonActionPerformed
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed

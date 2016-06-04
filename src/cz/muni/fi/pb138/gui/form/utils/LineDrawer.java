@@ -39,7 +39,10 @@ public class LineDrawer extends JComponent {
     }
 
     public void link(Port port, Point c1, Point c2, Color color) {
-        portConnections.put(port, new PortConnection(c1, c2, color));
+        if (!portConnections.containsKey(port)) {
+            portConnections.put(port, new PortConnection(c1, c2, color));
+        }
+        
         repaint();
     }
     
@@ -53,7 +56,7 @@ public class LineDrawer extends JComponent {
    public Set<Port> getOpenPorts() {
        return Collections.unmodifiableSet(portConnections.keySet());
    }
-
+    
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
