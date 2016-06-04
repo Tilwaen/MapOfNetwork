@@ -73,6 +73,12 @@ public class PortManagerImpl implements PortManager {
         validatePort(port);
         Device deviceA = port.getDeviceA();
         Device deviceB = port.getDeviceB();
+        for (Port portInList : deviceA.getArrayOfPorts()) {
+            if (portInList != null && ((portInList.getDeviceA().equals(deviceA) && portInList.getDeviceB().equals(deviceB))
+                    || (portInList.getDeviceA().equals(deviceB) && portInList.getDeviceB().equals(deviceA)))) {
+                throw new IllegalArgumentException("There is already port between these two devices");
+            }
+        }
         if (!deviceManager.isPortEmpty(deviceA, numberOfPortInDeviceA)) {
             throw new IllegalArgumentException("Port in first device is occupied");
         }
