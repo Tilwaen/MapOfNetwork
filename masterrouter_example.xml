@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+1. pocitac (klient / server), router, hub, prepinac (mezi sebou i navzajem)
+2. pouze mapa propojeni (nebudou se posilat zadna skutecna data), predpokladame idealni sit (nevznikaji kruznice)
+3. zobrazitelne - .svg? (ikonky v CISCO pocket traceru)
+4. vztahy primo v XML (pocet portu, switch - 12, 24, 48; router max. 8 portu / ethernet / seriove pripojeni)
+5. ke kazdemu portu odkaz na pripojene zarizeni
+6. XML / nativni XML databaze
+7. formalni popis struktury / schema / relacni schema
+-->
+
+<masterRouter>
+
+	<mainDevice did="modem" type="router">
+		<address>01:02:03:04:ab:cd</address>
+		<name>Modem</name>
+		<parentPort>
+			<port number="0" type="ethernet">01:22:03:04:ab:cd</port>
+			<port number="1" type="wan"></port>
+		</parentPort>
+	</mainDevice>
+
+	<devices>
+		<!--did unique nonempty string, required
+			type nonempty string required-->
+		<device did="jakubcomp" type="computer">
+			<!--address is required-->
+			<address>01:02:33:04:ab:cd</address>
+			<!--name is optional-->
+			<name>Jakubov Pocitac</name>
+			<!--parentPort is optional element, requires at least 1 port-->
+			<parentPort>
+				<!--port element, number is required numeric value
+					type is required nonempty string
+					address is address of existing device-->
+				<port number="0" type="ethernet">01:22:03:04:ab:cd</port>
+				<port number="1" type="wan"></port>
+			</parentPort>
+		</device>
+
+		<device did="hlrouter" type="router">
+			<address>01:22:03:04:ab:cd</address>
+			<name>Hlavny router</name>
+			<parentPort>
+				<port number="0" type="ethernet">01:02:33:04:ab:cd</port>
+				<port number="1" type="wan">01:02:03:44:ab:cd</port>
+				<port number="2" type="ethernet"></port>
+				<port number="3" type="wan"></port>
+				<port number="4" type="ethernet"></port>
+				<port number="5" type="wan"></port>
+				<port number="6" type="ethernet"></port>
+				<port number="7" type="wan"></port>
+			</parentPort>
+		</device>	
+		
+		<device did="server" type="computer">
+			<address>01:02:03:44:ab:cd</address>
+			<name>Server</name>
+			<parentPort>
+				<port number="0" type="ethernet"></port>
+				<port number="1" type="wan"></port>
+				<port number="2" type="ethernet"></port>
+				<port number="3" type="wan">01:22:03:04:ab:cd</port>
+			</parentPort>
+		</device>
+	</devices>	
+	
+	<types>
+		<!--tid required unique non empty string
+			max_ports optional numeric value-->
+		<type tid="computer">
+			<!--name required-->
+			<name>Computer</name>
+		</type>
+		
+		<type tid="hub">
+			<name>HUB</name>
+		</type>
+		
+		<type tid="router" max_ports="8">
+			<name>Router</name>
+		</type>
+
+		<type tid="switch12" max_ports="12">
+			<name>Switch 12</name>
+		</type>
+		
+		<type tid="switch24" max_ports="24">
+			<name>Switch 24</name>
+		</type>
+		
+		<type tid="switch48" max_ports="48">
+			<name>Switch 48</name>
+		</type>
+	</types>
+	
+</masterRouter>
