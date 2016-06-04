@@ -18,7 +18,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- * @version 30.5.2016
+ * @version 4.6.2016
  * @author Petr Beran
  * @author Kristýna Leknerová
  * @author Jakub Mičuda
@@ -78,7 +78,7 @@ public class ListOfDevices {
 		rootElement.appendChild(devicesElement);
                 
                 for (Device device : listOfDevices) {
-                    Element deviceElement = doc.createElement("devices");
+                    Element deviceElement = doc.createElement("device");
                     devicesElement.appendChild(deviceElement);
                     
                     // Did
@@ -112,7 +112,14 @@ public class ListOfDevices {
                     // Port
                     for (int i = 0; i < device.getArrayOfPorts().size(); i++) {
                         Element devicePort = doc.createElement("port");
-                        devicePort.appendChild(doc.createTextNode(device.getName()));
+                        
+                        Port port = device.getArrayOfPorts().get(i);
+                        if (port == null) {
+                            devicePort.appendChild(doc.createTextNode(""));
+                        }
+                        else {
+                            devicePort.appendChild(doc.createTextNode(getAddressOfTheOtherDevice(port, device)));
+                        }
                         
                         Attr portNumber = doc.createAttribute("number");
                         portNumber.setValue(String.valueOf(i));
@@ -202,12 +209,9 @@ public class ListOfDevices {
 		DOMSource source = new DOMSource(doc);
 		StreamResult result = new StreamResult(new File("./resultfile.xml"));
 
-		// Output to console for testing
-		// StreamResult result = new StreamResult(System.out);
-
 		transformer.transform(source, result);
 
-		System.out.println("File saved!");
+		System.out.println("File exported as resultfile.xml.");
 
                 
         } catch (ParserConfigurationException ex) {

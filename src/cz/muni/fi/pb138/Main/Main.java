@@ -14,11 +14,18 @@ public class Main {
         // Required parameters are passed in the constructor,
         // optional parameters are passed as chainable methods.
         // Must end with .build() method.
-        /*Device router = new Device.Builder("routerId", DeviceType.ROUTER, "routerAddress", 4)
+        Device router = new Device.Builder(666L, DeviceType.ROUTER, "12:23:45:56:aa:bb", 4)
                 .name("Jogobella")
-                .build();*/
+                .build();
+        Device computer = new Device.Builder(999L, DeviceType.COMPUTER, "92:23:45:56:aa:bb", 4)
+                .name("OhMyGod")
+                .build();
         
         ListOfDevices lod = new ListOfDevices();
+        
+        lod.getListOfDevices().add(router);
+        lod.getListOfDevices().add(computer);
+        
         lod.exportXML();
         
         
