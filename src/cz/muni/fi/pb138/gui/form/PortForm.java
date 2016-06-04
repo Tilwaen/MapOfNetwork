@@ -59,9 +59,9 @@ public class PortForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        typeCB = new javax.swing.JComboBox<>();
-        deviceAComboBox = new javax.swing.JComboBox<>();
-        deviceBComboBox = new javax.swing.JComboBox<>();
+        typeCB = new javax.swing.JComboBox<String>();
+        deviceAComboBox = new javax.swing.JComboBox<String>();
+        deviceBComboBox = new javax.swing.JComboBox<String>();
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -70,13 +70,14 @@ public class PortForm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("New port");
 
         typeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ethernet", "Wifi" }));
 
-        deviceAComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        deviceAComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        deviceBComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        deviceBComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         saveButton.setText("Save");
         saveButton.addActionListener(new java.awt.event.ActionListener() {

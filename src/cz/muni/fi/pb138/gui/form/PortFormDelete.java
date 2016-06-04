@@ -57,13 +57,14 @@ public class PortFormDelete extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        deleteCB = new javax.swing.JComboBox<>();
+        deleteCB = new javax.swing.JComboBox<String>();
         deleteButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Delete port");
 
         deleteCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  }));
 
@@ -130,6 +131,10 @@ public class PortFormDelete extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        if (deleteCB.getItemCount() == 0){
+            return;
+        }
+        
         String portString = (String) deleteCB.getSelectedItem();
         String addressA = portString.substring(0, 17);
         String addressB = portString.substring(21);

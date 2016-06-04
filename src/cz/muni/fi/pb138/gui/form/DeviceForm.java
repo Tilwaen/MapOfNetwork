@@ -145,11 +145,12 @@ public class DeviceForm extends javax.swing.JFrame {
         buttonSave = new javax.swing.JButton();
         buttonCancel = new javax.swing.JButton();
         panelNewDevice = new javax.swing.JLabel();
-        comboBoxDeviceType = new javax.swing.JComboBox<>();
+        comboBoxDeviceType = new javax.swing.JComboBox<String>();
         jLabel1 = new javax.swing.JLabel();
         textFieldSpot = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("New device");
 
         textFieldName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -155,8 +155,10 @@ public class Main extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         importButton = new javax.swing.JButton();
         exportButton = new javax.swing.JButton();
+        exitButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Map of network");
 
         buttonAddDevice.setText("Add device");
         buttonAddDevice.addActionListener(new java.awt.event.ActionListener() {
@@ -908,7 +910,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(labelSpot17, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelSpot19, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelSpot20, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -928,6 +930,13 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        exitButton.setText("Exit");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -944,13 +953,18 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(buttonDeletePort, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
                     .addComponent(jLabel1)
                     .addComponent(importButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(exportButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(35, 35, 35)
                 .addComponent(labelDevice)
                 .addGap(18, 18, 18)
                 .addComponent(buttonAddDevice)
@@ -960,17 +974,15 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(buttonAddPort)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(buttonDeletePort)
-                .addGap(57, 57, 57)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(importButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(exportButton)
-                .addGap(51, 51, 51))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(45, 45, 45)
+                .addComponent(exitButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -982,6 +994,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAddDeviceActionPerformed
 
     private void buttonAddPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddPortActionPerformed
+        if (devices.size() < 2){
+            JOptionPane.showMessageDialog(rootPane, "Create at least two devices to add a port.");
+            return;
+        }
+        
         PortForm portForm = new PortForm();
         portForm.setVisible(true);
     }//GEN-LAST:event_buttonAddPortActionPerformed
@@ -1018,6 +1035,10 @@ public class Main extends javax.swing.JFrame {
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
         listOfDevices.exportXML();
     }//GEN-LAST:event_exportButtonActionPerformed
+
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_exitButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1063,6 +1084,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton buttonAddDevice;
     private javax.swing.JButton buttonAddPort;
     private javax.swing.JButton buttonDeletePort;
+    private javax.swing.JButton exitButton;
     private javax.swing.JButton exportButton;
     private javax.swing.JButton importButton;
     private javax.swing.JLabel jLabel1;
