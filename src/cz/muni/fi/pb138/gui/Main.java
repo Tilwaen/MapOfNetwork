@@ -3,18 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.muni.fi.pb138.Gui;
+package cz.muni.fi.pb138.gui;
 
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.DeviceType;
 import cz.muni.fi.pb138.Devices.Port;
-import cz.muni.fi.pb138.Gui.form.SelectForm;
-import cz.muni.fi.pb138.Gui.form.DeviceForm;
-import cz.muni.fi.pb138.Gui.form.PortForm;
+import cz.muni.fi.pb138.gui.form.SelectForm;
+import cz.muni.fi.pb138.gui.form.DeviceForm;
+import cz.muni.fi.pb138.gui.form.PortForm;
+import cz.muni.fi.pb138.gui.form.PortFormDelete;
+import cz.muni.fi.pb138.gui.form.Spot;
 import cz.muni.fi.pb138.Main.ListOfDevices;
 import cz.muni.fi.pb138.Managers.DeviceManager;
 import cz.muni.fi.pb138.Managers.DeviceManagerImpl;
 import cz.muni.fi.pb138.Managers.PortManager;
+import cz.muni.fi.pb138.Managers.PortManagerImpl;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -26,14 +32,20 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import cz.muni.fi.pb138.gui.form.utils.LineDrawer;
+import java.awt.Color;
+import java.awt.Point;
 
 /**
  *
  * @author Magdalena Kunikova
  */
 public class Main extends javax.swing.JFrame {
-    private SwingWorker swingWorker;
-    private DeviceManager deviceManager;
+
+    private static DeviceManager deviceManager;
+    private static PortManager portManager;
+    private static LineDrawer linker;
+    
     private DeviceForm deviceForm;
     private List<Device> devices;
     public final int REMOVE = 0;
@@ -45,14 +57,23 @@ public class Main extends javax.swing.JFrame {
     private String address;
     private int numberOfPorts;
     private DeviceType deviceType;
-    private static List<JLabel> labels = new ArrayList<>();
+    private static List<Spot> spots = new ArrayList<>();
     
+    
+
     public Main() {
-        ListOfDevices listOfDevices = new ListOfDevices();
         deviceManager = new DeviceManagerImpl();
-        devices = listOfDevices.getListOfDevices();
+        portManager = new PortManagerImpl();
+        
+        devices = deviceManager.listAllDevices();
+        linker = new LineDrawer();
+        setGlassPane( linker );
+        linker.setVisible( true );
                 
+        
         initComponents();
+        setLocationRelativeTo(null);
+        
         /*
         deviceForm.addWindowListener( new WindowAdapter() { 
             @Override
@@ -67,56 +88,33 @@ public class Main extends javax.swing.JFrame {
         } );*/
     }
 
-    public static List<JLabel> getLabels() {
-        return Collections.unmodifiableList(labels);
-    }  
+    public static DeviceManager getDeviceManager() {
+        return deviceManager;
+    }
     
-    private class editSwingWorker extends SwingWorker<Integer, Void> {
-        Main frame;
-        Integer deviceNumber;
-        DeviceManager deviceManager;
-
-        public editSwingWorker(Main frame, Integer deviceNumber, DeviceManager deviceManager) {
-            this.frame = frame;
-            this.deviceNumber = deviceNumber;
-            this.deviceManager = deviceManager;
+    public static PortManager getPortManager() {
+        return portManager;
+    }
+    
+    public static LineDrawer getLinker() {
+        return linker;
+    }
+    
+    public static List<Spot> getSpots() {
+        return Collections.unmodifiableList(spots);
+    }
+    
+    public static Spot getSpotForDevice(Device device) {
+        for (Spot s : spots) {
+            if (s.getDevice() != null && 
+                    s.getDevice().getAddress().equals(device.getAddress())) {
+                return s;
+            }
         }
-
-        @Override
-        protected Integer doInBackground() throws Exception {
-            //Device device = deviceManager.findDeviceById( deviceNumber );
-            //DeviceForm deviceForm = new DeviceForm( frame, device );
-            //deviceForm.setVisible(true);
-            return 0;
-        }
-
-        @Override
-        protected void done() {
-            swingWorker = null;
-        }
+        
+        return null;
     }
 
-    private class deleteSwingWorker extends SwingWorker<Integer, Void> {
-        DeviceManager deviceManager;
-
-        public deleteSwingWorker(DeviceManager deviceManager) {
-            this.deviceManager = deviceManager;
-        }
-
-        @Override
-        protected Integer doInBackground() throws Exception {
-            return 0;
-        }
-
-        @Override
-        protected void done() {
-            swingWorker = null;
-        }
-    }
-
-   
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -127,10 +125,8 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonAddDevice = new javax.swing.JButton();
-        buttonDeleteDevice = new javax.swing.JButton();
         buttonAddPort = new javax.swing.JButton();
         buttonDeletePort = new javax.swing.JButton();
-        buttonEditDevice = new javax.swing.JButton();
         labelDevice = new javax.swing.JLabel();
         labelPort = new javax.swing.JLabel();
         panelContent = new javax.swing.JPanel();
@@ -164,13 +160,6 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        buttonDeleteDevice.setText("Delete device");
-        buttonDeleteDevice.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonDeleteDeviceActionPerformed(evt);
-            }
-        });
-
         buttonAddPort.setText("Add port");
         buttonAddPort.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,13 +174,6 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        buttonEditDevice.setText("Edit device");
-        buttonEditDevice.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonEditDeviceActionPerformed(evt);
-            }
-        });
-
         labelDevice.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         labelDevice.setText("Device");
 
@@ -200,14 +182,16 @@ public class Main extends javax.swing.JFrame {
 
         panelContent.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        labels.add(labelSpot1);
+        Spot spot1 = new Spot(1, labelSpot1, null);
+        spots.add(spot1);
         labelSpot1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot1.setText("Spot 1");
         labelSpot1.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot1.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot1);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -230,14 +214,15 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot2);
+        Spot spot2 = new Spot(2, labelSpot2, null);
+        spots.add(spot2);
         labelSpot2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot2.setText("Spot 2");
         labelSpot2.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot2.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot2);
                     selectForm.setVisible(true);
                 }
             }
@@ -260,14 +245,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot3);
+        Spot spot3 = new Spot(3, labelSpot3, null);
+        spots.add(spot3);
         labelSpot3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot3.setText("Spot 3");
         labelSpot3.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot3.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot3);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -290,14 +277,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot4);
+        Spot spot4 = new Spot(4, labelSpot4, null);
+        spots.add(spot4);
         labelSpot4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot4.setText("Spot 4");
         labelSpot4.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot4.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot4);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -320,14 +309,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot5);
+        Spot spot5 = new Spot(5, labelSpot5, null);
+        spots.add(spot5);
         labelSpot5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot5.setText("Spot 5");
         labelSpot5.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot5.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot5);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -350,14 +341,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot6);
+        Spot spot6 = new Spot(6, labelSpot6, null);
+        spots.add(spot6);
         labelSpot6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot6.setText("Spot 6");
         labelSpot6.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot6.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot6);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -380,14 +373,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot7);
+        Spot spot7 = new Spot(7, labelSpot7, null);
+        spots.add(spot7);
         labelSpot7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot7.setText("Spot 7");
         labelSpot7.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot7.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot7);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -410,14 +405,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot8);
+        Spot spot8 = new Spot(8, labelSpot8, null);
+        spots.add(spot8);
         labelSpot8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot8.setText("Spot 8");
         labelSpot8.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot8.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot8);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -440,14 +437,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot9);
+        Spot spot9 = new Spot(9, labelSpot9, null);
+        spots.add(spot9);
         labelSpot9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot9.setText("Spot 9");
         labelSpot9.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot9.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot9);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -470,14 +469,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot10);
+        Spot spot10 = new Spot(10, labelSpot10, null);
+        spots.add(spot10);
         labelSpot10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot10.setText("Spot 10");
         labelSpot10.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot10.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot10);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -500,14 +501,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot11);
+        Spot spot11 = new Spot(11, labelSpot11, null);
+        spots.add(spot11);
         labelSpot11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot11.setText("Spot 11");
         labelSpot11.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot11.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot11);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -530,14 +533,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot12);
+        Spot spot12 = new Spot(12, labelSpot12, null);
+        spots.add(spot12);
         labelSpot12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot12.setText("Spot 12");
         labelSpot12.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot12.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot12);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -560,14 +565,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot13);
+        Spot spot13 = new Spot(13, labelSpot13, null);
+        spots.add(spot13);
         labelSpot13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot13.setText("Spot 13");
         labelSpot13.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot13.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot13);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -590,14 +597,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot14);
+        Spot spot14 = new Spot(14, labelSpot14, null);
+        spots.add(spot14);
         labelSpot14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot14.setText("Spot 14");
         labelSpot14.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot14.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot14);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -620,14 +629,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot15);
+        Spot spot15 = new Spot(15, labelSpot15, null);
+        spots.add(spot15);
         labelSpot15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot15.setText("Spot 15");
         labelSpot15.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot15.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot15);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -650,14 +661,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot16);
+        Spot spot16 = new Spot(16, labelSpot16, null);
+        spots.add(spot16);
         labelSpot16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot16.setText("Spot 16");
         labelSpot16.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot16.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot16);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -680,14 +693,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot17);
+        Spot spot17 = new Spot(17, labelSpot17, null);
+        spots.add(spot17);
         labelSpot17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot17.setText("Spot 17");
         labelSpot17.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot17.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot17);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -710,14 +725,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot17.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot18);
+        Spot spot18 = new Spot(18, labelSpot18, null);
+        spots.add(spot18);
         labelSpot18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot18.setText("Spot 18");
         labelSpot18.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot18.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot18);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -740,14 +757,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot18.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot19);
+        Spot spot19 = new Spot(19, labelSpot19, null);
+        spots.add(spot19);
         labelSpot19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot19.setText("Spot 19");
         labelSpot19.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot19.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot19);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -770,14 +789,16 @@ public class Main extends javax.swing.JFrame {
         });
         labelSpot19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        labels.add(labelSpot20);
+        Spot spot20 = new Spot(20, labelSpot20, null);
+        spots.add(spot20);
         labelSpot20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelSpot20.setText("Spot 20");
         labelSpot20.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent arg0) {
                 if(labelSpot20.getText().equals("")) {
-                    SelectForm selectForm = new SelectForm();
+                    SelectForm selectForm = new SelectForm(spot20);
+                    selectForm.setLocationRelativeTo(null);
                     selectForm.setVisible(true);
                 }
             }
@@ -896,11 +917,9 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(labelPort)
                     .addComponent(labelDevice)
-                    .addComponent(buttonDeleteDevice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(buttonAddPort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(buttonAddDevice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonDeletePort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonEditDevice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonDeletePort, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
                 .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
@@ -910,17 +929,13 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(labelDevice)
                 .addGap(18, 18, 18)
                 .addComponent(buttonAddDevice)
-                .addGap(11, 11, 11)
-                .addComponent(buttonEditDevice)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(buttonDeleteDevice)
-                .addGap(29, 29, 29)
+                .addGap(35, 35, 35)
                 .addComponent(labelPort)
                 .addGap(18, 18, 18)
                 .addComponent(buttonAddPort)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(buttonDeletePort)
-                .addGap(143, 143, 143))
+                .addGap(205, 205, 205))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -931,49 +946,21 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonAddDeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddDeviceActionPerformed
-        deviceForm = new DeviceForm(deviceManager);
+        deviceForm = new DeviceForm();
         deviceForm.setVisible(true);
     }//GEN-LAST:event_buttonAddDeviceActionPerformed
 
     private void buttonAddPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddPortActionPerformed
-        PortForm portForm = new PortForm(devices, deviceManager);
+        PortForm portForm = new PortForm();
         portForm.setVisible(true);
     }//GEN-LAST:event_buttonAddPortActionPerformed
 
-    private void buttonDeleteDeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteDeviceActionPerformed
-        //rowIndex = tableInvoices.getSelectedRow();
-        //if (rowIndex == -1) {
-        //    JOptionPane.showMessageDialog(rootPane, "No device was selected.");
-        //} else {
-        //    int choice = JOptionPane.showConfirmDialog(rootPane, "Do you really want to delete the device?", null, JOptionPane.YES_NO_OPTION);
-        //    if (choice == 0) {
-        //        if (swingWorker != null) {
-        //            throw new IllegalStateException("Operation was not accomplished yet.");
-        //        }
-                //swingWorker = new deleteSwingWorker(deviceManager);
-        //        swingWorker.execute();
-        //    }
-        //}
-    }//GEN-LAST:event_buttonDeleteDeviceActionPerformed
-
     private void buttonDeletePortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeletePortActionPerformed
-        //rowIndex = tableInvoices.getSelectedRow();
-        //if (rowIndex == -1) {
-        //    JOptionPane.showMessageDialog(rootPane, "No port was selected.");
-        //} else {
-        //    int choice = JOptionPane.showConfirmDialog(rootPane, "Do you really want to delete the port?", null, JOptionPane.YES_NO_OPTION);
-        //    if (choice == 0) {
-        //        if (swingWorker != null) {
-        //            throw new IllegalStateException("Operation was not accomplished yet.");
-        //        }
-        //        //swingWorker = new deleteSwingWorker(deviceManager);
-        //        swingWorker.execute();
-        //    }
-     //}
+        PortFormDelete deleteForm = new PortFormDelete();
+        
+        deleteForm.setLocationRelativeTo(null);
+        deleteForm.setVisible(true);
     }//GEN-LAST:event_buttonDeletePortActionPerformed
-
-    private void buttonEditDeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditDeviceActionPerformed
-    }//GEN-LAST:event_buttonEditDeviceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1018,9 +1005,7 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAddDevice;
     private javax.swing.JButton buttonAddPort;
-    private javax.swing.JButton buttonDeleteDevice;
     private javax.swing.JButton buttonDeletePort;
-    private javax.swing.JButton buttonEditDevice;
     private javax.swing.JLabel labelDevice;
     private javax.swing.JLabel labelPort;
     private javax.swing.JLabel labelSpot1;

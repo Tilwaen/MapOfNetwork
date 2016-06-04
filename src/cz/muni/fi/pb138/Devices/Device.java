@@ -123,6 +123,10 @@ public class Device {
         this.name = name;
     }
     
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
     /*** Methods ***/
     
     /**

@@ -1,4 +1,4 @@
-package cz.muni.fi.pb138.Gui.List;
+package cz.muni.fi.pb138.gui.list;
 
 import cz.muni.fi.pb138.Devices.Port;
 import cz.muni.fi.pb138.Managers.*;

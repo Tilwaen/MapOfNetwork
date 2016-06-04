@@ -2,6 +2,7 @@ package cz.muni.fi.pb138.Main;
 
 import cz.muni.fi.pb138.Devices.Device;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @version 30.5.2016
@@ -11,9 +12,9 @@ import java.util.ArrayList;
  */
 public class ListOfDevices {
 
-    private final ArrayList<Device> listOfDevices = new ArrayList();
+    private final List<Device> listOfDevices = new ArrayList<>();
 
-    public ArrayList<Device> getListOfDevices() {
+    public List<Device> getListOfDevices() {
         return listOfDevices;
     }
     

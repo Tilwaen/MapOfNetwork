@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.muni.fi.pb138.Gui.List;
+package cz.muni.fi.pb138.gui.list;
 
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Managers.DeviceManager;
-import cz.muni.fi.pb138.Gui.Main;
+import cz.muni.fi.pb138.gui.Main;
 import cz.muni.fi.pb138.Managers.DeviceManagerImpl;
 import java.util.ArrayList;
 import java.util.List;

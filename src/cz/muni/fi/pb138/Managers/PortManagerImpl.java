@@ -2,6 +2,7 @@ package cz.muni.fi.pb138.Managers;
 
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.Port;
+import cz.muni.fi.pb138.gui.Main;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class PortManagerImpl implements PortManager {
 
-    private DeviceManagerImpl deviceManager = new DeviceManagerImpl();
+    private DeviceManager deviceManager = Main.getDeviceManager();
 
     /**
      * Creates new port. Port will be inserted into first available position in

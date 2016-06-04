@@ -1,11 +1,17 @@
-package cz.muni.fi.pb138.Gui.form;
+package cz.muni.fi.pb138.gui.form;
 
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.Port;
+import cz.muni.fi.pb138.gui.Main;
+import cz.muni.fi.pb138.gui.form.utils.LineDrawer;
 import cz.muni.fi.pb138.Managers.DeviceManager;
 import cz.muni.fi.pb138.Managers.PortManager;
 import cz.muni.fi.pb138.Managers.PortManagerImpl;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Dimension;
 import java.util.List;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,21 +22,28 @@ public class PortForm extends javax.swing.JFrame {
 
     private DeviceManager deviceManager;
     private PortManager portManager;
+    private LineDrawer linker;
 
     /**
      * Creates new form PortForm
      */
-    public PortForm(List<Device> devices, DeviceManager deviceManager) {
-        this.deviceManager = deviceManager;
-        portManager = new PortManagerImpl();
-        fillComboBoxes(devices);
+    public PortForm() {
+        this.deviceManager = Main.getDeviceManager();
+        this.portManager = Main.getPortManager();
+        this.linker = Main.getLinker();
+        
+               
         initComponents();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
+        fillComboBoxes();
     }
 
-    private void fillComboBoxes(List<Device> devices) {
+    private void fillComboBoxes() {
         deviceAComboBox.removeAllItems();
         deviceBComboBox.removeAllItems();
-        for (Device device : devices) {
+        for (Device device : deviceManager.listAllDevices()) {
             String address = device.getAddress();
             deviceAComboBox.addItem(address);
             deviceBComboBox.addItem(address);
@@ -46,9 +59,9 @@ public class PortForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBox1 = new javax.swing.JComboBox<String>();
-        deviceAComboBox = new javax.swing.JComboBox<String>();
-        deviceBComboBox = new javax.swing.JComboBox<String>();
+        typeCB = new javax.swing.JComboBox<>();
+        deviceAComboBox = new javax.swing.JComboBox<>();
+        deviceBComboBox = new javax.swing.JComboBox<>();
         saveButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -59,11 +72,11 @@ public class PortForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ethernet", "Wifi" }));
+        typeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ethernet", "Wifi" }));
 
-        deviceAComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        deviceAComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        deviceBComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        deviceBComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         saveButton.setText("Save");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -111,13 +124,11 @@ public class PortForm extends javax.swing.JFrame {
                                 .addComponent(jLabel5))
                             .addGap(18, 18, 18)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(0, 0, Short.MAX_VALUE)
-                                    .addComponent(deviceAComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(deviceBComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(typeCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(deviceBComboBox, 0, 90, Short.MAX_VALUE)
+                                .addComponent(deviceAComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,7 +137,7 @@ public class PortForm extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(typeCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(41, 41, 41)
                 .addComponent(jLabel3)
@@ -138,7 +149,7 @@ public class PortForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deviceBComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(saveButton))
@@ -158,12 +169,28 @@ public class PortForm extends javax.swing.JFrame {
         try {
             Port port = new Port(deviceA, deviceB);
             portManager.createPort(port);
+            
+            Spot spotA = Main.getSpotForDevice(deviceA);
+            Spot spotB = Main.getSpotForDevice(deviceB);
+            Color color = typeCB.getSelectedIndex() == 0 ? Color.RED : Color.BLACK;
+            
+            linker.link(port, getLabelCenter(spotA.getLabel()), 
+                    getLabelCenter(spotB.getLabel()), color);
         } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
             return;
         }
+        
+        this.dispose();
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private Point getLabelCenter(JLabel label) {
+        Point location = label.getLocation();
+        Dimension size = label.getSize();
+        
+        return new Point(location.x + size.width / 2, location.y + size.height / 2);
+    }
+    
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
@@ -207,12 +234,12 @@ public class PortForm extends javax.swing.JFrame {
     private javax.swing.JButton cancelButton;
     private javax.swing.JComboBox<String> deviceAComboBox;
     private javax.swing.JComboBox<String> deviceBComboBox;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JButton saveButton;
+    private javax.swing.JComboBox<String> typeCB;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,9 +1,9 @@
-package cz.muni.fi.pb138.Gui.form;
+package cz.muni.fi.pb138.gui.form;
 
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.DeviceType;
-import cz.muni.fi.pb138.Gui.List.DeviceList;
-import cz.muni.fi.pb138.Gui.Main;
+import cz.muni.fi.pb138.gui.list.DeviceList;
+import cz.muni.fi.pb138.gui.Main;
 import cz.muni.fi.pb138.Managers.DeviceManager;
 import cz.muni.fi.pb138.Managers.DeviceManagerImpl;
 import javax.swing.Icon;
@@ -32,68 +32,56 @@ public class DeviceForm extends javax.swing.JFrame {
     private int numberOfPorts;
     private String address;
     private DeviceManager deviceManager;
-    
-    private static final String computerPath = "resources/computer.png";
-    private static final String hubPath = "resources/hub.png";
-    private static final String modemPath = "resources/modem.png";
-    private static final String routerPath = "resources/router.png";
-    private static final String switch12Path = "resources/12switch.png";
-    private static final String switch24Path = "resources/24switch.png";
-    private static final String switch48Path = "resources/48switch.png";
 
     /**
      * Creates new form DeviceForm
      */
-    
     public String getAddress() {
         return address;
     }
-    
+
     public String getName() {
         return name;
     }
-        
+
     public DeviceType getDeviceType() {
         return deviceType;
     }
-    
+
     public int getSpot() {
         return spot;
     }
-    
+
     public int getNumberOfPorts() {
         return numberOfPorts;
     }
-    
-    
-    public DeviceForm(DeviceManager deviceManager) {
-        this.deviceManager = deviceManager;
+
+    public DeviceForm() {
+        this.deviceManager = Main.getDeviceManager();
+
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     public void setDeviceManager(DeviceManager deviceManager) {
         this.deviceManager = deviceManager;
     }
-    
-    public JTextField getTextFieldName() {
-        return textFieldName;
+
+    public void setFieldsByDevice(Device device) {
+        this.textFieldName.setText(device.getName());
+        this.comboBoxDeviceType.setSelectedItem(device.getDeviceType());
+        this.textFieldAddress.setText(device.getAddress());
+        this.textFieldNumberOfPorts.setText(Integer.toString(device.getNumberOfPorts()));
     }
 
-    public DeviceForm(Device device, DeviceManager deviceManager) {
-        this.deviceManager = deviceManager;
-        this.device = device;
-        action = EDIT;
-        initComponents();
-
-        textFieldAddress.setText(device.getAddress());
-        textFieldName.setText(device.getName());
-        textFieldNumberOfPorts.setText(new Integer(device.getNumberOfPorts()).toString());
-        //comboBoxDeviceType.se
-        //typeOfDevice
+    public JTextField getTextFieldSpot() {
+        return textFieldSpot;
     }
 
     private class addSwingWorker extends SwingWorker<Integer, Void> {
-        
+
         Device device;
         DeviceManager deviceManager;
 
@@ -104,8 +92,6 @@ public class DeviceForm extends javax.swing.JFrame {
 
         @Override
         protected Integer doInBackground() throws Exception {
-            deviceManager.createDevice(device);
-
             return 0;
         }
 
@@ -117,7 +103,7 @@ public class DeviceForm extends javax.swing.JFrame {
     }
 
     private class editSwingWorker extends SwingWorker<Integer, Void> {
-        
+
         Device newDevice;
         DeviceManager deviceManager;
 
@@ -289,25 +275,20 @@ public class DeviceForm extends javax.swing.JFrame {
         if (swingWorker != null) {
             throw new IllegalStateException("Operation was not accomplished yet.");
         } else {
-            if (action == ADD) {
-                Device newDevice = parseTextFields();
-                if (newDevice != null) {
-                    swingWorker = new addSwingWorker(newDevice, deviceManager);
-                    editLabel();
-                    buttonSave.setEnabled(false);
-                    swingWorker.execute();
-                    this.dispose();
-                }
-            } else if (action == EDIT) {
-                Device newDevice = parseTextFields();
-                if (newDevice != null) {
-                    //newDevice.setDid( device.getDid() );
-                    swingWorker = new editSwingWorker(newDevice, deviceManager);
-                    buttonSave.setEnabled(false);
-                    swingWorker.execute();
-                    this.dispose();
-                }
-            }  
+            Device newDevice = parseTextFields();
+            if (newDevice != null) {
+                deviceManager.createDevice(newDevice.getDeviceType(),
+                        newDevice.getAddress(),
+                        newDevice.getNumberOfPorts(),
+                        newDevice.getArrayOfPorts(),
+                        newDevice.getName());
+                
+                swingWorker = new addSwingWorker(newDevice, deviceManager);
+                Main.getSpots().get(spot - 1).updateSpot(newDevice);
+                buttonSave.setEnabled(false);
+                swingWorker.execute();
+                this.dispose();
+            }
         }
     }//GEN-LAST:event_buttonSaveActionPerformed
 
@@ -318,41 +299,6 @@ public class DeviceForm extends javax.swing.JFrame {
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_buttonCancelActionPerformed
-
-     private void editLabel() {
-        //String labelNumber = "labelSpot" + spot;
-        JLabel label = Main.getLabels().get(spot-1);
-        label.setText("");
-        
-        Icon image = null;
-        String deviceTypeString = deviceType.toString().toUpperCase();
-        switch(deviceTypeString) {
-            case "COMPUTER" : 
-                image = new ImageIcon(getClass().getClassLoader().getResource(computerPath));
-                break;
-            case "HUB" :
-                image = new ImageIcon(getClass().getClassLoader().getResource(hubPath));
-                break;
-            case "MODEM" :
-                image = new ImageIcon(getClass().getClassLoader().getResource(modemPath));
-                break;
-            case "ROUTER" :
-                image = new ImageIcon(getClass().getClassLoader().getResource(routerPath));
-                break;
-            case "SWITCH12" :
-                image = new ImageIcon(getClass().getClassLoader().getResource(switch12Path));
-                break;
-            case "SWITCH24" :
-                image = new ImageIcon(getClass().getClassLoader().getResource(switch24Path));
-                break;
-            case "SWITCH48" :
-                image = new ImageIcon(getClass().getClassLoader().getResource(switch48Path));
-                break;
-        }
-        label.setIcon(image);
-        label.setHorizontalTextPosition( SwingConstants.CENTER );
-        label.setToolTipText( name + ", number of ports: " + numberOfPorts + ", address: " + address );
-    }
     
     private Device parseTextFields() {
         name = textFieldName.getText();
@@ -453,16 +399,28 @@ public class DeviceForm extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+                
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DeviceForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DeviceForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DeviceForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DeviceForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeviceForm.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(DeviceForm.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(DeviceForm.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(DeviceForm.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

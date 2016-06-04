@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
-package cz.muni.fi.pb138.Gui.form;
+package cz.muni.fi.pb138.gui.form;
 
 import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.DeviceType;
 import cz.muni.fi.pb138.Devices.Port;
-import cz.muni.fi.pb138.Gui.form.SelectForm;
-import cz.muni.fi.pb138.Gui.form.DeviceForm;
-import cz.muni.fi.pb138.Gui.form.PortForm;
+import cz.muni.fi.pb138.gui.Main;
+import cz.muni.fi.pb138.gui.form.SelectForm;
+import cz.muni.fi.pb138.gui.form.DeviceForm;
+import cz.muni.fi.pb138.gui.form.PortForm;
 import cz.muni.fi.pb138.Main.ListOfDevices;
 import cz.muni.fi.pb138.Managers.DeviceManager;
 import cz.muni.fi.pb138.Managers.DeviceManagerImpl;
@@ -23,13 +22,17 @@ import cz.muni.fi.pb138.Managers.PortManager;
  * @author Mags
  */
 public class SelectForm extends javax.swing.JFrame {
+
+    private Spot spot;
     private DeviceForm deviceForm;
     private DeviceManager deviceManager;
+
     /**
      * Creates new form SelectForm
      */
-    public SelectForm() {
-        
+    public SelectForm(Spot spot) {
+        this.spot = spot;
+        this.deviceManager = Main.getDeviceManager();
         initComponents();
     }
 
@@ -103,13 +106,17 @@ public class SelectForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditActionPerformed
-        deviceForm = new DeviceForm(deviceManager);
-        deviceForm.getTextFieldName().setText(deviceForm.getName());
-        deviceForm.setVisible(true);
+
+        EditForm editForm = new EditForm(spot);
+        editForm.setLocationRelativeTo(null);
+        editForm.setVisible(true);
     }//GEN-LAST:event_buttonEditActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-        // TODO add your handling code here:
+        Device device = deviceManager.findDeviceByAddress(spot.getDevice().getAddress());
+        deviceManager.deleteDevice(device);
+        spot.clearDevice();
+        this.dispose();
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
     private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseActionPerformed
@@ -143,12 +150,6 @@ public class SelectForm extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SelectForm().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
