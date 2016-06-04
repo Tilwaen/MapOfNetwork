@@ -4,6 +4,8 @@ import cz.muni.fi.pb138.Devices.Device;
 import cz.muni.fi.pb138.Devices.Device.Builder;
 import cz.muni.fi.pb138.Devices.DeviceType;
 import cz.muni.fi.pb138.Devices.Port;
+import cz.muni.fi.pb138.Managers.DeviceManager;
+import cz.muni.fi.pb138.Managers.PortManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +21,11 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import org.xml.sax.SAXException;
 
 /**
@@ -275,8 +282,14 @@ public class ListOfDevices {
 
     /**
      * Method for importing XML into listOfDevices.
+     * 
+     * @author Jakub Mičuda
+     * @author Kristýna Leknerová
      */
     public void importXML(String input_xml) throws IOException {
+        DeviceManager deviceManager = cz.muni.fi.pb138.gui.Main.getDeviceManager();
+        PortManager portManager = cz.muni.fi.pb138.gui.Main.getPortManager();
+        
         try{  
         File inputFile = new File(input_xml);
          DocumentBuilderFactory dbFactory =
@@ -289,7 +302,7 @@ public class ListOfDevices {
          listOfDevices.clear();
          for (int i = 0; i < nList.getLength(); i++) {
              Element nNode = (Element)nList.item(i);
-             Long did =  new Long(nNode.getAttribute("did").hashCode());
+             Long did =  new Long(nNode.getAttribute("did"));
              DeviceType type = getDeviceType(nNode.getAttribute("type"));
              Element parentPort = (Element)nNode.getElementsByTagName("parentPort").item(0);
              Element address = (Element)nNode.getElementsByTagName("address").item(0);
@@ -304,7 +317,8 @@ public class ListOfDevices {
              }*/
              builder.name(name.getNodeValue());
              Device dev = builder.build();
-             listOfDevices.add(dev);
+             //listOfDevices.add(dev);
+             deviceManager.createDevice(dev);
          }
          
          Element mainDevice = (Element)doc.getElementsByTagName("mainDevice").item(0);
@@ -324,24 +338,58 @@ public class ListOfDevices {
              }*/
          builder.name(name.getNodeValue());
          Device dev = builder.build();
-         listOfDevices.add(dev);
+         //listOfDevices.add(dev);
+         deviceManager.createDevice(dev);
          
          for(int i = 0; i < nList.getLength();i++){
             Element nNode = (Element)nList.item(i);
             parentPort = (Element)nNode.getElementsByTagName("parentPort").item(0);
             nPortList = parentPort.getElementsByTagName("port");
-            Long mDid =  new Long(nNode.getAttribute("did").hashCode());
+            Long mDid =  new Long(nNode.getAttribute("did"));
             nPortList = parentPort.getElementsByTagName("port");
-            Device thisDevice = listOfDevices.stream().filter(d -> d.getDid().equals(mDid)).findFirst().get();
+            
+            /*** Kristýna XPath edit: ***/
+            
+            //Device thisDevice = listOfDevices.stream().filter(d -> d.getDid().equals(mDid)).findFirst().get();
+            Device thisDevice = deviceManager.findDeviceById(mDid);
+            
             for(int j=0;j<nPortList.getLength();j++){
                 Element nPort = (Element)nPortList.item(j);
-                Device otherDevice = listOfDevices.stream()
+                /*Device otherDevice = listOfDevices.stream()
                                         .filter(device -> device.getAddress().equals(nPort.getTextContent()))
-                                        .findFirst().orElse(null);
+                                        .findFirst().orElse(null);*/
+                Device otherDevice = deviceManager.findDeviceByAddress(nPort.getTextContent());
+                
                 if(otherDevice != null){
-                Port port = new Port(thisDevice,otherDevice);
-                thisDevice.getArrayOfPorts().set(j, port);
+                    
+                    // Get number attribute of element port which belongs to
+                    // element device with specific address
+                    XPath xpath = XPathFactory.newInstance().newXPath();
+                    XPathExpression expr = xpath.compile("//device[address=\""     // Get device element
+                            + nPort.getTextContent()                                // with address of otherDevice
+                            + "\"]/parentPort/port[text() = \""                     // get its port
+                            + thisDevice.getAddress()                               // with thisDevice address
+                            + "\"]/@number");                                       // and, finally, select its number
+                    
+                    double exprResult = (double)expr.evaluate(doc, XPathConstants.NUMBER);  // XPathConstants.NODESET
+                    
+                    int thisDevicePortNumber = Integer.parseInt(nPort.getAttribute("number"));
+                    int otherDevicePortNumber = (int)exprResult;
+                    
+                    Port port = new Port(thisDevice,otherDevice);
+                    
+                    try {
+                        portManager.createPortFromXML(port, thisDevicePortNumber, otherDevicePortNumber);
+                    }
+                    catch (UnsupportedOperationException uoe) {
+                        // There is already a port between those two devices
+                    }
+                    
+                    //portManager.createPortFromXML(port, thisDevice.getNumberOfPorts(), otherDevice.getNumberOfPorts());
+                    //thisDevice.getArrayOfPorts().set(j, port);
                 }
+                
+                /*** End of Kristýna edit ***/
             }
            
         }
@@ -354,6 +402,8 @@ public class ListOfDevices {
             throw new IOException(ex.toString());
         } catch (SAXException ex) {
             throw new IOException(ex.toString());
+        } catch (XPathExpressionException ex) {
+            throw new IOException("Wrong XPath expression. " + ex.toString());
         }
     }
       

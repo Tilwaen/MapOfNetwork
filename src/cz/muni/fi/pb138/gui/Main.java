@@ -45,7 +45,7 @@ public class Main extends javax.swing.JFrame {
 
     private static ListOfDevices listOfDevices = new ListOfDevices();
     private static DeviceManager deviceManager = new DeviceManagerImpl(listOfDevices);
-    private static PortManager portManager;
+    private static PortManager portManager = new PortManagerImpl();
     private static LineDrawer linker;
     
     private DeviceForm deviceForm;
@@ -65,7 +65,7 @@ public class Main extends javax.swing.JFrame {
 
     public Main() {
         //deviceManager = new DeviceManagerImpl();
-        portManager = new PortManagerImpl();
+        //portManager = new PortManagerImpl();
         
         devices = deviceManager.listAllDevices();
         linker = new LineDrawer();
