@@ -279,7 +279,7 @@ public class ListOfDevices {
             }
         }
         else {
-            if (thisDevice.getAddress().equals(port.getDeviceB().getAddress())) {
+            if (!thisDevice.getAddress().equals(port.getDeviceB().getAddress())) {
                 throw new IllegalArgumentException("Port doesn't contain given device! (comparison by address)");
             }
             else {

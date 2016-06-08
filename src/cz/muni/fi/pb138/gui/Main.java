@@ -1031,6 +1031,7 @@ public class Main extends javax.swing.JFrame {
         }
         catch (SAXException saxe) {
             JOptionPane.showMessageDialog(null, "Imported file is not valid.");
+            saxe.printStackTrace();
             return;
         }
         

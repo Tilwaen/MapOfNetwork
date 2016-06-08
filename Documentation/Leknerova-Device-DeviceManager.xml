@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article>
+    <articleinfo>
+        <title>Map of the network connection</title>
+        <subtitle>
+            Device, Device manager
+        </subtitle>
+        <author>
+            <firstname>Kristýna</firstname>
+            <surname>Leknerová</surname>
+        </author>
+    </articleinfo>
+
+    <section>
+        <title>Role in the team</title>
+        <para>
+		My role in the team was to design class <code>Device</code>, which holds every important property of the network device. I implemented <code>DeviceManager</code>, which ensures basic operations over devices - addition, removal, change and search by various parameters. I also modified file import and am responsible for showing the imported devices in GUI and file export.
+        </para>
+    </section>             
+        
+    <section>
+        <title>Device</title>
+        <para>
+            Class that represents a single device. Constructed via the Builder pattern, which allows some modularity with respect to its optional parameters.
+        </para>
+	<section>
+		<title>Properties of the device class:</title>
+		<itemizedlist>
+			<listitem><para><code>did</code> - Unique numerical identifier.</para></listitem>
+			<listitem><para><code>deviceType</code> - Type of the device. See supported device types in the respective documentation.</para></listitem>
+		<listitem><para><code>address</code> - Unique string identifier. Must be in valid MAC address format, ie. 01-02-03-04-aa-bb or 01:02:03:04:aa:bb.</para></listitem>
+		<listitem><para><code>numberOfPorts</code> - maximal number of ports available to the device. Must be non-negative.</para></listitem>
+		<listitem><para><code>arrayOfPorts</code> - List of ports of fixed size (<code>numberOfItems</code> size).</para></listitem>
+		<listitem><para><code>name</code> - Name of the device.</para></listitem>
+		</itemizedlist>
+	</section>
+	<para>
+	<code>deviceType</code>, <code>numberOfPorts</code> and <code>name</code> properties can be changed. Changing <code>numberOfPorts</code> shrinks/enlarges current <code>arrayOfPorts</code>; shrinking crops reduntant port connections.
+	</para>
+	<para><code>arrayOfPorts</code> is list created as <code>Arrays.toList()</code> to ensure fixed size. This prevents to add or remove any port (and thus change the list size), but allows to get or set any list element.
+	</para>
+	<para>Two devices are equal if their <code>did</code> and <code>address</code> are equal.
+	</para>
+    </section>            
+    
+    <section>
+        <title>Device Manager</title>
+        <para>
+            Device manager is a class that allows basic operations over devices. Devices can be created, updated and deleted. Using Java 8 streaming API, this class also allows search operations based on various conditions, most important being search by device <code>did</code> and <code>address</code>.
+        </para>
+    </section>                 
+</article>
