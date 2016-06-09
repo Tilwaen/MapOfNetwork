@@ -36,7 +36,7 @@
 		<listitem><para><code>arrayOfPorts</code> - List of ports of fixed size (<code>numberOfItems</code> size).</para></listitem>
 		<listitem><para><code>name</code> - Name of the device.</para></listitem>
 		</itemizedlist>
-	</section>
+	
 	<para>
 	<code>deviceType</code>, <code>numberOfPorts</code> and <code>name</code> properties can be changed. Changing <code>numberOfPorts</code> shrinks/enlarges current <code>arrayOfPorts</code>; shrinking crops reduntant port connections.
 	</para>
@@ -44,6 +44,7 @@
 	</para>
 	<para>Two devices are equal if their <code>did</code> and <code>address</code> are equal.
 	</para>
+	</section>
     </section>            
     
     <section>
