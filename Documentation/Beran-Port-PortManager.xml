@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<article>
+  <articleinfo>
+    <title>Map of the network connection</title>
+
+    <subtitle>Port, Port manager</subtitle>
+
+    <author>
+      <firstname>Petr</firstname>
+
+      <surname>Beran</surname>
+    </author>
+  </articleinfo>
+
+  <section>
+    <title>Role in the team</title>
+
+    <para>In this project I was responsible for designing
+    <code>portManager</code>, backend class which creates, deletes and
+    validates ports between devices, as well as implementing this class's
+    interface. I also implemented several GUI tweaks and created unit tests
+    for <code>portManager</code>.</para>
+  </section>
+
+  <section>
+    <title>Port</title>
+
+    <para>Class that represents a connection between two devices. At this
+    moment, <code>Port</code> does not have a <code>portType</code> property,
+    which will be added later when wifi ports will be implemented.</para>
+
+    <section>
+      <title>Properties of the port class:</title>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>deviceA</code> - First of two devices in port.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>deviceB</code> - Second of two devices needed in
+          port.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>(portType)</code> - Wifi or Ethernet. Will be
+          implemented later.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para><code>portType</code> will be the only property that can be
+      changed and will be the only one with setter. Changing either
+      <code>deviceA</code> or <code>deviceB</code> is not allowed and only
+      getters of these properties are available.</para>
+
+      <para>It is not allowed to have port without both devices. These devices
+      have reference for the same port. First and second device must be
+      different.</para>
+
+      <para>Two ports are equal if their devices are same, no matter the
+      order. There cannot be multiple ports between two same devices.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Port Manager</title>
+
+    <para>Port manager is a class that allows basic operations over ports.
+    Ports can be either created or deleted. While creating, port is also
+    validated if there are no missing arguments. Updating a port is not
+    implemented at this moment. Changing <code>portType</code> will be
+    available later and changes of either device is not allowed. Deleting and
+    creating new port is recommended instead of changing one or both devices
+    in a port. When creating port from XML, imported ports are placed in the
+    spot specified in the XML. This guarantees consistency of imported data.
+    Ports created in application find first available spot in both devices, if
+    there is one. Both methods also checks for duplicate ports between two
+    devices.</para>
+  </section>
+</article>
