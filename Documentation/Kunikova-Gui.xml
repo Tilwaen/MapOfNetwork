@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<article>
+  <articleinfo>
+    <title>Map of the network connection</title>
+
+    <subtitle>Graphical user interface</subtitle>
+
+    <author>
+      <firstname>Magdaléna</firstname>
+
+      <surname>Kuníková</surname>
+    </author>
+  </articleinfo>
+
+  <section>
+    <title>Role in the team</title>
+
+    <para>My responsibility was to create a 
+    <code>gui</code> (graphical user interface), that would allow a user to display his project and interact with the application. 
+	
+	I also did some backend changes and wrote project wiki on GitHub.</para>
+  </section>
+
+  <section>
+    <title>Main</title>
+
+    <para>The main class of the project. This class evokes a window, where the user can interact with the program.</para>
+	
+	<section>
+		<title>Properties of the Main class:</title>
+      <itemizedlist>
+        <listitem>
+          <para><code>listOfDevices</code> - unnecessary, should be deleted</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>deviceManager</code> - manages the devices</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>portManager</code> - manages the ports</para>
+        </listitem>
+
+        <listitem>
+          <para><code>linker</code> - connects two devices</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>deviceForm</code> - creating new device</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>devices</code> - all devices given</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>REMOVE</code> - unnecessary, should be deleted</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>ADD</code> - unnecessary, should be deleted</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>EDIT</code> - unnecessary, should be deleted</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>port</code> - the port given</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>spot</code> - location of the device in the window</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>name</code> - name of the device</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>address</code> - device's MAC address (only one unique address is supported for a device)</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>numberOfPorts</code> - how many ports the device has</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>deviceType</code> - type of the device (computer, hub,...)</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>spots</code> - list of all spots in the window</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The window shows 20 empty <code>spots</code>, in which can the user put his device representation with Add device button, which evokes <code>deviceForm</code> property.</para>
+	  
+	  <para>The user can modify or delete the device by right-clicking on the device icon.</para>
+
+      <para>The user can establish the connection between two devices by clicking the Add port icon, which evokes <code>portForm</code> property.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>List, list</title>
+
+    <para>Unnecessary (package) part of the project used for the first <code>gui</code> version, should me removed.</para>
+  </section>
+  
+  <section>
+    <title>List, list</title>
+
+    <para>Unnecessary part of the project used for the first <code>gui</code> version, should me removed.</para>
+  </section>
+  
+  <section>
+    <title>form</title>
+	
+	<section>
+		<title>This package contains two other packages:</title>
+		<itemizedlist>
+			<listitem>
+			<para><code>constants</code> - contains class <code>GUIConstants</code>, that holds paths to the icon resources</para>
+			</listitem>	
+			
+			<listitem>
+			  <para><code>utils</code> - contains class <code>LineDrawer</code>, that draws lines between objects</para>
+			</listitem>	
+		</itemizedlist>
+	
+		<para>Except for that, the <code>form</code> package contains classes:
+		<itemizedlist>
+			<listitem>
+			  <para><code>DeviceForm</code> - contains class <code>GUIConstants</code>, that holds paths to the icon resources</para>
+			</listitem>	
+			
+			<listitem>
+			  <para><code>EditForm</code> - window for creating a new device</para>
+			</listitem>	
+			
+			<listitem>
+			  <para><code>PortForm</code> - window for creating a new port</para>
+			</listitem>	
+			
+			<listitem>
+			  <para><code>PortFormDelete</code> - window for deleting an existing port according to its MAC address</para>
+			</listitem>	
+			
+			<listitem>
+			  <para><code>SelectForm</code> - window to select a device to Edit or Delete</para>
+			</listitem>	
+			
+			<listitem>
+			  <para><code>Spot</code> - represents a single spot in the <code>Main</code> window</para>
+			</listitem>	
+		</itemizedlist></para>
+	</section>
+  </section>
+</article>
