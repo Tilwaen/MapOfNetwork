@@ -1,0 +1,94 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<article>
+  <articleinfo>
+    <title>Map of the network connection</title>
+
+    <subtitle>XML Structure and Schema</subtitle>
+
+    <author>
+      <firstname>Jakub</firstname>
+
+      <surname>Mičuda</surname>
+    </author>
+  </articleinfo>
+
+  <section>
+    <title>Role in the team</title>
+
+    <para>My Job was  to make xml structure for application,
+	and xsd schema for it. I was also doing a code for importing XML to Java</para>
+  </section>
+
+  <section>
+    <title>Structure</title>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>mainDevice</code> - Element with same structure as <code>device</code>. Represents main modem in the network</para>
+        </listitem>
+
+        <listitem>
+          <para><code>devices</code> - Groups all <code>device</code> elements</para>
+        </listitem>
+
+        <listitem>
+          <para><code>device</code> - element representing device in the network.</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>parentPort</code> - Groups all <code>port</code> elements of <code>device</code></para>
+        </listitem>
+		
+		<listitem>
+          <para><code>port</code> - represents connection between 2 <code>device</code>`s</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>types</code> - Groups all <code>type</code> elements</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>type</code> - element representing type of the <code>device</code></para>
+        </listitem>
+      </itemizedlist>
+  </section>
+
+  <section>
+    <title>XSD Schema</title>
+
+    <itemizedlist>
+        <listitem>
+          <para><code>mainDevice</code> - Has fixed attribute <code>did</code>, and <code>type</code>.
+		  Rest of structure is same as <code>device</code> element</para>
+        </listitem>
+
+        <listitem>
+          <para><code>devices</code> - Sequence of <code>device</code> elements. Could have 0 children</para>
+        </listitem>
+
+        <listitem>
+          <para><code>device</code> - Unique required attribute <code>did</code> and required attribute <code>type</code>.
+		    Elements <code>address</code>,<code>name</code> and <code>parentPort</code> are each exact one in <code>device</code></para>
+        </listitem>
+		
+		<listitem>
+          <para><code>parentPort</code> - Sequence of <code>port</code> elements. At least one <code>port</code> required</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>port</code> - Required attribute <code>number</code></para>
+        </listitem>
+		
+		<listitem>
+          <para><code>types</code> - Sequence of <code>type</code> elements. Can be empty</para>
+        </listitem>
+		
+		<listitem>
+          <para><code>type</code> - Required unique attribute <code>tid</code> and optional attribute <code>mas_ports</code>
+		  One child element <code>name</code>, it can be empty</para>
+        </listitem>
+      </itemizedlist>
+</article>
